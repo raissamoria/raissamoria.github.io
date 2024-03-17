@@ -3,7 +3,18 @@
     color: #fff;
     
 }
+.name{ color:black;
+    font-size: 50px;
+    border: 3px solid white;
+    font-family: 'Times New Roman', Times, serif;
+
+}
 
 img{ 
     width: 250px;
+
+}
+
+.videotype{
+    width: 500px;
 }
