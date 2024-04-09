@@ -1,13 +1,23 @@
 *{
-    background-color: rgb(0, 221, 255);
-    color: #fff;
+    background-color: #fff
+    color#fff;
     
 }
-.name{ color:black;
+
+
+.name{ color:rgb(0, 0, 0);
     font-size: 50px;
     border: 3px solid white;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'FontName';
 
+}
+
+@font-face 
+{
+  font-family: "FontName";
+  src:
+    url("ClashDisplay-Variable.ttf") format("woff2"),
+    url("linkToTheFontFolder/File.woff")  format("woff");
 }
 
 img{ 
@@ -17,4 +27,20 @@ img{
 
 .videotype{
     width: 500px;
+}
+
+
+
+.mywork{ color: black;
+    font-size: 40px;
+    font-family:'mywork' ;
+
+}
+
+@font-face 
+{
+  font-family: "mywork";
+  src:
+    url("Exo2-VariableFont_wght.ttf") format("woff2"),
+    url("linkToTheFontFolder/File.woff")  format("woff");
 }
