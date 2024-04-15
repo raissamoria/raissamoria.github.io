@@ -1,0 +1,95 @@
+*{
+    background-color: rgb(255, 255, 255);
+    color: #000000;
+    
+}
+
+
+.rai{ color:rgb(0, 0, 0);
+    font-size: 50px;
+    border: 3px solid white;
+    font-family: 'Name';}
+
+    @font-face 
+    {
+      font-family: "Name";
+      src:
+        url("ClashDisplay-Variable.ttf") format("woff2"),
+        url("linkToTheFontFolder/File.woff")  format("woff");
+    }
+
+
+    @font-face 
+    {
+      font-family: "one";
+      src:
+        url("Exo2-VariableFont_wght.ttf") format("woff2"),
+        url("linkToTheFontFolder/File.woff")  format("woff");
+    }
+
+.one{color:rgb(0, 0, 0);
+    font-size: 50px;
+    border: 3px solid white;
+    font-family: 'one';}
+
+    @font-face 
+    {
+      font-family: "one";
+      src:
+        url("Exo2-VariableFont_wght.ttf") format("woff2"),
+        url("linkToTheFontFolder/File.woff")  format("woff");
+    }
+
+    .two{color:rgb(0, 0, 0);
+        font-size: 50px;
+        border: 3px solid white;
+        font-family: 'one';}
+
+        .videotype{
+          width: 500px;
+      }
+.one {width: 500px;}
+
+
+.name{ color:rgb(0, 0, 0);
+  font-size: 50px;
+  border: 3px solid white;
+  font-family: 'FontName';
+
+}
+
+@font-face 
+{
+font-family: "FontName";
+src:
+  url("Exo2-VariableFont_wght.ttf") format("woff2"),
+  url("linkToTheFontFolder/File.woff")  format("woff");
+}
+
+img{ 
+  width: 250px;
+
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 250px; /* Espaçamento entre os itens */
+}
+
+nav ul li a {
+  font-size: 50px;
+  font-family: "Helvetica";
+  text-decoration: none;
+  color: #333; /* Cor do texto dos links */
+  font-weight: bold; /* Deixar os links em negrito */
+}
+
+nav ul li a:hover {
+  color: #d11414; /* Cor do texto dos links quando hover */
+}
