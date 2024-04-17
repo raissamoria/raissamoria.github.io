@@ -1,95 +1,137 @@
-*{
-    background-color: rgb(255, 255, 255);
-    color: #000000;
-    
-}
-
-
-.rai{ color:rgb(0, 0, 0);
-    font-size: 50px;
-    border: 3px solid white;
-    font-family: 'Name';}
-
-    @font-face 
-    {
-      font-family: "Name";
-      src:
-        url("ClashDisplay-Variable.ttf") format("woff2"),
-        url("linkToTheFontFolder/File.woff")  format("woff");
-    }
-
-
-    @font-face 
-    {
-      font-family: "one";
-      src:
-        url("Exo2-VariableFont_wght.ttf") format("woff2"),
-        url("linkToTheFontFolder/File.woff")  format("woff");
-    }
-
-.one{color:rgb(0, 0, 0);
-    font-size: 50px;
-    border: 3px solid white;
-    font-family: 'one';}
-
-    @font-face 
-    {
-      font-family: "one";
-      src:
-        url("Exo2-VariableFont_wght.ttf") format("woff2"),
-        url("linkToTheFontFolder/File.woff")  format("woff");
-    }
-
-    .two{color:rgb(0, 0, 0);
-        font-size: 50px;
-        border: 3px solid white;
-        font-family: 'one';}
-
-        .videotype{
-          width: 500px;
-      }
-.one {width: 500px;}
-
-
-.name{ color:rgb(0, 0, 0);
-  font-size: 50px;
-  border: 3px solid white;
-  font-family: 'FontName';
-
-}
-
 @font-face 
 {
-font-family: "FontName";
+font-family: "exo";
 src:
   url("Exo2-VariableFont_wght.ttf") format("woff2"),
   url("linkToTheFontFolder/File.woff")  format("woff");
 }
 
-img{ 
-  width: 250px;
-
+@font-face 
+{
+  font-family: "Clash";
+  src:
+    url("ClashDisplay-Variable.ttf") format("woff2"),
+    url("linkToTheFontFolder/File.woff")  format("woff");
 }
+@font-face 
+    {
+      font-family: "barra";
+      src:
+        url("Roboto-Bold.ttf") format("woff2"),
+        url("linkToTheFontFolder/File.woff")  format("woff");
+    }
+*{
+    color: #000000;
+    margin: 0;
+  padding: 0;
+}
+
+
+h2{ color:rgb(0, 0, 0);
+    font-size: 50px;
+    border: 3px solid white;
+    font-family: 'exo';}
+
+    h1{ color:rgb(0, 0, 0);
+      font-size: 50px;
+      border: 3px solid white;
+      font-family: 'Clash';}
+
+    
+
+   
+
+    
+
+
+
+    
+
+        .videotype{
+          width: 100vw;
+      }
+
+.fotoproject1 {width: 100vw}
+
+
+
 
 nav ul {
   list-style-type: none;
-  margin: 0;
-  padding: 0;
+  
 }
 
 nav ul li {
   display: inline;
-  margin-right: 250px; /* Espaçamento entre os itens */
+  margin-right: 350px; 
+  
 }
 
 nav ul li a {
   font-size: 50px;
-  font-family: "Helvetica";
+  font-family: "barra";
   text-decoration: none;
-  color: #333; /* Cor do texto dos links */
-  font-weight: bold; /* Deixar os links em negrito */
+  color: #333; 
+  font-weight: bold; 
+  
 }
 
 nav ul li a:hover {
-  color: #d11414; /* Cor do texto dos links quando hover */
+  color: #d11414; 
 }
+
+
+
+
+
+body
+{
+  padding-left: 2vw;
+  padding-top: 2vw;
+}
+
+main {
+  width: 100%;
+}
+
+figure {
+  width: 30vw;
+  float: left;
+  margin-top: 2%;
+ 
+  margin-right: 2%; 
+}
+
+figure img {
+  background-color: lightblue;
+  width: 100%;
+}
+
+figcaption {
+  text-align: left;
+  font-size: 30px;
+  font-family: "barra";
+}
+@media only screen and (min-width: 992px) 
+{
+  figure 
+  {
+    width: 30.5%;
+  }
+  
+}
+
+
+.bond {width: 100vw;}
+
+p 
+{
+  font-size: 1.3em;
+  font-family: exo;
+}
+
+
+
+
+
+
