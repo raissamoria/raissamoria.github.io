@@ -1,153 +1,156 @@
+/* Definição das fontes personalizadas utilizando @font-face */
 @font-face {
   font-family: "exo";
   src:
-    url("Roboto-Regular.ttf") format("woff2"),
-    url("linkToTheFontFolder/File.woff") format("woff");
+    url("Roboto-Regular.ttf") format("woff2"), /* Caminho para o arquivo da fonte no formato woff2 */
+    url("linkToTheFontFolder/File.woff") format("woff"); /* Caminho alternativo para o formato woff */
 }
 
 @font-face {
   font-family: "Clash";
   src:
-    url("ClashDisplay-Variable.ttf") format("woff2"),
-    url("linkToTheFontFolder/File.woff") format("woff");
+    url("ClashDisplay-Variable.ttf") format("woff2"), /* Caminho para o arquivo da fonte no formato woff2 */
+    url("linkToTheFontFolder/File.woff") format("woff"); /* Caminho alternativo para o formato woff */
 }
 
 @font-face {
   font-family: "barra";
   src:
-    url("Roboto-Bold.ttf") format("woff2"),
-    url("linkToTheFontFolder/File.woff") format("woff");
+    url("Roboto-Bold.ttf") format("woff2"), /* Caminho para o arquivo da fonte no formato woff2 */
+    url("linkToTheFontFolder/File.woff") format("woff"); /* Caminho alternativo para o formato woff */
 }
 
-
+/* Reset básico para margens e preenchimentos */
 * {
   margin: 0;
   padding: 0;
 }
 
-
+/* Estilo geral do corpo da página */
 body {
-  color: #000000;
-  padding: 1%;
+  color: #000000; /* Cor do texto */
+  padding: 1%; /* Preenchimento de 1% */
 }
 
-
+/* Estilo para a lista de navegação */
 nav ul {
-  list-style-type: none;
-  display: flex;
-  justify-content: space-between;
+  list-style-type: none; /* Remove os marcadores da lista */
+  display: flex; /* Exibe os itens da lista em linha */
+  justify-content: space-between; /* Espaça os itens igualmente */
 }
 
-
+/* Estilo para os links dentro dos itens da lista de navegação */
 nav ul li a {
-
-  font-size: 50px;
-  font-family: "barra";
-  text-decoration: none;
-  color: #333;
-  font-weight: bold;
-
+  font-size: 50px; /* Tamanho da fonte */
+  font-family: "barra"; /* Família da fonte */
+  text-decoration: none; /* Remove a sublinha dos links */
+  color: #333; /* Cor do texto */
+  font-weight: bold; /* Peso da fonte */
 }
 
+/* Estilo para o hover (passar o mouse) nos links da navegação */
 nav ul li a:hover {
-  color: #d11414;
+  color: #d11414; /* Cor do texto ao passar o mouse */
 }
 
-
-
+/* Estilo para o título principal (h1) */
 h1 {
-  color: rgb(0, 0, 0);
-  font-size: 30px;
-  border: 3px solid white;
-  font-family: 'exo';
+  color: rgb(0, 0, 0); /* Cor do texto */
+  font-size: 30px; /* Tamanho da fonte */
+  border: 3px solid white; /* Borda de 3px sólida e branca */
+  font-family: 'exo'; /* Família da fonte */
 }
-h4 {color:#333;
-font-family:'exo';}
 
+/* Estilo para subtítulos (h4) */
+h4 {
+  color: #333; /* Cor do texto */
+  font-family: 'exo'; /* Família da fonte */
+}
 
-
-
-
-
-
-
-
-
-
-
+/* Estilo para elementos com a classe videotype */
 .videotype {
-  width: 100vw;
+  width: 100vw; /* Largura de 100% da viewport */
 }
 
+/* Estilo para elementos com a classe fotoproject1 */
 .fotoproject1 {
-  width: 100vw
+  width: 100vw; /* Largura de 100% da viewport */
 }
 
+/* Estilo para elementos com a classe moria */
+.moria {
+  width: 99vw; /* Largura de 99% da viewport */
+}
 
-
-
-
-
-
-
-.moria {width:99vw;}
-
-
+/* Estilo para seções */
 section {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 2%;
+  display: flex; /* Exibe os itens em linha flexível */
+  justify-content: space-between; /* Espaça os itens igualmente */
+  align-items: flex-start; /* Alinha os itens ao início do eixo transversal */
+  flex-wrap: wrap; /* Permite que os itens sejam quebrados em várias linhas */
+  gap: 2%; /* Espaçamento entre os itens */
 }
 
+/* Estilo para links */
 a {
-  flex-basis:30%;
-  text-decoration: none;
+  flex-basis: 30%; /* Base flexível de 30% */
+  text-decoration: none; /* Remove a sublinha dos links */
 }
 
+/* Estilo para figuras dentro de links */
 a figure {
-  width: 100%;
+  width: 100%; /* Largura de 100% */
 }
 
+/* Estilo para imagens dentro de figuras em links */
 a figure img {
-  width: 100%;
+  width: 100%; /* Largura de 100% */
 }
 
+/* Estilo para legendas dentro de figuras em links */
 a figure figcaption {
-  width:80%;
-  font-size: 30px;
-  font-family: "exo";
-  color: rgb(62, 60, 60);
+  width: 80%; /* Largura de 80% */
+  font-size: 30px; /* Tamanho da fonte */
+  font-family: "exo"; /* Família da fonte */
+  color: rgb(62, 60, 60); /* Cor do texto */
 }
 
+/* Estilo para artigos */
 article {
-  flex-basis: 48%;
+  flex-basis: 48%; /* Base flexível de 48% */
 }
 
+/* Estilo para imagens dentro de artigos */
 article img {
-  width: 100%;
+  width: 100%; /* Largura de 100% */
 }
 
+/* Estilo para parágrafos dentro de artigos */
 article p {
-  font-size: 1.2em;
-}
-section img {
-  width:100%;
-}
-section img {
-  flex-basis: 100%;
+  font-size: 1.2em; /* Tamanho da fonte */
 }
 
-section video 
-{width: 350px;}
-section video 
-{flex-basis:100%;}
+/* Estilo para imagens dentro de seções */
+section img {
+  width: 100%; /* Largura de 100% */
+}
 
-.gif
-{width:600px
-  ;}
-.behance {width: 40px;}
+/* Estilo para vídeos dentro de seções */
+section video {
+  width: 350px; /* Largura de 350px */
+  flex-basis: 100%; /* Base flexível de 100% */
+}
+
+/* Estilo para elementos com a classe gif */
+.gif {
+  width: 600px; /* Largura de 600px */
+}
+
+/* Estilo para elementos com a classe behance */
+.behance {
+  width: 40px; /* Largura de 40px */
+}
+
 
 
 
@@ -161,12 +164,4 @@ section video
 }
 
 
-.bond {
-  width: 100vw;
-}
-
-p {
-  font-size: 1.3em;
-  font-family: exo;
-}
 */
