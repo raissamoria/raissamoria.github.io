@@ -1,137 +1,172 @@
-@font-face 
-{
-font-family: "exo";
-src:
-  url("Exo2-VariableFont_wght.ttf") format("woff2"),
-  url("linkToTheFontFolder/File.woff")  format("woff");
+@font-face {
+  font-family: "exo";
+  src:
+    url("Roboto-Regular.ttf") format("woff2"),
+    url("linkToTheFontFolder/File.woff") format("woff");
 }
 
-@font-face 
-{
+@font-face {
   font-family: "Clash";
   src:
     url("ClashDisplay-Variable.ttf") format("woff2"),
-    url("linkToTheFontFolder/File.woff")  format("woff");
+    url("linkToTheFontFolder/File.woff") format("woff");
 }
-@font-face 
-    {
-      font-family: "barra";
-      src:
-        url("Roboto-Bold.ttf") format("woff2"),
-        url("linkToTheFontFolder/File.woff")  format("woff");
-    }
-*{
-    color: #000000;
-    margin: 0;
+
+@font-face {
+  font-family: "barra";
+  src:
+    url("Roboto-Bold.ttf") format("woff2"),
+    url("linkToTheFontFolder/File.woff") format("woff");
+}
+
+
+* {
+  margin: 0;
   padding: 0;
 }
 
 
-h2{ color:rgb(0, 0, 0);
-    font-size: 50px;
-    border: 3px solid white;
-    font-family: 'exo';}
-
-    h1{ color:rgb(0, 0, 0);
-      font-size: 50px;
-      border: 3px solid white;
-      font-family: 'Clash';}
-
-    
-
-   
-
-    
-
-
-
-    
-
-        .videotype{
-          width: 100vw;
-      }
-
-.fotoproject1 {width: 100vw}
-
-
+body {
+  color: #000000;
+  padding: 1%;
+}
 
 
 nav ul {
   list-style-type: none;
-  
+  display: flex;
+  justify-content: space-between;
 }
 
-nav ul li {
-  display: inline;
-  margin-right: 350px; 
-  
-}
 
 nav ul li a {
+
   font-size: 50px;
   font-family: "barra";
   text-decoration: none;
-  color: #333; 
-  font-weight: bold; 
-  
+  color: #333;
+  font-weight: bold;
+
 }
 
 nav ul li a:hover {
-  color: #d11414; 
+  color: #d11414;
 }
 
 
 
-
-
-body
-{
-  padding-left: 2vw;
-  padding-top: 2vw;
-}
-
-main {
-  width: 100%;
-}
-
-figure {
-  width: 30vw;
-  float: left;
-  margin-top: 2%;
- 
-  margin-right: 2%; 
-}
-
-figure img {
-  background-color: lightblue;
-  width: 100%;
-}
-
-figcaption {
-  text-align: left;
+h1 {
+  color: rgb(0, 0, 0);
   font-size: 30px;
-  font-family: "barra";
+  border: 3px solid white;
+  font-family: 'exo';
 }
-@media only screen and (min-width: 992px) 
-{
-  figure 
-  {
+h4 {color:#333;
+font-family:'exo';}
+
+
+
+
+
+
+
+
+
+
+
+
+.videotype {
+  width: 100vw;
+}
+
+.fotoproject1 {
+  width: 100vw
+}
+
+
+
+
+
+
+
+
+.moria {width:99vw;}
+
+
+section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2%;
+}
+
+a {
+  flex-basis:30%;
+  text-decoration: none;
+}
+
+a figure {
+  width: 100%;
+}
+
+a figure img {
+  width: 100%;
+}
+
+a figure figcaption {
+  width:80%;
+  font-size: 30px;
+  font-family: "exo";
+  color: rgb(62, 60, 60);
+}
+
+article {
+  flex-basis: 48%;
+}
+
+article img {
+  width: 100%;
+}
+
+article p {
+  font-size: 1.2em;
+}
+section img {
+  width:100%;
+}
+section img {
+  flex-basis: 100%;
+}
+
+section video 
+{width: 350px;}
+section video 
+{flex-basis:100%;}
+
+.gif
+{width:600px
+  ;}
+.behance {width: 40px;}
+
+
+
+
+/*
+@media only screen and (min-width: 992px) {
+  figure {
     width: 30.5%;
   }
-  
+
 }
 
 
-.bond {width: 100vw;}
+.bond {
+  width: 100vw;
+}
 
-p 
-{
+p {
   font-size: 1.3em;
   font-family: exo;
 }
-
-
-
-
-
-
+*/
