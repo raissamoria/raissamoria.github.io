@@ -8,6 +8,8 @@ import { ArrowUpRight, Github, Linkedin, Mail, Sparkles, ArrowRight, ArrowDown }
 import { useState, useEffect } from "react";
 import KineticTypography from "./components/KineticTypography";
 import Marquee from "./components/Marquee";
+// @ts-ignore
+import profilePic from "./assets/images/WhatsApp Image 2026-06-03 at 13.15.20.jpeg";
 
 const projects = [
   {
@@ -291,7 +293,7 @@ export default function App() {
             <div className="lg:col-span-4 flex flex-col gap-6 lg:sticky lg:top-[100px]">
               <div className="w-full aspect-[4/5] rounded-2xl overflow-hidden border border-neutral-100 p-2.5 bg-neutral-50 shadow-sm hover:shadow-md transition-shadow group">
                 <img 
-                  src="/src/assets/images/WhatsApp Image 2026-06-03 at 13.15.20.jpeg" 
+                  src={profilePic} 
                   alt="Raíssa Moriá portrait photograph" 
                   className="w-full h-full object-cover rounded-xl transition-all duration-700 group-hover:scale-[1.02]"
                   referrerPolicy="no-referrer"
