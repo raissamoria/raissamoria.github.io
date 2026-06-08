@@ -57,9 +57,18 @@
 
         <!-- Navigation Links -->
         <nav class="flex items-center gap-8 md:gap-10 text-[11px] tracking-[0.15em] font-bold text-neutral-500 uppercase">
-          <a href="#portfolio" class="hover:text-black transition-colors">Portfólio</a>
-          <a href="#sobre" class="hover:text-black transition-colors">Sobre</a>
-          <a href="#contacto" class="hover:text-black transition-colors">Contacto</a>
+          <a href="#portfolio" class="hover:text-black transition-colors">
+            <span class="lang-pt">Portfólio</span>
+            <span class="lang-en hidden">Portfolio</span>
+          </a>
+          <a href="#sobre" class="hover:text-black transition-colors">
+            <span class="lang-pt">Sobre</span>
+            <span class="lang-en hidden">About</span>
+          </a>
+          <a href="#contacto" class="hover:text-black transition-colors">
+            <span class="lang-pt">Contacto</span>
+            <span class="lang-en hidden">Contact</span>
+          </a>
         </nav>
 
         <!-- Time Tracker & CTA -->
@@ -67,11 +76,31 @@
           <span id="time-clock" class="text-[10px] text-neutral-400 font-mono font-medium hidden md:inline">
             Loading Lisbon Time...
           </span>
+          
+          <!-- Language Selector -->
+          <div class="flex items-center bg-neutral-100 rounded-full p-1 border border-neutral-200/50 select-none">
+            <button 
+              id="lang-btn-en" 
+              onclick="setLanguage('en')" 
+              class="px-2 py-1 rounded-full text-[9px] font-bold uppercase transition-all tracking-wider font-mono bg-white text-black shadow-xs cursor-pointer"
+            >
+              EN
+            </button>
+            <button 
+              id="lang-btn-pt" 
+              onclick="setLanguage('pt')" 
+              class="px-2 py-1 rounded-full text-[9px] font-bold uppercase transition-all tracking-wider font-mono text-neutral-400 hover:text-black cursor-pointer"
+            >
+              PT
+            </button>
+          </div>
+
           <a 
             href="mailto:raissagfdhb@gmail.com" 
             class="bg-neutral-900 border border-neutral-900 hover:bg-transparent hover:text-black text-white px-4 py-2 rounded-full font-bold text-[10px] uppercase tracking-wider transition-all shadow-sm"
           >
-            Falar →
+            <span class="lang-pt">Falar →</span>
+            <span class="lang-en hidden">Talk →</span>
           </a>
         </div>
 
@@ -87,7 +116,10 @@
           <!-- Controls Dashboard -->
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 border-y border-gray-100 text-[10px] uppercase tracking-[0.25em] font-bold text-gray-400 w-full">
             <div class="flex items-center gap-2 justify-center sm:justify-start">
-              <span class="opacity-40">Modo Interativo:</span>
+              <span class="opacity-40">
+                <span class="lang-pt">Modo Interativo:</span>
+                <span class="lang-en hidden">Interactive Mode:</span>
+              </span>
             </div>
 
             <div class="flex flex-wrap items-center justify-center sm:justify-end gap-6 text-neutral-500">
@@ -128,7 +160,8 @@
         <!-- Info alert badge below sandbox -->
         <div class="flex items-center gap-2.5 bg-neutral-50 px-5 py-2.5 rounded-full border border-neutral-100 text-neutral-500 font-mono text-[9px] md:text-xs tracking-[0.15em] font-bold mt-2 shadow-xs">
           <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
-          <span>MOVA O CURSOR E DIVIRTA-SE COM AS LETRAS ↓</span>
+          <span class="lang-pt">MOVA O CURSOR E DIVIRTA-SE COM AS LETRAS ↓</span>
+          <span class="lang-en hidden">MOVE YOUR MOUSE AND PLAY WITH THE LETTERS ↓</span>
         </div>
       </div>
     </section>
@@ -143,23 +176,27 @@
           <!-- Decorative badge -->
           <div class="inline-flex items-center gap-2 self-start bg-neutral-100 text-neutral-600 px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest select-none">
             <i data-lucide="sparkles" class="w-2.5 h-2.5 text-neutral-500"></i>
-            <span>UX/UI & Multimédia</span>
+            <span class="lang-pt">UX/UI & Multimédia</span>
+            <span class="lang-en hidden">UX/UI & Multimedia</span>
           </div>
           
           <h2 class="text-5xl md:text-6xl font-black uppercase tracking-tight leading-[0.9] text-neutral-900 select-none">
-            CRIAR <br />
-            SISTEMAS <br />
-            <span class="text-[#666666]">LIVRES.</span>
+            <span class="lang-pt">CRIAR <br /> SISTEMAS <br /> <span class="text-[#666666]">LIVRES.</span></span>
+            <span class="lang-en hidden">BUILDING <br /> LIBERATED <br /> <span class="text-[#666666]">SYSTEMS.</span></span>
           </h2>
           
           <p class="text-neutral-500 text-sm md:text-base font-light leading-relaxed max-w-sm">
-            Especializada no design de produtos digitais sofisticados, design interativo, tipografia experimental e layouts limpos voltados para usabilidade máxima.
+            <span class="lang-pt">Especializada no design de produtos digitais sofisticados, design interativo, tipografia experimental e layouts limpos voltados para usabilidade máxima.</span>
+            <span class="lang-en hidden">Specializing in the design of sophisticated digital products, interactive design, experimental typography, and clean layouts focused on maximum usability.</span>
           </p>
         </div>
 
         <!-- Dynamic Rapid Connections -->
         <div class="flex flex-col gap-5 pt-8 border-t border-neutral-100">
-          <span class="text-[10px] text-neutral-400 uppercase tracking-widest font-black">Ligações Rápidas</span>
+          <span class="text-[10px] text-neutral-400 uppercase tracking-widest font-black">
+            <span class="lang-pt">Ligações Rápidas</span>
+            <span class="lang-en hidden">Quick Connections</span>
+          </span>
           <div class="flex flex-col gap-2">
             <a 
               href="https://github.com/raissamoria" 
@@ -185,7 +222,8 @@
         <!-- Operational Status Indicator -->
         <div class="flex items-center gap-2.5 text-[9px] text-neutral-400 uppercase tracking-widest font-bold pt-4 select-none">
           <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span>Disponível para novos projetos</span>
+          <span class="lang-pt">Disponível para novos projetos</span>
+          <span class="lang-en hidden">Available for new projects</span>
         </div>
 
       </div>
@@ -196,14 +234,21 @@
         <!-- Large responsive bio intro statement -->
         <div class="bg-white border border-neutral-100/75 p-6 md:p-10 rounded-2xl">
           <p class="text-[#111111] text-xl md:text-2xl font-light leading-relaxed tracking-tight">
-            A <span class="font-black">Designer de Experiência e Multimédia</span> sediada entre Porto e Lisboa. Foco constante no minimalismo funcional, clareza sistemática de informação, e interatividade pura.
+            <span class="lang-pt">A <span class="font-black">Designer de Experiência e Multimédia</span> sediada entre Porto e Lisboa. Foco constante no minimalismo funcional, clareza sistemática de informação, e interatividade pura.</span>
+            <span class="lang-en hidden">An <span class="font-black">Experience & Multimedia Designer</span> based between Porto and Lisbon. Active focus on functional minimalism, systematic code clarity, and pure interactivity.</span>
           </p>
         </div>
 
         <!-- Title of Portfolio collection -->
         <div class="flex justify-between items-center border-b border-neutral-100 pb-4 mt-4 select-none">
-          <h3 class="text-xs uppercase tracking-widest font-black text-neutral-400">Trabalhos Selecionados</h3>
-          <span class="text-[10px] font-mono text-neutral-400 font-bold">(4 PROJETOS)</span>
+          <h3 class="text-xs uppercase tracking-widest font-black text-neutral-400">
+            <span class="lang-pt">Trabalhos Selecionados</span>
+            <span class="lang-en hidden">Selected Works</span>
+          </h3>
+          <span class="text-[10px] font-mono text-neutral-400 font-bold">
+            <span class="lang-pt">(4 PROJETOS)</span>
+            <span class="lang-en hidden">(4 PROJECTS)</span>
+          </span>
         </div>
 
         <!-- Project Grid layout with 4 dynamic responsive items -->
@@ -223,11 +268,18 @@
               </span>
             </div>
             <div class="flex flex-col gap-2">
-              <span class="text-[10px] uppercase tracking-widest text-[#B5B5B5] font-extrabold">Development</span>
+              <span class="text-[10px] uppercase tracking-widest text-[#B5B5B5] font-extrabold">
+                <span class="lang-pt">Desenvolvimento</span>
+                <span class="lang-en hidden">Development</span>
+              </span>
               <h4 class="text-lg font-black uppercase tracking-tight text-neutral-900 mt-1">Creative Code</h4>
-              <p class="text-[11px] font-mono uppercase tracking-wider text-neutral-400 mb-2">Kinetic Typography & Shaders</p>
+              <p class="text-[11px] font-mono uppercase tracking-wider text-neutral-400 mb-2">
+                <span class="lang-pt">Tipografia Cinética & Shaders</span>
+                <span class="lang-en hidden">Kinetic Typography & Shaders</span>
+              </p>
               <p class="text-xs text-neutral-500 leading-relaxed font-light mb-4">
-                An exploration of motion and typography using custom canvas scripts and shaders to create organic, interactive text behaviors.
+                <span class="lang-pt">Uma exploração de movimento e tipografia usando scripts de canvas personalizados e shaders para criar comportamentos de texto orgânicos e interativos.</span>
+                <span class="lang-en hidden">An exploration of motion and typography using custom canvas scripts and shaders to create organic, interactive text behaviors.</span>
               </p>
               <div class="border-t border-neutral-50 pt-3 mt-auto flex justify-between items-center text-[10px] uppercase tracking-widest font-bold">
                 <span class="text-neutral-400">Explore</span>
@@ -259,9 +311,13 @@
             <div class="flex flex-col gap-2">
               <span class="text-[10px] uppercase tracking-widest text-[#B5B5B5] font-extrabold">Product Design</span>
               <h4 class="text-lg font-black uppercase tracking-tight text-neutral-900 mt-1">SUE App</h4>
-              <p class="text-[11px] font-mono uppercase tracking-wider text-neutral-400 mb-2">Emigration Support Platform</p>
+              <p class="text-[11px] font-mono uppercase tracking-wider text-neutral-400 mb-2">
+                <span class="lang-pt">Plataforma de Apoio à Emigração</span>
+                <span class="lang-en hidden">Relocation Support Platform</span>
+              </p>
               <p class="text-xs text-neutral-500 leading-relaxed font-light mb-4">
-                End-to-end UX/UI design for a mobile application dedicated to simplifying international relocating processes and emotional support.
+                <span class="lang-pt">Design de UX/UI ponta a ponta para uma aplicação móvel de suporte emocional e simplificação de processos de mudança de país.</span>
+                <span class="lang-en hidden">End-to-end UX/UI design for a mobile application dedicated to simplifying international relocating processes and emotional support.</span>
               </p>
               <div class="border-t border-neutral-50 pt-3 mt-auto flex justify-between items-center text-[10px] uppercase tracking-widest font-bold">
                 <span class="text-neutral-400">Explore</span>
@@ -293,9 +349,13 @@
             <div class="flex flex-col gap-2">
               <span class="text-[10px] uppercase tracking-widest text-[#B5B5B5] font-extrabold">Motion Design</span>
               <h4 class="text-lg font-black uppercase tracking-tight text-neutral-900 mt-1">Amarelo C4ralho</h4>
-              <p class="text-[11px] font-mono uppercase tracking-wider text-neutral-400 mb-2">Expressive Motion Design</p>
+              <p class="text-[11px] font-mono uppercase tracking-wider text-neutral-400 mb-2">
+                <span class="lang-pt">Design de Movimento Expressivo</span>
+                <span class="lang-en hidden">Expressive Motion Design</span>
+              </p>
               <p class="text-xs text-neutral-500 leading-relaxed font-light mb-4">
-                A fast-paced audio-visual motion design study examining high-impact typography pairings and rhythmic video editing.
+                <span class="lang-pt">Um estudo rápido de design de movimento de alto impacto examinando combinações tipográficas de vídeo e edição rítmica.</span>
+                <span class="lang-en hidden">A fast-paced audio-visual motion design study examining high-impact typography pairings and rhythmic video editing.</span>
               </p>
               <div class="border-t border-neutral-50 pt-3 mt-auto flex justify-between items-center text-[10px] uppercase tracking-widest font-bold">
                 <span class="text-neutral-400">Explore</span>
@@ -325,11 +385,18 @@
               </span>
             </div>
             <div class="flex flex-col gap-2">
-              <span class="text-[10px] uppercase tracking-widest text-[#B5B5B5] font-extrabold">Visual Identity</span>
+              <span class="text-[10px] uppercase tracking-widest text-[#B5B5B5] font-extrabold">
+                <span class="lang-pt">Identidade Visual</span>
+                <span class="lang-en hidden">Visual Identity</span>
+              </span>
               <h4 class="text-lg font-black uppercase tracking-tight text-neutral-900 mt-1">Two Points</h4>
-              <p class="text-[11px] font-mono uppercase tracking-wider text-neutral-400 mb-2">Parametric Typography System</p>
+              <p class="text-[11px] font-mono uppercase tracking-wider text-neutral-400 mb-2">
+                <span class="lang-pt">Sistema de Tipografia Paramétrica</span>
+                <span class="lang-en hidden">Parametric Typography System</span>
+              </p>
               <p class="text-xs text-neutral-500 leading-relaxed font-light mb-4">
-                A modular typographic design system built around architectural grid geometry and responsive vector anchors.
+                <span class="lang-pt">Um sistema modular de design tipográfico desenvolvido em torno de geometria de grelha arquitetónica e âncoras vetoriais responsivas.</span>
+                <span class="lang-en hidden">A modular typographic design system built around architectural grid geometry and responsive vector anchors.</span>
               </p>
               <div class="border-t border-neutral-50 pt-3 mt-auto flex justify-between items-center text-[10px] uppercase tracking-widest font-bold">
                 <span class="text-neutral-400">Explore</span>
@@ -358,10 +425,12 @@
         <!-- Header of Bio Section -->
         <div class="flex flex-col gap-3 select-none">
           <div class="inline-flex items-center gap-2 self-start bg-neutral-100 text-neutral-600 px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest">
-            <span>02 / BIOGRAFIA & TRAJETÓRIA</span>
+            <span class="lang-pt">02 / BIOGRAFIA & TRAJETÓRIA</span>
+            <span class="lang-en hidden">02 / BIOGRAPHY & JOURNEY</span>
           </div>
           <h2 class="text-3xl md:text-5xl font-black uppercase tracking-tight text-neutral-900 leading-none">
-            Quem está por trás do código.
+            <span class="lang-pt">Quem está por trás do código.</span>
+            <span class="lang-en hidden">The mind behind the code.</span>
           </h2>
         </div>
 
@@ -409,10 +478,12 @@
             <!-- Narrative bio statement -->
             <div class="flex flex-col gap-4 text-neutral-600 text-sm md:text-base font-light leading-relaxed">
               <p class="text-lg md:text-xl text-neutral-800 font-normal leading-relaxed tracking-tight">
-                O meu compromisso definitivo é simplificar a interação humana com sistemas digitais, eliminando ruídos ornamentais inúteis e privilegiando proporções precisas, legibilidade máxima e harmonia tipográfica absoluta.
+                <span class="lang-pt">O meu compromisso definitivo é simplificar a interação humana com sistemas digitais, eliminando ruídos ornamentais inúteis e privilegiando proporções precisas, legibilidade máxima e harmonia tipográfica absoluta.</span>
+                <span class="lang-en hidden">My definitive commitment is to simplify human interaction with digital systems, eliminating useless ornamental noise and prioritizing precise proportions, maximum readability, and absolute typographic harmony.</span>
               </p>
               <p>
-                Trabalho a partir de Lisboa e Porto combinando rigor metodológico em UX com codificação multimedia criativa. Desenvolvo sistemas limpos de fácil compreensão estética em colaboração com marcas globais, marcas inovadoras e equipes multidisciplinares.
+                <span class="lang-pt">Trabalho a partir de Lisboa e Porto combinando rigor metodológico em UX com codificação multimedia criativa. Desenvolvo sistemas limpos de fácil compreensão estética em colaboração com marcas globais, marcas inovadoras e equipes multidisciplinares.</span>
+                <span class="lang-en hidden">Working from Lisbon and Porto, I combine UX methodological rigor with creative multimedia coding. I develop clean, aesthetically intuitive systems in collaboration with global brands, innovative startups, and multidisciplinary teams.</span>
               </p>
             </div>
 
@@ -421,14 +492,23 @@
               
               <!-- Education column -->
               <div class="flex flex-col gap-4">
-                <h4 class="text-xs uppercase tracking-widest font-black text-neutral-400 select-none">Educação</h4>
+                <h4 class="text-xs uppercase tracking-widest font-black text-neutral-400 select-none">
+                  <span class="lang-pt">Educação</span>
+                  <span class="lang-en hidden">Education</span>
+                </h4>
                 <div class="flex flex-col gap-4">
                   <div>
-                    <h5 class="text-xs font-mono font-bold text-neutral-800">Licenciatura em Design Gráfico e Multimédia</h5>
+                    <h5 class="text-xs font-mono font-bold text-neutral-800">
+                      <span class="lang-pt">Licenciatura em Design Gráfico e Multimédia</span>
+                      <span class="lang-en hidden">Bachelor's Degree in Graphic Design & Multimedia</span>
+                    </h5>
                     <p class="text-xs text-neutral-500">ESAD, Caldas da Rainha • 2021 – 2024</p>
                   </div>
                   <div>
-                    <h5 class="text-xs font-mono font-bold text-neutral-800">Curso de Fotografia Profissional</h5>
+                    <h5 class="text-xs font-mono font-bold text-neutral-800">
+                      <span class="lang-pt">Curso de Fotografia Profissional</span>
+                      <span class="lang-en hidden">Professional Photography Course</span>
+                    </h5>
                     <p class="text-xs text-neutral-500">Escola Profissional Magestil, Lisboa • 2013 – 2016</p>
                   </div>
                 </div>
@@ -436,7 +516,10 @@
 
               <!-- Skills tags column -->
               <div class="flex flex-col gap-4">
-                <h4 class="text-xs uppercase tracking-widest font-black text-neutral-400 select-none">Competências Técnicas</h4>
+                <h4 class="text-xs uppercase tracking-widest font-black text-neutral-400 select-none">
+                  <span class="lang-pt">Competências Técnicas</span>
+                  <span class="lang-en hidden font-bold">Technical Skills</span>
+                </h4>
                 <div class="flex flex-wrap gap-1.5">
                   <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Figma</span>
                   <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Webflow</span>
@@ -450,7 +533,10 @@
                   <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Illustrator</span>
                   <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Design Thinking</span>
                   <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">User Flows</span>
-                  <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Prototipagem</span>
+                  <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">
+                    <span class="lang-pt">Prototipagem</span>
+                    <span class="lang-en hidden">Prototyping</span>
+                  </span>
                 </div>
               </div>
 
@@ -458,21 +544,26 @@
 
             <!-- Professional Experience timeline elements -->
             <div class="flex flex-col gap-6 pt-8 border-t border-neutral-100">
-              <h4 class="text-xs uppercase tracking-widest font-black text-neutral-400 select-none">Experiência Profissional</h4>
+              <h4 class="text-xs uppercase tracking-widest font-black text-neutral-400 select-none">
+                <span class="lang-pt">Experiência Profissional</span>
+                <span class="lang-en hidden font-bold">Professional Experience</span>
+              </h4>
               
               <div class="flex flex-col gap-8">
                 
                 <!-- Experience item 1 -->
                 <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6">
                   <div class="sm:col-span-4 font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-wider">
-                    Dez 2025 — Presente
+                    <span class="lang-pt">Dez 2025 — Presente</span>
+                    <span class="lang-en hidden font-bold">Dec 2025 — Present</span>
                   </div>
                   <div class="sm:col-span-8 flex flex-col gap-2">
                     <h5 class="text-sm font-black uppercase text-neutral-900 tracking-tight">
                       UX/UI Designer — VOQIN’ (futureLabs)
                     </h5>
                     <p class="text-xs text-neutral-500 leading-relaxed font-light">
-                      Liderança de processos de Design Thinking, UX e UI para a criação de plataformas digitais de suporte corporativo internas e aceleração de fluxos de eventos. Desenvolvimento de websites interativos na rede Cvent, organizando jornadas de usuário e fluxos comunicacionais eficazes.
+                      <span class="lang-pt">Liderança de processos de Design Thinking, UX e UI para a criação de plataformas digitais de suporte corporativo internas e aceleração de fluxos de eventos. Desenvolvimento de websites interativos na rede Cvent, organizando jornadas de usuário e fluxos comunicacionais eficazes.</span>
+                      <span class="lang-en hidden">Leading Design Thinking, UX, and UI processes to create internal corporate support digital platforms and speed up event workflows. Constructing interactive websites on the Cvent network, organizing seamless user journeys and effective communication flows.</span>
                     </p>
                   </div>
                 </div>
@@ -480,14 +571,16 @@
                 <!-- Experience item 2 -->
                 <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6">
                   <div class="sm:col-span-4 font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-wider">
-                    Abr 2025
+                    <span class="lang-pt">Abr 2025</span>
+                    <span class="lang-en hidden font-bold">Apr 2025</span>
                   </div>
                   <div class="sm:col-span-8 flex flex-col gap-2">
                     <h5 class="text-sm font-black uppercase text-neutral-900 tracking-tight">
-                      Photography Coordinator — SEEDS (Islândia)
+                      Photography Coordinator — SEEDS (<span class="lang-pt">Islândia</span><span class="lang-en hidden">Iceland</span>)
                     </h5>
                     <p class="text-xs text-neutral-500 leading-relaxed font-light">
-                      Coordenação de workshops de fotografia e audiovisual para voluntários internacionais. Gestão e polimento de presença digital através da concepção de layouts no Figma e animações em vídeo.
+                      <span class="lang-pt">Coordenação de workshops de fotografia e audiovisual para voluntários internacionais. Gestão e polimento de presença digital através da concepção de layouts no Figma e animações em vídeo.</span>
+                      <span class="lang-en hidden">Coordinating photography and audiovisual workshops for international volunteers. Managing and polishing digital presence through visual layouts in Figma and custom video animations.</span>
                     </p>
                   </div>
                 </div>
@@ -499,10 +592,11 @@
                   </div>
                   <div class="sm:col-span-8 flex flex-col gap-2">
                     <h5 class="text-sm font-black uppercase text-neutral-900 tracking-tight">
-                      Video Editor — Six Seconds (Califórnia)
+                      Video Editor — Six Seconds (<span class="lang-pt">Califórnia</span><span class="lang-en hidden">California</span>)
                     </h5>
                     <p class="text-xs text-neutral-500 leading-relaxed font-light">
-                      Edição e finalização de vídeos educativos e de marketing promocional voltados para campanhas de redes sociais, atuando em forte sinergia com equipes de criação globais.
+                      <span class="lang-pt">Edição e finalização de vídeos educativos e de marketing promocional voltados para campanhas de redes sociais, atuando em forte sinergia com equipes de criação globais.</span>
+                      <span class="lang-en hidden">Editing and finalizing educational and promotional videos for social media campaigns, working in close synergy with global creative teams.</span>
                     </p>
                   </div>
                 </div>
@@ -517,7 +611,8 @@
                       Multimedia Volunteer — ESAD (Portugal)
                     </h5>
                     <p class="text-xs text-neutral-500 leading-relaxed font-light">
-                      Apoio ao laboratório audiovisual de design gráfico e multimédia, auxiliando na execução prática de instalações interativas, fotografia experimental e edição de motion graphics.
+                      <span class="lang-pt">Apoio ao laboratório audiovisual de design gráfico e multimédia, auxiliando na execução prática de instalações interativas, fotografia experimental e edição de motion graphics.</span>
+                      <span class="lang-en hidden">Assisting the audiovisual lab for graphic design and multimedia, contributing to interactive installations, experimental photography, and motion graphics editing.</span>
                     </p>
                   </div>
                 </div>
@@ -535,12 +630,18 @@
     <!-- 5. SCROLLING MARQUEE: Infinite sliding visual line -->
     <div class="w-full py-3 bg-white border-b border-neutral-100 overflow-hidden relative flex select-none">
       <div class="animate-marquee uppercase tracking-[0.2em] font-mono text-[10px] font-bold text-neutral-400 py-1">
-        <span class="px-4">• WORK INQUIRIES • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
-        <span class="px-4">• WORK INQUIRIES • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
-        <span class="px-4">• WORK INQUIRIES • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
-        <span class="px-4">• WORK INQUIRIES • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
-        <span class="px-4">• WORK INQUIRIES • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
-        <span class="px-4">• WORK INQUIRIES • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
+        <span class="px-4 lang-pt">• CONTACTOS PROFISSIONAIS • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBOA & PORTO •</span>
+        <span class="px-4 lang-en hidden">• WORK INQUIRIES • LET'S COLLABORATE • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
+        <span class="px-4 lang-pt">• CONTACTOS PROFISSIONAIS • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBOA & PORTO •</span>
+        <span class="px-4 lang-en hidden">• WORK INQUIRIES • LET'S COLLABORATE • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
+        <span class="px-4 lang-pt">• CONTACTOS PROFISSIONAIS • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBOA & PORTO •</span>
+        <span class="px-4 lang-en hidden">• WORK INQUIRIES • LET'S COLLABORATE • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
+        <span class="px-4 lang-pt">• CONTACTOS PROFISSIONAIS • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBOA & PORTO •</span>
+        <span class="px-4 lang-en hidden">• WORK INQUIRIES • LET'S COLLABORATE • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
+        <span class="px-4 lang-pt">• CONTACTOS PROFISSIONAIS • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBOA & PORTO •</span>
+        <span class="px-4 lang-en hidden">• WORK INQUIRIES • LET'S COLLABORATE • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
+        <span class="px-4 lang-pt">• CONTACTOS PROFISSIONAIS • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBOA & PORTO •</span>
+        <span class="px-4 lang-en hidden">• WORK INQUIRIES • LET'S COLLABORATE • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
       </div>
     </div>
 
@@ -549,10 +650,13 @@
       <div class="max-w-[1720px] mx-auto flex flex-col gap-16">
         
         <div class="flex flex-col gap-4">
-          <span class="text-[10px] text-neutral-500 uppercase tracking-widest font-black">03 / CONTACTO DIRECTO</span>
+          <span class="text-[10px] text-neutral-500 uppercase tracking-widest font-black">
+            <span class="lang-pt">03 / CONTACTO DIRECTO</span>
+            <span class="lang-en hidden">03 / DIRECT CONTACT</span>
+          </span>
           <h2 class="text-4xl md:text-6xl font-light uppercase tracking-tight leading-none text-neutral-200">
-            Inicie uma <br />
-            <span class="text-neutral-500">nova conversa</span>.
+            <span class="lang-pt">Inicie uma <br /><span class="text-neutral-500 font-bold">nova conversa</span>.</span>
+            <span class="lang-en hidden">Start a <br /><span class="text-neutral-500 font-bold">new conversation</span>.</span>
           </h2>
         </div>
 
@@ -567,12 +671,24 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10 pt-16 border-t border-white/10 text-xs text-neutral-400 font-medium">
           <div>
-            <p class="opacity-40 uppercase tracking-widest mb-1.5 text-[10px] font-mono">LOCALIZAÇÃO ATUAL</p>
-            <p class="text-neutral-200 text-sm">Portugal • Lisboa & Porto</p>
+            <p class="opacity-40 uppercase tracking-widest mb-1.5 text-[10px] font-mono">
+              <span class="lang-pt">LOCALIZAÇÃO ATUAL</span>
+              <span class="lang-en hidden">CURRENT LOCATION</span>
+            </p>
+            <p class="text-neutral-200 text-sm">
+              <span class="lang-pt">Portugal • Lisboa & Porto</span>
+              <span class="lang-en hidden">Portugal • Lisbon & Porto</span>
+            </p>
           </div>
           <div>
-            <p class="opacity-40 uppercase tracking-widest mb-1.5 text-[10px] font-mono">ESPECIALIZAÇÕES</p>
-            <p class="text-neutral-200 text-sm">UX/UI, Design Multimédia, Motion, Interactive Code</p>
+            <p class="opacity-40 uppercase tracking-widest mb-1.5 text-[10px] font-mono">
+              <span class="lang-pt">ESPECIALIZAÇÕES</span>
+              <span class="lang-en hidden">SPECIALIZATIONS</span>
+            </p>
+            <p class="text-neutral-200 text-sm">
+              <span class="lang-pt">UX/UI, Design Multimédia, Motion, Código Interativo</span>
+              <span class="lang-en hidden">UX/UI, Multimedia Design, Motion, Interactive Code</span>
+            </p>
           </div>
           <div class="flex flex-col md:items-end justify-end">
             <p class="text-[10px] tracking-widest uppercase opacity-30 font-mono">
@@ -591,10 +707,67 @@
       // 1. Initialize Lucide Icons
       lucide.createIcons();
 
+      // Language configuration and toggle
+      let currentLang = localStorage.getItem("raissa_lang") || "en";
+
+      const modeDescriptions = {
+        en: {
+          dodge: "The letters move gently away from the mouse cursor.",
+          magnetic: "The letters are magnetically attracted to the cursor direction.",
+          stretch: "The letters compress and stretch vertically based on cursor proximity.",
+          elastic: "The letters perform a subtle elastic jump and twist."
+        },
+        pt: {
+          dodge: "As letras afastam-se suavemente do ponteiro do rato.",
+          magnetic: "As letras são atraídas magneticamente na direção do rato.",
+          stretch: "As letras comprimem e alongam-se verticalmente com a aproximação.",
+          elastic: "As letras dão um pequeno salto elástico com rotação subtil."
+        }
+      };
+
+      const modeDescriptionHints = {
+        en: "Hover over the letters below!",
+        pt: "Passe o cursor por cima das letras abaixo!"
+      };
+
+      function setLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem("raissa_lang", lang);
+
+        if (lang === "en") {
+          document.querySelectorAll(".lang-pt").forEach(el => el.classList.add("hidden"));
+          document.querySelectorAll(".lang-en").forEach(el => el.classList.remove("hidden"));
+          document.getElementById("lang-btn-en").className = "px-2 py-1 rounded-full text-[9px] font-bold uppercase transition-all tracking-wider font-mono bg-white text-black shadow-xs cursor-pointer";
+          document.getElementById("lang-btn-pt").className = "px-2 py-1 rounded-full text-[9px] font-bold uppercase transition-all tracking-wider font-mono text-neutral-400 hover:text-black cursor-pointer";
+        } else {
+          document.querySelectorAll(".lang-en").forEach(el => el.classList.add("hidden"));
+          document.querySelectorAll(".lang-pt").forEach(el => el.classList.remove("hidden"));
+          document.getElementById("lang-btn-pt").className = "px-2 py-1 rounded-full text-[9px] font-bold uppercase transition-all tracking-wider font-mono bg-white text-black shadow-xs cursor-pointer";
+          document.getElementById("lang-btn-en").className = "px-2 py-1 rounded-full text-[9px] font-bold uppercase transition-all tracking-wider font-mono text-neutral-400 hover:text-black cursor-pointer";
+        }
+
+        updateClock();
+        updateSandboxTexts();
+      }
+
+      function updateSandboxTexts() {
+        const buttonsLabels = {
+          en: { dodge: "Dodge", magnetic: "Attract", stretch: "Stretch", elastic: "Elastic" },
+          pt: { dodge: "Afastar", magnetic: "Atrair", stretch: "Esticar", elastic: "Elasticidade" }
+        };
+        
+        document.getElementById("btn-dodge").innerText = buttonsLabels[currentLang].dodge;
+        document.getElementById("btn-magnetic").innerText = buttonsLabels[currentLang].magnetic;
+        document.getElementById("btn-stretch").innerText = buttonsLabels[currentLang].stretch;
+        document.getElementById("btn-elastic").innerText = buttonsLabels[currentLang].elastic;
+        
+        setActiveMode(activeMode);
+      }
+
       // 2. Lisbon Time Clock Tracker
       function updateClock() {
         const now = new Date();
-        const formatter = new Intl.DateTimeFormat("en-US", {
+        const formatter = new Intl.DateTimeFormat(currentLang === 'en' ? 'en-US' : 'pt-PT', {
           timeZone: "Europe/Lisbon",
           month: "short",
           day: "2-digit",
@@ -603,7 +776,9 @@
           second: "2-digit",
           hour12: true
         });
-        document.getElementById("time-clock").innerText = formatter.format(now);
+        const formatted = formatter.format(now);
+        const label = currentLang === 'en' ? 'Lisbon Time' : 'Hora de Lisboa';
+        document.getElementById("time-clock").innerText = `${label}: ${formatted}`;
       }
       setInterval(updateClock, 1000);
       updateClock();
@@ -611,16 +786,11 @@
       // 3. Interactive Kinetic Letter Springs Physics
       let activeMode = 'dodge';
 
-      const modeDescriptions = {
-        dodge: "As letras afastam-se suavemente do ponteiro do rato.",
-        magnetic: "As letras são atraídas magneticamente na direção do rato.",
-        stretch: "As letras comprimem e alongam-se verticalmente (peso variável).",
-        elastic: "As letras dão um pequeno salto elástico com rotação subtil."
-      };
-
       function setActiveMode(mode) {
         activeMode = mode;
-        document.getElementById('mode-description').innerText = "✨ " + modeDescriptions[mode] + " Passe o cursor por cima das letras abaixo!";
+        const desc = modeDescriptions[currentLang][mode];
+        const hint = modeDescriptionHints[currentLang];
+        document.getElementById('mode-description').innerText = "✨ " + desc + " " + hint;
         
         ['dodge', 'magnetic', 'stretch', 'elastic'].forEach(m => {
           const btn = document.getElementById('btn-' + m);
@@ -631,6 +801,9 @@
           }
         });
       }
+
+      // Initialize language on startup
+      setLanguage(currentLang);
 
       // Spring Physics Simulation
       class Spring {
