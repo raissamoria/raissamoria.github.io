@@ -108,25 +108,28 @@
     </header>
 
     <!-- 2. HERO PLAYGROUND: Giant typography sandbox -->
-    <section class="bg-white border-b border-neutral-100 py-12 md:py-24 px-4 sm:px-6 md:px-12 relative overflow-visible select-none">
-      <div class="max-w-[1720px] mx-auto w-full flex flex-col items-center justify-center text-center gap-6">
+    <section class="bg-black border-b border-neutral-900 py-16 md:py-28 px-4 sm:px-6 md:px-12 relative overflow-hidden select-none">
+      <!-- 3D Lava Lamp Falling Balls Canvas Background -->
+      <canvas id="lava-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-0 opacity-80"></canvas>
+      
+      <div class="max-w-[1720px] mx-auto w-full flex flex-col items-center justify-center text-center gap-6 relative z-10">
         
         <!-- Interactive Kinetic Typography Sandbox -->
-        <div class="flex flex-col gap-6 w-full select-none text-black items-center">
+        <div class="flex flex-col gap-6 w-full select-none text-white items-center">
           <!-- Controls Dashboard -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 border-y border-gray-100 text-[10px] uppercase tracking-[0.25em] font-bold text-gray-400 w-full">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 border-y border-neutral-900 text-[10px] uppercase tracking-[0.25em] font-bold text-neutral-500 w-full">
             <div class="flex items-center gap-2 justify-center sm:justify-start">
-              <span class="opacity-40">
+              <span class="opacity-60 text-neutral-400">
                 <span class="lang-pt">Modo Interativo:</span>
                 <span class="lang-en hidden">Interactive Mode:</span>
               </span>
             </div>
 
-            <div class="flex flex-wrap items-center justify-center sm:justify-end gap-6 text-neutral-500">
-              <button onclick="setActiveMode('dodge')" id="btn-dodge" class="transition-all duration-200 cursor-pointer text-neutral-900 border-b border-black pb-0.5 font-bold">Afastar</button>
-              <button onclick="setActiveMode('magnetic')" id="btn-magnetic" class="transition-all duration-200 cursor-pointer hover:text-neutral-900">Atrair</button>
-              <button onclick="setActiveMode('stretch')" id="btn-stretch" class="transition-all duration-200 cursor-pointer hover:text-neutral-900">Esticar</button>
-              <button onclick="setActiveMode('elastic')" id="btn-elastic" class="transition-all duration-200 cursor-pointer hover:text-neutral-900">Elasticidade</button>
+            <div class="flex flex-wrap items-center justify-center sm:justify-end gap-6 text-neutral-400">
+              <button onclick="setActiveMode('dodge')" id="btn-dodge" class="transition-all duration-200 cursor-pointer text-white border-b border-white pb-0.5 font-bold">Afastar</button>
+              <button onclick="setActiveMode('magnetic')" id="btn-magnetic" class="transition-all duration-200 cursor-pointer hover:text-white">Atrair</button>
+              <button onclick="setActiveMode('stretch')" id="btn-stretch" class="transition-all duration-200 cursor-pointer hover:text-white">Esticar</button>
+              <button onclick="setActiveMode('elastic')" id="btn-elastic" class="transition-all duration-200 cursor-pointer hover:text-white">Elasticidade</button>
             </div>
           </div>
 
@@ -137,29 +140,29 @@
 
           <!-- Kinetic Typography Area -->
           <div class="relative py-8 overflow-visible w-full flex justify-center text-[22vw] sm:text-[20vw] md:text-[18vw] lg:text-[16vw] xl:text-[14vw] select-none">
-            <div id="kinetic-typography-container" class="flex gap-x-4 md:gap-x-8 flex-nowrap items-center justify-center font-black select-none leading-[0.8] tracking-tighter">
+            <div id="kinetic-typography-container" class="flex gap-x-4 md:gap-x-8 flex-nowrap items-center justify-center font-black select-none leading-[0.8] tracking-tighter drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">
               <div class="relative inline-flex items-center justify-center select-none">
-                <span class="kinetic-letter inline-block cursor-pointer origin-center transition-colors duration-200" data-char="M" data-index="0">M</span>
+                <span class="kinetic-letter inline-block cursor-pointer origin-center transition-colors duration-200 text-white" data-char="M" data-index="0">M</span>
               </div>
               <div class="relative inline-flex items-center justify-center select-none">
-                <span class="kinetic-letter inline-block cursor-pointer origin-center transition-colors duration-200" data-char="O" data-index="1">O</span>
+                <span class="kinetic-letter inline-block cursor-pointer origin-center transition-colors duration-200 text-white" data-char="O" data-index="1">O</span>
               </div>
               <div class="relative inline-flex items-center justify-center select-none">
-                <span class="kinetic-letter inline-block cursor-pointer origin-center transition-colors duration-200" data-char="R" data-index="2">R</span>
+                <span class="kinetic-letter inline-block cursor-pointer origin-center transition-colors duration-200 text-white" data-char="R" data-index="2">R</span>
               </div>
               <div class="relative inline-flex items-center justify-center select-none">
-                <span class="kinetic-letter inline-block cursor-pointer origin-center transition-colors duration-200" data-char="I" data-index="3">I</span>
+                <span class="kinetic-letter inline-block cursor-pointer origin-center transition-colors duration-200 text-white" data-char="I" data-index="3">I</span>
               </div>
               <div class="relative inline-flex items-center justify-center select-none">
-                <span class="kinetic-letter inline-block cursor-pointer origin-center transition-colors duration-200" data-char="Á" data-index="4">Á</span>
+                <span class="kinetic-letter inline-block cursor-pointer origin-center transition-colors duration-200 text-white" data-char="Á" data-index="4">Á</span>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Info alert badge below sandbox -->
-        <div class="flex items-center gap-2.5 bg-neutral-50 px-5 py-2.5 rounded-full border border-neutral-100 text-neutral-500 font-mono text-[9px] md:text-xs tracking-[0.15em] font-bold mt-2 shadow-xs">
-          <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+        <div class="flex items-center gap-2.5 bg-neutral-950 px-5 py-2.5 rounded-full border border-neutral-800 text-neutral-400 font-mono text-[9px] md:text-xs tracking-[0.15em] font-bold mt-2 shadow-xs">
+          <span class="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse shadow-[0_0_10px_rgba(168,85,247,0.5)]"></span>
           <span class="lang-pt">MOVA O CURSOR E DIVIRTA-SE COM AS LETRAS ↓</span>
           <span class="lang-en hidden">MOVE YOUR MOUSE AND PLAY WITH THE LETTERS ↓</span>
         </div>
@@ -309,7 +312,7 @@
               </span>
             </div>
             <div class="flex flex-col gap-2">
-              <span class="text-[10px] uppercase tracking-widest text-[#B5B5B5] font-extrabold">Product Design</span>
+              <span class="text-[10px] uppercase tracking-widest text-[#B5B5B5] font-extrabold font-mono">Product Design</span>
               <h4 class="text-lg font-black uppercase tracking-tight text-neutral-900 mt-1">SUE App</h4>
               <p class="text-[11px] font-mono uppercase tracking-wider text-neutral-400 mb-2">
                 <span class="lang-pt">Plataforma de Apoio à Emigração</span>
@@ -322,12 +325,12 @@
               <div class="border-t border-neutral-50 pt-3 mt-auto flex justify-between items-center text-[10px] uppercase tracking-widest font-bold">
                 <span class="text-neutral-400">Explore</span>
                 <a 
-                  href="https://raissamoria.github.io/project2.html" 
+                  href="https://www.behance.net/gallery/197121683/SUE-app-mobile-to-support-emigration-(uxui)" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   class="inline-flex items-center gap-1.5 text-neutral-900 hover:text-black transition-colors border-b border-black pb-0.5"
                 >
-                  raissamoria.github.io <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+                  behance.net <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
                 </a>
               </div>
             </div>
@@ -700,6 +703,8 @@
       </div>
     </footer>
 
+
+
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
@@ -795,15 +800,101 @@
         ['dodge', 'magnetic', 'stretch', 'elastic'].forEach(m => {
           const btn = document.getElementById('btn-' + m);
           if (m === mode) {
-            btn.className = "transition-all duration-200 cursor-pointer text-neutral-900 border-b border-black pb-0.5 font-bold";
+            btn.className = "transition-all duration-200 cursor-pointer text-white border-b border-white pb-0.5 font-bold";
           } else {
-            btn.className = "transition-all duration-200 cursor-pointer hover:text-neutral-900";
+            btn.className = "transition-all duration-200 cursor-pointer text-neutral-500 hover:text-white";
           }
         });
       }
 
       // Initialize language on startup
       setLanguage(currentLang);
+
+      // --- 3D Lava Lamp Falling Balls Canvas Background ---
+      const canvas = document.getElementById('lava-canvas');
+      const ctx = canvas ? canvas.getContext('2d') : null;
+      const bubbles = [];
+
+      class BulletBubble {
+        constructor(canvasElement) {
+          this.canvas = canvasElement;
+          this.reset(true);
+        }
+        reset(startRandomY = false) {
+          this.radius = Math.random() * 80 + 40; // Beautiful varied sizes
+          this.x = Math.random() * this.canvas.width;
+          this.y = startRandomY ? Math.random() * this.canvas.height : -this.radius;
+          
+          this.vy = Math.random() * 0.7 + 0.3; // Gentle downward speed (balls falling)
+          this.vx = (Math.random() - 0.5) * 0.25; // Gentle horizontal drift
+          this.wobbleSpeed = Math.random() * 0.01 + 0.005;
+          this.wobbleOffset = Math.random() * 100;
+          
+          // Gorgeous minimalist black & white 3D glassy palettes
+          const palettes = [
+            { highlight: '#ffffff', mid: '#e5e5e5', shadow: '#171717', glow: 'rgba(255, 255, 255, 0.12)' }, // Matte Soft White
+            { highlight: '#fafafa', mid: '#a3a3a3', shadow: '#0a0a0a', glow: 'rgba(244, 244, 245, 0.15)' }, // Metallic Chrome Silver
+            { highlight: '#525252', mid: '#262626', shadow: '#050505', glow: 'rgba(82, 82, 82, 0.12)' },    // Glossy Obsidian Black
+            { highlight: '#d4d4d4', mid: '#737373', shadow: '#171717', glow: 'rgba(163, 163, 163, 0.1)' }   // Smooth Satin Graphite
+          ];
+          this.color = palettes[Math.floor(Math.random() * palettes.length)];
+        }
+        update() {
+          this.y += this.vy;
+          this.x += this.vx + Math.sin(Date.now() * this.wobbleSpeed + this.wobbleOffset) * 0.1;
+          
+          // Respawn above when falling off the bottom
+          if (this.y - this.radius > this.canvas.height) {
+            this.reset(false);
+          }
+        }
+        draw(context) {
+          const x = this.x;
+          const y = this.y;
+          const r = this.radius;
+
+          // Radial volume gradient to achieve pristine 3D shading
+          const grad = context.createRadialGradient(
+            x - r / 3.5,
+            y - r / 3.5,
+            r / 12,
+            x,
+            y,
+            r
+          );
+          grad.addColorStop(0, this.color.highlight); // Warm glossy source spot
+          grad.addColorStop(0.25, this.color.mid);       // Vibrant midtones
+          grad.addColorStop(0.8, this.color.shadow);     // Volumetric ambient falloff shadow
+          grad.addColorStop(1, 'rgba(0, 0, 0, 0)');     // Alpha edge fade
+
+          // Subtle organic shadow rendering for immersive glow
+          context.shadowColor = this.color.glow;
+          context.shadowBlur = 40;
+          context.fillStyle = grad;
+          
+          context.beginPath();
+          context.arc(x, y, r, 0, Math.PI * 2);
+          context.fill();
+        }
+      }
+
+      function resizeLavaCanvas() {
+        if (!canvas) return;
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+      }
+
+      if (canvas && ctx) {
+        resizeLavaCanvas();
+        window.addEventListener('resize', resizeLavaCanvas);
+        
+        // Spawn immersive balls
+        const bubbleCount = 12;
+        for (let i = 0; i < bubbleCount; i++) {
+          bubbles.push(new BulletBubble(canvas));
+        }
+      }
 
       // Spring Physics Simulation
       class Spring {
@@ -840,7 +931,7 @@
           scaleY: new Spring(1),
           skewX: new Spring(0),
           rotate: new Spring(0),
-          currentColor: '#121212'
+          currentColor: '#ffffff'
         });
       });
 
@@ -855,6 +946,18 @@
 
       // Physics loop using requestAnimationFrame (60/120fps)
       function animate() {
+        // Redraw 3D falling blobs background
+        if (canvas && ctx) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          bubbles.forEach(b => {
+            b.update();
+            b.draw(ctx);
+          });
+          // Restore canvas configurations to prevent affecting letter drawing
+          ctx.shadowBlur = 0;
+          ctx.shadowColor = 'transparent';
+        }
+
         lettersData.forEach((letter) => {
           const rect = letter.el.getBoundingClientRect();
           const letterCenterX = rect.left + rect.width / 2;
@@ -876,14 +979,14 @@
               letter.scaleX.target = 1 + 0.1 * power;
               letter.scaleY.target = 1 + 0.1 * power;
               letter.rotate.target = (distanceX / (distance || 1)) * 15 * power;
-              letter.currentColor = "#000000";
+              letter.currentColor = "#ffffff"; // Minimalist pure white
             } else if (activeMode === "magnetic") {
               letter.x.target = (distanceX / (distance || 1)) * 20 * power;
               letter.y.target = (distanceY / (distance || 1)) * 20 * power;
               letter.scaleX.target = 1 - 0.05 * power;
               letter.scaleY.target = 1 - 0.05 * power;
               letter.rotate.target = -(distanceX / (distance || 1)) * 10 * power;
-              letter.currentColor = "#666666";
+              letter.currentColor = "#d4d4d4"; // Matte light silver-grey
             } else if (activeMode === "stretch") {
               letter.x.target = 0;
               letter.y.target = -10 * power;
@@ -891,14 +994,14 @@
               letter.scaleY.target = 1 + 0.6 * power;
               letter.skewX.target = Math.sin(angle) * 10 * power;
               letter.rotate.target = 0;
-              letter.currentColor = "#121212";
+              letter.currentColor = "#fafafa"; // Soft white highlight
             } else if (activeMode === "elastic") {
               letter.x.target = 0;
               letter.y.target = -25 * power;
               letter.scaleX.target = 1;
               letter.scaleY.target = 1;
               letter.rotate.target = (letter.index % 2 === 0 ? 1 : -1) * 20 * power;
-              letter.currentColor = "#888888";
+              letter.currentColor = "#a3a3a3"; // Satin medium ash grey
             }
           } else {
             // Smooth natural alignment return values
@@ -908,7 +1011,7 @@
             letter.scaleY.target = 1;
             letter.skewX.target = 0;
             letter.rotate.target = 0;
-            letter.currentColor = "#121212";
+            letter.currentColor = "#ffffff";
           }
           
           // Compute updated values under Physical Springs
