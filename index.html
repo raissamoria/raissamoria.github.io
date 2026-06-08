@@ -1,13 +1,761 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-PT" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
+    <title>Raíssa Moriá • UX/UI & Multimedia Portfolio</title>
+    <!-- CSS Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+              mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* Smooth styles and marquee keyframes */
+      @keyframes scrolling-marquee {
+        0% { transform: translate3d(0, 0, 0); }
+        100% { transform: translate3d(-50%, 0, 0); }
+      }
+      .animate-marquee {
+        display: flex;
+        width: max-content;
+        animation: scrolling-marquee 30s linear infinite;
+      }
+      /* Ensure touch targets fit mobile standards */
+      button, a {
+        min-height: 12px;
+      }
+      /* Custom selection coloring */
+      ::selection {
+        background-color: #111111;
+        color: #FAFAFA;
+      }
+    </style>
   </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+  <body class="min-h-screen bg-[#FAFAFA] text-[#111111] font-sans antialiased">
+
+    <!-- 1. HEADER: Minimal high-contrast navigation bar -->
+    <header class="sticky top-0 z-50 w-full bg-white/75 backdrop-blur-xl border-b border-neutral-100 px-6 md:px-12 py-4">
+      <div class="max-w-[1720px] mx-auto flex justify-between items-center">
+        
+        <!-- Logo -->
+        <div class="flex items-center gap-2 select-none">
+          <span class="font-sans font-black text-sm tracking-[-0.03em] uppercase">RAÍSSA MORIÁ</span>
+          <div class="w-1.5 h-1.5 rounded-full bg-black"></div>
+          <span class="text-[10px] text-neutral-400 uppercase tracking-widest font-medium hidden sm:inline">Portfolio</span>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="flex items-center gap-8 md:gap-10 text-[11px] tracking-[0.15em] font-bold text-neutral-500 uppercase">
+          <a href="#portfolio" class="hover:text-black transition-colors">Portfólio</a>
+          <a href="#sobre" class="hover:text-black transition-colors">Sobre</a>
+          <a href="#contacto" class="hover:text-black transition-colors">Contacto</a>
+        </nav>
+
+        <!-- Time Tracker & CTA -->
+        <div class="flex items-center gap-6">
+          <span id="time-clock" class="text-[10px] text-neutral-400 font-mono font-medium hidden md:inline">
+            Loading Lisbon Time...
+          </span>
+          <a 
+            href="mailto:raissagfdhb@gmail.com" 
+            class="bg-neutral-900 border border-neutral-900 hover:bg-transparent hover:text-black text-white px-4 py-2 rounded-full font-bold text-[10px] uppercase tracking-wider transition-all shadow-sm"
+          >
+            Falar →
+          </a>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- 2. HERO PLAYGROUND: Giant typography sandbox -->
+    <section class="bg-white border-b border-neutral-100 py-12 md:py-24 px-4 sm:px-6 md:px-12 relative overflow-visible select-none">
+      <div class="max-w-[1720px] mx-auto w-full flex flex-col items-center justify-center text-center gap-6">
+        
+        <!-- Interactive Kinetic Typography Sandbox -->
+        <div class="flex flex-col gap-6 w-full select-none text-black items-center">
+          <!-- Controls Dashboard -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 border-y border-gray-100 text-[10px] uppercase tracking-[0.25em] font-bold text-gray-400 w-full">
+            <div class="flex items-center gap-2 justify-center sm:justify-start">
+              <span class="opacity-40">Modo Interativo:</span>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-center sm:justify-end gap-6 text-neutral-500">
+              <button onclick="setActiveMode('dodge')" id="btn-dodge" class="transition-all duration-200 cursor-pointer text-neutral-900 border-b border-black pb-0.5 font-bold">Afastar</button>
+              <button onclick="setActiveMode('magnetic')" id="btn-magnetic" class="transition-all duration-200 cursor-pointer hover:text-neutral-900">Atrair</button>
+              <button onclick="setActiveMode('stretch')" id="btn-stretch" class="transition-all duration-200 cursor-pointer hover:text-neutral-900">Esticar</button>
+              <button onclick="setActiveMode('elastic')" id="btn-elastic" class="transition-all duration-200 cursor-pointer hover:text-neutral-900">Elasticidade</button>
+            </div>
+          </div>
+
+          <!-- Description Hint -->
+          <div id="mode-description" class="h-4 text-[11px] text-neutral-400 font-medium tracking-wide text-center">
+            ✨ As letras afastam-se suavemente do ponteiro do rato. Passe o cursor por cima das letras abaixo!
+          </div>
+
+          <!-- Kinetic Typography Area -->
+          <div class="relative py-8 overflow-visible w-full flex justify-center text-[22vw] sm:text-[20vw] md:text-[18vw] lg:text-[16vw] xl:text-[14vw] select-none">
+            <div id="kinetic-typography-container" class="flex gap-x-4 md:gap-x-8 flex-nowrap items-center justify-center font-black select-none leading-[0.8] tracking-tighter">
+              <div class="relative inline-flex items-center justify-center select-none">
+                <span class="kinetic-letter inline-block cursor-pointer origin-center transition-colors duration-200" data-char="M" data-index="0">M</span>
+              </div>
+              <div class="relative inline-flex items-center justify-center select-none">
+                <span class="kinetic-letter inline-block cursor-pointer origin-center transition-colors duration-200" data-char="O" data-index="1">O</span>
+              </div>
+              <div class="relative inline-flex items-center justify-center select-none">
+                <span class="kinetic-letter inline-block cursor-pointer origin-center transition-colors duration-200" data-char="R" data-index="2">R</span>
+              </div>
+              <div class="relative inline-flex items-center justify-center select-none">
+                <span class="kinetic-letter inline-block cursor-pointer origin-center transition-colors duration-200" data-char="I" data-index="3">I</span>
+              </div>
+              <div class="relative inline-flex items-center justify-center select-none">
+                <span class="kinetic-letter inline-block cursor-pointer origin-center transition-colors duration-200" data-char="Á" data-index="4">Á</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info alert badge below sandbox -->
+        <div class="flex items-center gap-2.5 bg-neutral-50 px-5 py-2.5 rounded-full border border-neutral-100 text-neutral-500 font-mono text-[9px] md:text-xs tracking-[0.15em] font-bold mt-2 shadow-xs">
+          <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+          <span>MOVA O CURSOR E DIVIRTA-SE COM AS LETRAS ↓</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. MAIN SECTION: Modern, highly elegant grid layouts -->
+    <main id="inicio" class="max-w-[1720px] mx-auto px-6 md:px-12 py-12 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-16">
+      
+      <!-- ==================== LEFT COLUMN: Biography Summary & Availability ==================== -->
+      <div class="lg:col-span-4 flex flex-col justify-between gap-12 lg:sticky lg:top-[100px] lg:h-[calc(100vh-160px)]">
+        
+        <div class="flex flex-col gap-6">
+          <!-- Decorative badge -->
+          <div class="inline-flex items-center gap-2 self-start bg-neutral-100 text-neutral-600 px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest select-none">
+            <i data-lucide="sparkles" class="w-2.5 h-2.5 text-neutral-500"></i>
+            <span>UX/UI & Multimédia</span>
+          </div>
+          
+          <h2 class="text-5xl md:text-6xl font-black uppercase tracking-tight leading-[0.9] text-neutral-900 select-none">
+            CRIAR <br />
+            SISTEMAS <br />
+            <span class="text-[#666666]">LIVRES.</span>
+          </h2>
+          
+          <p class="text-neutral-500 text-sm md:text-base font-light leading-relaxed max-w-sm">
+            Especializada no design de produtos digitais sofisticados, design interativo, tipografia experimental e layouts limpos voltados para usabilidade máxima.
+          </p>
+        </div>
+
+        <!-- Dynamic Rapid Connections -->
+        <div class="flex flex-col gap-5 pt-8 border-t border-neutral-100">
+          <span class="text-[10px] text-neutral-400 uppercase tracking-widest font-black">Ligações Rápidas</span>
+          <div class="flex flex-col gap-2">
+            <a 
+              href="https://github.com/raissamoria" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="flex items-center justify-between p-3.5 bg-white border border-neutral-100 hover:border-neutral-300 rounded-xl transition-all text-xs font-bold text-neutral-700"
+            >
+              <span>Github</span>
+              <span class="font-mono text-[9px] text-neutral-400">github.com/raissamoria</span>
+            </a>
+            <a 
+              href="https://linkedin.com/in/raissamoria" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="flex items-center justify-between p-3.5 bg-white border border-neutral-100 hover:border-neutral-300 rounded-xl transition-all text-xs font-bold text-neutral-700"
+            >
+              <span>LinkedIn</span>
+              <span class="font-mono text-[9px] text-neutral-400 font-medium">linkedin.com/in/raissamoria</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Operational Status Indicator -->
+        <div class="flex items-center gap-2.5 text-[9px] text-neutral-400 uppercase tracking-widest font-bold pt-4 select-none">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span>Disponível para novos projetos</span>
+        </div>
+
+      </div>
+
+      <!-- ==================== RIGHT COLUMN: Works Portfolio Content ==================== -->
+      <div id="portfolio" class="lg:col-span-8 flex flex-col gap-12 md:gap-16">
+        
+        <!-- Large responsive bio intro statement -->
+        <div class="bg-white border border-neutral-100/75 p-6 md:p-10 rounded-2xl">
+          <p class="text-[#111111] text-xl md:text-2xl font-light leading-relaxed tracking-tight">
+            A <span class="font-black">Designer de Experiência e Multimédia</span> sediada entre Porto e Lisboa. Foco constante no minimalismo funcional, clareza sistemática de informação, e interatividade pura.
+          </p>
+        </div>
+
+        <!-- Title of Portfolio collection -->
+        <div class="flex justify-between items-center border-b border-neutral-100 pb-4 mt-4 select-none">
+          <h3 class="text-xs uppercase tracking-widest font-black text-neutral-400">Trabalhos Selecionados</h3>
+          <span class="text-[10px] font-mono text-neutral-400 font-bold">(4 PROJETOS)</span>
+        </div>
+
+        <!-- Project Grid layout with 4 dynamic responsive items -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          <!-- Project 1: Creative Code -->
+          <div class="group flex flex-col bg-white border border-neutral-100 hover:border-neutral-200 hover:shadow-xl hover:shadow-black/[0.02] rounded-2xl p-6 transition-all duration-300">
+            <div class="w-full h-48 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50/40 text-blue-600 relative overflow-hidden flex items-center justify-center border border-neutral-100 mb-6 transition-transform group-hover:scale-[1.01]">
+              <div class="absolute top-4 left-4 text-[9px] font-mono font-bold text-neutral-400 bg-white/80 px-2 py-0.5 rounded-full border border-neutral-200/50">
+                Nº 01
+              </div>
+              <div class="absolute bottom-4 right-4 text-[10px] font-bold text-neutral-500 bg-white/80 px-2 py-0.5 rounded-full border border-neutral-200/50">
+                2024
+              </div>
+              <span class="text-xl font-sans font-black uppercase tracking-tight text-neutral-800 text-center max-w-[180px] leading-tight select-none">
+                Creative Code
+              </span>
+            </div>
+            <div class="flex flex-col gap-2">
+              <span class="text-[10px] uppercase tracking-widest text-[#B5B5B5] font-extrabold">Development</span>
+              <h4 class="text-lg font-black uppercase tracking-tight text-neutral-900 mt-1">Creative Code</h4>
+              <p class="text-[11px] font-mono uppercase tracking-wider text-neutral-400 mb-2">Kinetic Typography & Shaders</p>
+              <p class="text-xs text-neutral-500 leading-relaxed font-light mb-4">
+                An exploration of motion and typography using custom canvas scripts and shaders to create organic, interactive text behaviors.
+              </p>
+              <div class="border-t border-neutral-50 pt-3 mt-auto flex justify-between items-center text-[10px] uppercase tracking-widest font-bold">
+                <span class="text-neutral-400">Explore</span>
+                <a 
+                  href="https://raissamoria.github.io/project4.html" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="inline-flex items-center gap-1.5 text-neutral-900 hover:text-black transition-colors border-b border-black pb-0.5"
+                >
+                  raissamoria.github.io <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 2: SUE App -->
+          <div class="group flex flex-col bg-white border border-neutral-100 hover:border-neutral-200 hover:shadow-xl hover:shadow-black/[0.02] rounded-2xl p-6 transition-all duration-300">
+            <div class="w-full h-48 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50/40 text-emerald-600 relative overflow-hidden flex items-center justify-center border border-neutral-100 mb-6 transition-transform group-hover:scale-[1.01]">
+              <div class="absolute top-4 left-4 text-[9px] font-mono font-bold text-neutral-400 bg-white/80 px-2 py-0.5 rounded-full border border-neutral-200/50">
+                Nº 02
+              </div>
+              <div class="absolute bottom-4 right-4 text-[10px] font-bold text-neutral-500 bg-white/80 px-2 py-0.5 rounded-full border border-neutral-200/50">
+                2023
+              </div>
+              <span class="text-xl font-sans font-black uppercase tracking-tight text-neutral-800 text-center max-w-[180px] leading-tight select-none">
+                SUE App
+              </span>
+            </div>
+            <div class="flex flex-col gap-2">
+              <span class="text-[10px] uppercase tracking-widest text-[#B5B5B5] font-extrabold">Product Design</span>
+              <h4 class="text-lg font-black uppercase tracking-tight text-neutral-900 mt-1">SUE App</h4>
+              <p class="text-[11px] font-mono uppercase tracking-wider text-neutral-400 mb-2">Emigration Support Platform</p>
+              <p class="text-xs text-neutral-500 leading-relaxed font-light mb-4">
+                End-to-end UX/UI design for a mobile application dedicated to simplifying international relocating processes and emotional support.
+              </p>
+              <div class="border-t border-neutral-50 pt-3 mt-auto flex justify-between items-center text-[10px] uppercase tracking-widest font-bold">
+                <span class="text-neutral-400">Explore</span>
+                <a 
+                  href="https://raissamoria.github.io/project2.html" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="inline-flex items-center gap-1.5 text-neutral-900 hover:text-black transition-colors border-b border-black pb-0.5"
+                >
+                  raissamoria.github.io <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 3: Amarelo C4ralho -->
+          <div class="group flex flex-col bg-white border border-neutral-100 hover:border-neutral-200 hover:shadow-xl hover:shadow-black/[0.02] rounded-2xl p-6 transition-all duration-300">
+            <div class="w-full h-48 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50/40 text-amber-600 relative overflow-hidden flex items-center justify-center border border-neutral-100 mb-6 transition-transform group-hover:scale-[1.01]">
+              <div class="absolute top-4 left-4 text-[9px] font-mono font-bold text-neutral-400 bg-white/80 px-2 py-0.5 rounded-full border border-neutral-200/50">
+                Nº 03
+              </div>
+              <div class="absolute bottom-4 right-4 text-[10px] font-bold text-neutral-500 bg-white/80 px-2 py-0.5 rounded-full border border-neutral-200/50">
+                2023
+              </div>
+              <span class="text-xl font-sans font-black uppercase tracking-tight text-neutral-800 text-center max-w-[180px] leading-tight select-none">
+                Amarelo C4ralho
+              </span>
+            </div>
+            <div class="flex flex-col gap-2">
+              <span class="text-[10px] uppercase tracking-widest text-[#B5B5B5] font-extrabold">Motion Design</span>
+              <h4 class="text-lg font-black uppercase tracking-tight text-neutral-900 mt-1">Amarelo C4ralho</h4>
+              <p class="text-[11px] font-mono uppercase tracking-wider text-neutral-400 mb-2">Expressive Motion Design</p>
+              <p class="text-xs text-neutral-500 leading-relaxed font-light mb-4">
+                A fast-paced audio-visual motion design study examining high-impact typography pairings and rhythmic video editing.
+              </p>
+              <div class="border-t border-neutral-50 pt-3 mt-auto flex justify-between items-center text-[10px] uppercase tracking-widest font-bold">
+                <span class="text-neutral-400">Explore</span>
+                <a 
+                  href="https://raissamoria.github.io/project3.html" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="inline-flex items-center gap-1.5 text-neutral-900 hover:text-black transition-colors border-b border-black pb-0.5"
+                >
+                  raissamoria.github.io <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 4: Two Points -->
+          <div class="group flex flex-col bg-white border border-neutral-100 hover:border-neutral-200 hover:shadow-xl hover:shadow-black/[0.02] rounded-2xl p-6 transition-all duration-300">
+            <div class="w-full h-48 rounded-xl bg-gradient-to-br from-rose-50 to-purple-50/40 text-rose-600 relative overflow-hidden flex items-center justify-center border border-neutral-100 mb-6 transition-transform group-hover:scale-[1.01]">
+              <div class="absolute top-4 left-4 text-[9px] font-mono font-bold text-neutral-400 bg-white/80 px-2 py-0.5 rounded-full border border-neutral-200/50">
+                Nº 04
+              </div>
+              <div class="absolute bottom-4 right-4 text-[10px] font-bold text-neutral-500 bg-white/80 px-2 py-0.5 rounded-full border border-neutral-200/50">
+                2022
+              </div>
+              <span class="text-xl font-sans font-black uppercase tracking-tight text-neutral-800 text-center max-w-[180px] leading-tight select-none">
+                Two Points
+              </span>
+            </div>
+            <div class="flex flex-col gap-2">
+              <span class="text-[10px] uppercase tracking-widest text-[#B5B5B5] font-extrabold">Visual Identity</span>
+              <h4 class="text-lg font-black uppercase tracking-tight text-neutral-900 mt-1">Two Points</h4>
+              <p class="text-[11px] font-mono uppercase tracking-wider text-neutral-400 mb-2">Parametric Typography System</p>
+              <p class="text-xs text-neutral-500 leading-relaxed font-light mb-4">
+                A modular typographic design system built around architectural grid geometry and responsive vector anchors.
+              </p>
+              <div class="border-t border-neutral-50 pt-3 mt-auto flex justify-between items-center text-[10px] uppercase tracking-widest font-bold">
+                <span class="text-neutral-400">Explore</span>
+                <a 
+                  href="https://raissamoria.github.io/project1.html" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="inline-flex items-center gap-1.5 text-neutral-900 hover:text-black transition-colors border-b border-black pb-0.5"
+                >
+                  raissamoria.github.io <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- 4. PROFILE SECTION: Biography + High Quality Portrait Photo -->
+    <section id="sobre" class="border-t border-b border-neutral-100 bg-white py-24 px-6 md:px-12 xl:px-16">
+      <div class="max-w-[1720px] mx-auto flex flex-col gap-12">
+        
+        <!-- Header of Bio Section -->
+        <div class="flex flex-col gap-3 select-none">
+          <div class="inline-flex items-center gap-2 self-start bg-neutral-100 text-neutral-600 px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest">
+            <span>02 / BIOGRAFIA & TRAJETÓRIA</span>
+          </div>
+          <h2 class="text-3xl md:text-5xl font-black uppercase tracking-tight text-neutral-900 leading-none">
+            Quem está por trás do código.
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          
+          <!-- LEFT PORTRAIT CAPTURE COLUMN: High design photo -->
+          <div class="lg:col-span-4 flex flex-col gap-6 lg:sticky lg:top-[100px]">
+            <div class="w-full aspect-[4/5] rounded-2xl overflow-hidden border border-neutral-100 p-2.5 bg-neutral-50 shadow-sm hover:shadow-md transition-shadow group">
+              <!-- Using the user's uploaded WhatsApp photograph directly with relative path inside the repo -->
+              <img 
+                src="./src/assets/images/WhatsApp Image 2026-06-03 at 13.15.20.jpeg" 
+                alt="Raíssa Moriá portrait photograph" 
+                class="w-full h-full object-cover rounded-xl transition-all duration-700 group-hover:scale-[1.02]"
+                referrerpolicy="no-referrer"
+              />
+            </div>
+
+            <!-- Profile Info & Contacts details -->
+            <div class="flex flex-col gap-4 px-2">
+              <div>
+                <h3 class="text-xl font-black uppercase tracking-tight text-neutral-900">Raíssa Moriá</h3>
+                <p class="text-xs text-neutral-400 uppercase tracking-widest font-bold font-mono mt-1">UX/UI & Multimedia Designer</p>
+              </div>
+              
+              <div class="flex flex-col gap-1.5 text-xs text-neutral-500 pt-2 border-t border-neutral-100 font-mono">
+                <div class="flex justify-between">
+                  <span class="text-neutral-400">TEL:</span>
+                  <a href="tel:+351935360284" class="text-neutral-800 hover:text-black font-bold">+351 935 360 284</a>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-neutral-400">LOCAL:</span>
+                  <span class="text-neutral-800 font-bold">Lisboa & Porto, PT</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-neutral-400">EMAIL:</span>
+                  <a href="mailto:raissagfdhb@gmail.com" class="text-neutral-800 hover:text-black font-bold">raissagfdhb@gmail.com</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN: Narrative Timeline & Technical Skills -->
+          <div class="lg:col-span-8 flex flex-col gap-12">
+            
+            <!-- Narrative bio statement -->
+            <div class="flex flex-col gap-4 text-neutral-600 text-sm md:text-base font-light leading-relaxed">
+              <p class="text-lg md:text-xl text-neutral-800 font-normal leading-relaxed tracking-tight">
+                O meu compromisso definitivo é simplificar a interação humana com sistemas digitais, eliminando ruídos ornamentais inúteis e privilegiando proporções precisas, legibilidade máxima e harmonia tipográfica absoluta.
+              </p>
+              <p>
+                Trabalho a partir de Lisboa e Porto combinando rigor metodológico em UX com codificação multimedia criativa. Desenvolvo sistemas limpos de fácil compreensão estética em colaboração com marcas globais, marcas inovadoras e equipes multidisciplinares.
+              </p>
+            </div>
+
+            <!-- Education and Skills breakdown -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-neutral-100">
+              
+              <!-- Education column -->
+              <div class="flex flex-col gap-4">
+                <h4 class="text-xs uppercase tracking-widest font-black text-neutral-400 select-none">Educação</h4>
+                <div class="flex flex-col gap-4">
+                  <div>
+                    <h5 class="text-xs font-mono font-bold text-neutral-800">Licenciatura em Design Gráfico e Multimédia</h5>
+                    <p class="text-xs text-neutral-500">ESAD, Caldas da Rainha • 2021 – 2024</p>
+                  </div>
+                  <div>
+                    <h5 class="text-xs font-mono font-bold text-neutral-800">Curso de Fotografia Profissional</h5>
+                    <p class="text-xs text-neutral-500">Escola Profissional Magestil, Lisboa • 2013 – 2016</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Skills tags column -->
+              <div class="flex flex-col gap-4">
+                <h4 class="text-xs uppercase tracking-widest font-black text-neutral-400 select-none">Competências Técnicas</h4>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Figma</span>
+                  <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Webflow</span>
+                  <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">HTML/CSS</span>
+                  <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">JavaScript</span>
+                  <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">After Effects</span>
+                  <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Cinema 4D</span>
+                  <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Blender</span>
+                  <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Premiere Pro</span>
+                  <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Photoshop</span>
+                  <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Illustrator</span>
+                  <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Design Thinking</span>
+                  <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">User Flows</span>
+                  <span class="bg-neutral-50 hover:bg-neutral-100 transition-colors border border-neutral-100 text-[10px] text-neutral-600 font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">Prototipagem</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Professional Experience timeline elements -->
+            <div class="flex flex-col gap-6 pt-8 border-t border-neutral-100">
+              <h4 class="text-xs uppercase tracking-widest font-black text-neutral-400 select-none">Experiência Profissional</h4>
+              
+              <div class="flex flex-col gap-8">
+                
+                <!-- Experience item 1 -->
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6">
+                  <div class="sm:col-span-4 font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-wider">
+                    Dez 2025 — Presente
+                  </div>
+                  <div class="sm:col-span-8 flex flex-col gap-2">
+                    <h5 class="text-sm font-black uppercase text-neutral-900 tracking-tight">
+                      UX/UI Designer — VOQIN’ (futureLabs)
+                    </h5>
+                    <p class="text-xs text-neutral-500 leading-relaxed font-light">
+                      Liderança de processos de Design Thinking, UX e UI para a criação de plataformas digitais de suporte corporativo internas e aceleração de fluxos de eventos. Desenvolvimento de websites interativos na rede Cvent, organizando jornadas de usuário e fluxos comunicacionais eficazes.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Experience item 2 -->
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6">
+                  <div class="sm:col-span-4 font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-wider">
+                    Abr 2025
+                  </div>
+                  <div class="sm:col-span-8 flex flex-col gap-2">
+                    <h5 class="text-sm font-black uppercase text-neutral-900 tracking-tight">
+                      Photography Coordinator — SEEDS (Islândia)
+                    </h5>
+                    <p class="text-xs text-neutral-500 leading-relaxed font-light">
+                      Coordenação de workshops de fotografia e audiovisual para voluntários internacionais. Gestão e polimento de presença digital através da concepção de layouts no Figma e animações em vídeo.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Experience item 3 -->
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6">
+                  <div class="sm:col-span-4 font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-wider">
+                    2023 — 2024
+                  </div>
+                  <div class="sm:col-span-8 flex flex-col gap-2">
+                    <h5 class="text-sm font-black uppercase text-neutral-900 tracking-tight">
+                      Video Editor — Six Seconds (Califórnia)
+                    </h5>
+                    <p class="text-xs text-neutral-500 leading-relaxed font-light">
+                      Edição e finalização de vídeos educativos e de marketing promocional voltados para campanhas de redes sociais, atuando em forte sinergia com equipes de criação globais.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Experience item 4 -->
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6">
+                  <div class="sm:col-span-4 font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-wider">
+                    2022 — 2024
+                  </div>
+                  <div class="sm:col-span-8 flex flex-col gap-2">
+                    <h5 class="text-sm font-black uppercase text-neutral-900 tracking-tight">
+                      Multimedia Volunteer — ESAD (Portugal)
+                    </h5>
+                    <p class="text-xs text-neutral-500 leading-relaxed font-light">
+                      Apoio ao laboratório audiovisual de design gráfico e multimédia, auxiliando na execução prática de instalações interativas, fotografia experimental e edição de motion graphics.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5. SCROLLING MARQUEE: Infinite sliding visual line -->
+    <div class="w-full py-3 bg-white border-b border-neutral-100 overflow-hidden relative flex select-none">
+      <div class="animate-marquee uppercase tracking-[0.2em] font-mono text-[10px] font-bold text-neutral-400 py-1">
+        <span class="px-4">• WORK INQUIRIES • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
+        <span class="px-4">• WORK INQUIRIES • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
+        <span class="px-4">• WORK INQUIRIES • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
+        <span class="px-4">• WORK INQUIRIES • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
+        <span class="px-4">• WORK INQUIRIES • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
+        <span class="px-4">• WORK INQUIRIES • VAMOS COLABORAR • RAÍSSA MORIÁ ATELIER • LISBON & PORTO •</span>
+      </div>
+    </div>
+
+    <!-- 6. CONTACT FOOTER: Large high-contrast conversion layout -->
+    <footer id="contacto" class="bg-[#0A0A0A] text-white py-24 px-6 md:px-12 xl:px-16">
+      <div class="max-w-[1720px] mx-auto flex flex-col gap-16">
+        
+        <div class="flex flex-col gap-4">
+          <span class="text-[10px] text-neutral-500 uppercase tracking-widest font-black">03 / CONTACTO DIRECTO</span>
+          <h2 class="text-4xl md:text-6xl font-light uppercase tracking-tight leading-none text-neutral-200">
+            Inicie uma <br />
+            <span class="text-neutral-500">nova conversa</span>.
+          </h2>
+        </div>
+
+        <div>
+          <a 
+            href="mailto:raissagfdhb@gmail.com" 
+            class="text-2xl md:text-5xl font-mono text-neutral-200 hover:text-white transition-colors inline-block break-all border-b border-white/10 pb-2 hover:border-white"
+          >
+            raissagfdhb@gmail.com
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 pt-16 border-t border-white/10 text-xs text-neutral-400 font-medium">
+          <div>
+            <p class="opacity-40 uppercase tracking-widest mb-1.5 text-[10px] font-mono">LOCALIZAÇÃO ATUAL</p>
+            <p class="text-neutral-200 text-sm">Portugal • Lisboa & Porto</p>
+          </div>
+          <div>
+            <p class="opacity-40 uppercase tracking-widest mb-1.5 text-[10px] font-mono">ESPECIALIZAÇÕES</p>
+            <p class="text-neutral-200 text-sm">UX/UI, Design Multimédia, Motion, Interactive Code</p>
+          </div>
+          <div class="flex flex-col md:items-end justify-end">
+            <p class="text-[10px] tracking-widest uppercase opacity-30 font-mono">
+              © 2026 Raíssa Moriá • ALL RIGHTS RESERVED
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+      // 1. Initialize Lucide Icons
+      lucide.createIcons();
+
+      // 2. Lisbon Time Clock Tracker
+      function updateClock() {
+        const now = new Date();
+        const formatter = new Intl.DateTimeFormat("en-US", {
+          timeZone: "Europe/Lisbon",
+          month: "short",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true
+        });
+        document.getElementById("time-clock").innerText = formatter.format(now);
+      }
+      setInterval(updateClock, 1000);
+      updateClock();
+
+      // 3. Interactive Kinetic Letter Springs Physics
+      let activeMode = 'dodge';
+
+      const modeDescriptions = {
+        dodge: "As letras afastam-se suavemente do ponteiro do rato.",
+        magnetic: "As letras são atraídas magneticamente na direção do rato.",
+        stretch: "As letras comprimem e alongam-se verticalmente (peso variável).",
+        elastic: "As letras dão um pequeno salto elástico com rotação subtil."
+      };
+
+      function setActiveMode(mode) {
+        activeMode = mode;
+        document.getElementById('mode-description').innerText = "✨ " + modeDescriptions[mode] + " Passe o cursor por cima das letras abaixo!";
+        
+        ['dodge', 'magnetic', 'stretch', 'elastic'].forEach(m => {
+          const btn = document.getElementById('btn-' + m);
+          if (m === mode) {
+            btn.className = "transition-all duration-200 cursor-pointer text-neutral-900 border-b border-black pb-0.5 font-bold";
+          } else {
+            btn.className = "transition-all duration-200 cursor-pointer hover:text-neutral-900";
+          }
+        });
+      }
+
+      // Spring Physics Simulation
+      class Spring {
+        constructor(targetValue = 0, damping = 15, stiffness = 180, mass = 0.5) {
+          this.value = targetValue;
+          this.target = targetValue;
+          this.velocity = 0;
+          this.damping = damping;
+          this.stiffness = stiffness;
+          this.mass = mass;
+        }
+        
+        update(dt = 0.016) {
+          const force = -this.stiffness * (this.value - this.target);
+          const dampingForce = -this.damping * this.velocity;
+          const acceleration = (force + dampingForce) / this.mass;
+          this.velocity += acceleration * dt;
+          this.value += this.velocity * dt;
+          return this.value;
+        }
+      }
+
+      // Collect kinetic letters elements
+      const letterEls = document.querySelectorAll('.kinetic-letter');
+      const lettersData = [];
+
+      letterEls.forEach((el, index) => {
+        lettersData.push({
+          el: el,
+          index: index,
+          x: new Spring(0),
+          y: new Spring(0),
+          scaleX: new Spring(1),
+          scaleY: new Spring(1),
+          skewX: new Spring(0),
+          rotate: new Spring(0),
+          currentColor: '#121212'
+        });
+      });
+
+      // Track cursor position
+      let mouseX = -9999;
+      let mouseY = -9999;
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      // Physics loop using requestAnimationFrame (60/120fps)
+      function animate() {
+        lettersData.forEach((letter) => {
+          const rect = letter.el.getBoundingClientRect();
+          const letterCenterX = rect.left + rect.width / 2;
+          const letterCenterY = rect.top + rect.height / 2;
+          
+          const distanceX = mouseX - letterCenterX;
+          const distanceY = mouseY - letterCenterY;
+          const distance = Math.hypot(distanceX, distanceY);
+          
+          const maxDistance = 150; // Max radius (px)
+          
+          if (distance < maxDistance && mouseX !== -9999) {
+            const power = (maxDistance - distance) / maxDistance; // 0 to 1
+            const angle = Math.atan2(distanceY, distanceX);
+            
+            if (activeMode === "dodge") {
+              letter.x.target = -(distanceX / (distance || 1)) * 30 * power;
+              letter.y.target = -(distanceY / (distance || 1)) * 30 * power;
+              letter.scaleX.target = 1 + 0.1 * power;
+              letter.scaleY.target = 1 + 0.1 * power;
+              letter.rotate.target = (distanceX / (distance || 1)) * 15 * power;
+              letter.currentColor = "#000000";
+            } else if (activeMode === "magnetic") {
+              letter.x.target = (distanceX / (distance || 1)) * 20 * power;
+              letter.y.target = (distanceY / (distance || 1)) * 20 * power;
+              letter.scaleX.target = 1 - 0.05 * power;
+              letter.scaleY.target = 1 - 0.05 * power;
+              letter.rotate.target = -(distanceX / (distance || 1)) * 10 * power;
+              letter.currentColor = "#666666";
+            } else if (activeMode === "stretch") {
+              letter.x.target = 0;
+              letter.y.target = -10 * power;
+              letter.scaleX.target = 1 - 0.25 * power;
+              letter.scaleY.target = 1 + 0.6 * power;
+              letter.skewX.target = Math.sin(angle) * 10 * power;
+              letter.rotate.target = 0;
+              letter.currentColor = "#121212";
+            } else if (activeMode === "elastic") {
+              letter.x.target = 0;
+              letter.y.target = -25 * power;
+              letter.scaleX.target = 1;
+              letter.scaleY.target = 1;
+              letter.rotate.target = (letter.index % 2 === 0 ? 1 : -1) * 20 * power;
+              letter.currentColor = "#888888";
+            }
+          } else {
+            // Smooth natural alignment return values
+            letter.x.target = 0;
+            letter.y.target = 0;
+            letter.scaleX.target = 1;
+            letter.scaleY.target = 1;
+            letter.skewX.target = 0;
+            letter.rotate.target = 0;
+            letter.currentColor = "#121212";
+          }
+          
+          // Compute updated values under Physical Springs
+          const xVal = letter.x.update();
+          const yVal = letter.y.update();
+          const sxVal = letter.scaleX.update();
+          const syVal = letter.scaleY.update();
+          const skVal = letter.skewX.update();
+          const rVal = letter.rotate.update();
+          
+          // Apply standard WebGL transform mapping
+          letter.el.style.transform = `translate3d(${xVal}px, ${yVal}px, 0) scale(${sxVal}, ${syVal}) skewX(${skVal}deg) rotate(${rVal}deg)`;
+          letter.el.style.color = letter.currentColor;
+        });
+        
+        requestAnimationFrame(animate);
+      }
+
+      // Fire simulation sequence
+      animate();
+    </script>
   </body>
 </html>
-
