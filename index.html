@@ -42,7 +42,7 @@
       }
     </style>
   </head>
-  <body class="min-h-screen bg-[#FAFAFA] text-[#111111] font-sans antialiased">
+  <body class="min-h-screen bg-white text-[#111111] font-sans antialiased">
 
     <!-- 1. HEADER: Minimal high-contrast navigation bar -->
     <header class="sticky top-0 z-50 w-full bg-white/75 backdrop-blur-xl border-b border-neutral-100 px-6 md:px-12 py-4">
@@ -133,10 +133,8 @@
             </div>
           </div>
 
-          <!-- Description Hint -->
-          <div id="mode-description" class="h-4 text-[11px] text-neutral-400 font-medium tracking-wide text-center">
-            ✨ As letras afastam-se suavemente do ponteiro do rato. Passe o cursor por cima das letras abaixo!
-          </div>
+          <!-- Description Hint (Hidden) -->
+          <div id="mode-description" class="hidden"></div>
 
           <!-- Kinetic Typography Area -->
           <div class="relative py-8 overflow-visible w-full flex justify-center text-[22vw] sm:text-[20vw] md:text-[18vw] lg:text-[16vw] xl:text-[14vw] select-none">
@@ -161,10 +159,9 @@
         </div>
 
         <!-- Info alert badge below sandbox -->
-        <div class="flex items-center gap-2.5 bg-neutral-950 px-5 py-2.5 rounded-full border border-neutral-800 text-neutral-400 font-mono text-[9px] md:text-xs tracking-[0.15em] font-bold mt-2 shadow-xs">
-          <span class="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse shadow-[0_0_10px_rgba(168,85,247,0.5)]"></span>
-          <span class="lang-pt">MOVA O CURSOR E DIVIRTA-SE COM AS LETRAS ↓</span>
-          <span class="lang-en hidden">MOVE YOUR MOUSE AND PLAY WITH THE LETTERS ↓</span>
+        <div class="flex items-center justify-center text-white font-mono text-[9px] md:text-xs tracking-[0.15em] font-bold mt-2 select-none">
+          <span class="lang-pt">MOVA O CURSOR E DIVIRTA-SE COM AS LETRAS</span>
+          <span class="lang-en hidden">MOVE YOUR MOUSE AND PLAY WITH THE LETTERS</span>
         </div>
       </div>
     </section>
@@ -176,9 +173,8 @@
       <div class="lg:col-span-4 flex flex-col justify-between gap-12 lg:sticky lg:top-[100px] lg:h-[calc(100vh-160px)]">
         
         <div class="flex flex-col gap-6">
-          <!-- Decorative badge -->
-          <div class="inline-flex items-center gap-2 self-start bg-neutral-100 text-neutral-600 px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest select-none">
-            <i data-lucide="sparkles" class="w-2.5 h-2.5 text-neutral-500"></i>
+          <!-- Decorative text -->
+          <div class="text-neutral-500 text-[10px] font-extrabold uppercase tracking-widest select-none">
             <span class="lang-pt">UX/UI & Multimédia</span>
             <span class="lang-en hidden">UX/UI & Multimedia</span>
           </div>
@@ -427,7 +423,7 @@
         
         <!-- Header of Bio Section -->
         <div class="flex flex-col gap-3 select-none">
-          <div class="inline-flex items-center gap-2 self-start bg-neutral-100 text-neutral-600 px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest">
+          <div class="text-neutral-500 text-[10px] font-extrabold uppercase tracking-widest select-none">
             <span class="lang-pt">02 / BIOGRAFIA & TRAJETÓRIA</span>
             <span class="lang-en hidden">02 / BIOGRAPHY & JOURNEY</span>
           </div>
@@ -481,8 +477,8 @@
             <!-- Narrative bio statement -->
             <div class="flex flex-col gap-4 text-neutral-600 text-sm md:text-base font-light leading-relaxed">
               <p class="text-lg md:text-xl text-neutral-800 font-normal leading-relaxed tracking-tight">
-                <span class="lang-pt">O meu compromisso definitivo é simplificar a interação humana com sistemas digitais, eliminando ruídos ornamentais inúteis e privilegiando proporções precisas, legibilidade máxima e harmonia tipográfica absoluta.</span>
-                <span class="lang-en hidden">My definitive commitment is to simplify human interaction with digital systems, eliminating useless ornamental noise and prioritizing precise proportions, maximum readability, and absolute typographic harmony.</span>
+                <span class="lang-pt">Transformo caos criativo em experiências digitais intuitivas, visuais e humanas.</span>
+                <span class="lang-en hidden">I transform creative chaos into intuitive, visual, and human digital experiences.</span>
               </p>
               <p>
                 <span class="lang-pt">Trabalho a partir de Lisboa e Porto combinando rigor metodológico em UX com codificação multimedia criativa. Desenvolvo sistemas limpos de fácil compreensão estética em colaboração com marcas globais, marcas inovadoras e equipes multidisciplinares.</span>

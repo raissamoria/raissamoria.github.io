@@ -78,7 +78,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-[#111111] selection:bg-[#111111] selection:text-[#FAFAFA] font-sans antialiased">
+    <div className="min-h-screen bg-white text-[#111111] selection:bg-[#111111] selection:text-white font-sans antialiased">
       
       {/* 1. Header/Navigation: Extremely clean, modern, and high-design header */}
       <header className="sticky top-0 z-50 w-full bg-white/75 backdrop-blur-xl border-b border-neutral-100 px-6 md:px-12 py-4">
@@ -143,9 +143,8 @@ export default function App() {
         <div className="lg:col-span-4 flex flex-col justify-between gap-12 lg:sticky lg:top-[100px] lg:h-[calc(100vh-160px)]">
           
           <div className="flex flex-col gap-6">
-            {/* Soft decorative badge */}
-            <div className="inline-flex items-center gap-2 self-start bg-neutral-100 text-neutral-600 px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest">
-              <Sparkles size={10} className="text-neutral-500" />
+            {/* Soft decorative text */}
+            <div className="text-neutral-500 text-[10px] font-extrabold uppercase tracking-widest select-none">
               <span>UX/UI & Multimédia</span>
             </div>
             
@@ -279,7 +278,7 @@ export default function App() {
           
           {/* Header of Section */}
           <div className="flex flex-col gap-3">
-            <div className="inline-flex items-center gap-2 self-start bg-neutral-100 text-neutral-600 px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest">
+            <div className="text-neutral-500 text-[10px] font-extrabold uppercase tracking-widest select-none">
               <span>02 / BIOGRAFIA & TRAJETÓRIA</span>
             </div>
             <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-neutral-900 leading-none">
@@ -329,7 +328,7 @@ export default function App() {
               {/* Biografia text block */}
               <div className="flex flex-col gap-4 text-neutral-600 text-sm md:text-base font-light leading-relaxed">
                 <p className="text-lg md:text-xl text-neutral-800 font-neutral leading-relaxed tracking-tight">
-                  O meu compromisso definitivo é simplificar a interação humana com sistemas digitais, eliminando ruídos ornamentais inúteis e privilegiando proporções precisas, legibilidade máxima e harmonia tipográfica absoluta.
+                  Transformo caos criativo em experiências digitais intuitivas, visuais e humanas.
                 </p>
                 <p>
                   Trabalho a partir de Lisboa e Porto combinando rigor metodológico em UX com codificação multimedia criativa. Desenvolvo sistemas limpos de fácil compreensão estética em colaboração com marcas globais, marcas inovadoras e equipes multidisciplinares.
