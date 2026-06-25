@@ -40,9 +40,49 @@
         background-color: #111111;
         color: #FAFAFA;
       }
+      
+      /* Custom Cursor Style */
+      @media (pointer: fine) {
+        body, a, button, input, select, textarea, [role="button"], .interactive-element {
+          cursor: none !important;
+        }
+        .custom-cursor {
+          display: block;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 90px;
+          height: 90px;
+          border-radius: 50%;
+          background-color: white;
+          mix-blend-mode: difference;
+          pointer-events: none;
+          z-index: 99999;
+          transform: translate3d(-50%, -50%, 0);
+          will-change: transform;
+          opacity: 0;
+          transition: opacity 0.3s ease, width 0.3s cubic-bezier(0.25, 1, 0.5, 1), height 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease;
+        }
+        /* Custom hover state classes to feel modern, creative, and playful */
+        .custom-cursor.hovered {
+          width: 130px;
+          height: 130px;
+          background-color: #ffffff;
+        }
+        .custom-cursor.visible {
+          opacity: 1;
+        }
+      }
+      @media (pointer: coarse) {
+        .custom-cursor {
+          display: none !important;
+        }
+      }
     </style>
   </head>
   <body class="min-h-screen bg-white text-[#111111] font-sans antialiased">
+    <!-- Custom animated cursor -->
+    <div class="custom-cursor"></div>
 
     <!-- 1. HEADER: Minimal high-contrast navigation bar -->
     <header class="sticky top-0 z-50 w-full bg-white/75 backdrop-blur-xl border-b border-neutral-100 px-6 md:px-12 py-4">
@@ -707,6 +747,55 @@
     <script>
       // 1. Initialize Lucide Icons
       lucide.createIcons();
+
+      // Custom animated cursor logic
+      (function() {
+        const cursor = document.querySelector('.custom-cursor');
+        if (cursor && window.matchMedia('(pointer: fine)').matches) {
+          let mouseX = -100;
+          let mouseY = -100;
+          let cursorX = -100;
+          let cursorY = -100;
+          const ease = 0.15; // Smooth movement easing factor
+
+          window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            if (!cursor.classList.contains('visible')) {
+              cursor.classList.add('visible');
+            }
+          });
+
+          document.addEventListener('mouseleave', () => {
+            cursor.classList.remove('visible');
+          });
+
+          document.addEventListener('mouseenter', () => {
+            cursor.classList.add('visible');
+          });
+
+          // Toggle state on hover for links, buttons, inputs, etc.
+          document.addEventListener('mouseover', (e) => {
+            const target = e.target;
+            if (target && target.closest('a, button, [role="button"], input, select, textarea, .interactive-element')) {
+              cursor.classList.add('hovered');
+            } else {
+              cursor.classList.remove('hovered');
+            }
+          });
+
+          function animateCursor() {
+            // Linear interpolation (lerp)
+            cursorX += (mouseX - cursorX) * ease;
+            cursorY += (mouseY - cursorY) * ease;
+            
+            cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate3d(-50%, -50%, 0)`;
+            
+            requestAnimationFrame(animateCursor);
+          }
+          animateCursor();
+        }
+      })();
 
       // Language configuration and toggle
       let currentLang = localStorage.getItem("raissa_lang") || "en";

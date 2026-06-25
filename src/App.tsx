@@ -8,6 +8,7 @@ import { ArrowUpRight, Github, Linkedin, Mail, Sparkles, ArrowRight, ArrowDown }
 import { useState, useEffect } from "react";
 import KineticTypography from "./components/KineticTypography";
 import Marquee from "./components/Marquee";
+import CustomCursor from "./components/CustomCursor";
 // @ts-ignore
 import profilePic from "./assets/images/WhatsApp Image 2026-06-03 at 13.15.20.jpeg";
 
@@ -79,6 +80,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white text-[#111111] selection:bg-[#111111] selection:text-white font-sans antialiased">
+      <CustomCursor />
       
       {/* 1. Header/Navigation: Extremely clean, modern, and high-design header */}
       <header className="sticky top-0 z-50 w-full bg-white/75 backdrop-blur-xl border-b border-neutral-100 px-6 md:px-12 py-4">
