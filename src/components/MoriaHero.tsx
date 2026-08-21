@@ -275,9 +275,13 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
 
   // Global Pointer Event Listeners for seamless Drag & Momentum Throw
   const handlePointerDown = useCallback((e: React.PointerEvent, id: number) => {
-    e.preventDefault();
     const container = containerRef.current;
     if (!container || !physicsEngineRef.current) return;
+
+    // Only prevent default on mouse down, allow touch gestures unless actively dragging
+    if (e.pointerType === 'mouse') {
+      e.preventDefault();
+    }
 
     const rect = container.getBoundingClientRect();
     const px = e.clientX - rect.left;
@@ -285,6 +289,12 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
 
     physicsEngineRef.current.startDrag(id, px, py);
     setDraggedId(id);
+
+    try {
+      (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    } catch {
+      // Ignore if pointer capture fails
+    }
   }, []);
 
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
@@ -302,7 +312,14 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
     }
   }, [draggedId]);
 
-  const handlePointerUp = useCallback(() => {
+  const handlePointerUp = useCallback((e?: React.PointerEvent) => {
+    if (e && e.target) {
+      try {
+        (e.target as HTMLElement).releasePointerCapture?.(e.pointerId);
+      } catch {
+        // Ignore
+      }
+    }
     if (physicsEngineRef.current) {
       physicsEngineRef.current.endDrag();
       setDraggedId(null);
@@ -312,6 +329,13 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
   const handleResetComposition = () => {
     if (dimensions.width > 0 && dimensions.height > 0) {
       setupOrbs(dimensions.width, dimensions.height);
+    }
+  };
+
+  const handleScrollDown = () => {
+    const tunnel = document.getElementById('tunnel-section');
+    if (tunnel) {
+      tunnel.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -328,9 +352,9 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
           setDraggedId(null);
         }
       }}
-      className="relative w-full min-h-screen h-screen bg-[#000000] overflow-hidden select-none flex flex-col items-center justify-center border-b border-neutral-900"
+      className="relative w-full min-h-screen h-[100dvh] bg-[#000000] overflow-hidden select-none flex flex-col items-center justify-center border-b border-neutral-900"
       style={{
-        touchAction: 'none',
+        touchAction: 'pan-y',
       }}
     >
       {/* 1. Subtle Radial Ambient Vignette */}
@@ -352,7 +376,7 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
       <BackgroundTitle text="MORIA" />
 
       {/* 4. Interactive 3D Refractive Glass Orbs Layer */}
-      <div className="absolute inset-0 w-full h-full pointer-events-auto z-20 overflow-hidden">
+      <div className="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-hidden">
         {orbs.map((orb, index) => (
           <motion.div
             key={orb.id}
@@ -366,7 +390,7 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
               delay: 0.2 + index * 0.08,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className="absolute top-0 left-0"
+            className="absolute top-0 left-0 pointer-events-auto"
           >
             <GlassOrb
               orb={orb}
@@ -413,28 +437,31 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
 
       </div>
 
-      {/* 6. Minimal Bottom Instruction & Scroll Down Indicator */}
-      <div className="absolute bottom-8 left-0 right-0 z-30 flex flex-col items-center justify-center gap-3 pointer-events-none select-none">
-        <motion.div
+      {/* 6. Minimal Bottom Instruction & Interactive Scroll Down Indicator */}
+      <div className="absolute bottom-8 left-0 right-0 z-30 flex flex-col items-center justify-center gap-3 select-none pointer-events-auto">
+        <motion.button
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1, duration: 0.6 }}
-          className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.25em] text-neutral-500 font-bold"
+          onClick={handleScrollDown}
+          className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.25em] text-neutral-400 hover:text-white transition-colors font-bold cursor-pointer outline-none bg-black/40 px-4 py-1 rounded-full border border-white/5"
         >
           <Sparkles className="w-3 h-3 text-neutral-400" />
           <span>
-            {language === 'pt' ? 'Agarre e lance as lentes de vidro' : 'Grab and fling the glass lenses'}
+            {language === 'pt' ? 'Scroll para Explorar' : 'Scroll to Explore'}
           </span>
-        </motion.div>
+        </motion.button>
 
-        <motion.div
+        <motion.button
           initial={{ opacity: 0 }}
-          animate={{ opacity: [0.3, 0.8, 0.3] }}
+          animate={{ opacity: [0.4, 1, 0.4] }}
           transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
-          className="w-4 h-7 rounded-full border border-neutral-700 flex items-start justify-center p-1"
+          onClick={handleScrollDown}
+          className="w-4 h-7 rounded-full border border-neutral-700 hover:border-white flex items-start justify-center p-1 cursor-pointer transition-colors"
+          aria-label="Scroll down"
         >
           <div className="w-1 h-1.5 rounded-full bg-neutral-300 animate-bounce" />
-        </motion.div>
+        </motion.button>
       </div>
 
     </section>
