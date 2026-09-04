@@ -12,6 +12,7 @@ import { ProjectsSection } from "./components/ProjectsSection";
 import { NiponSpaProject } from "./components/NiponSpaProject";
 import Marquee from "./components/Marquee";
 import CustomCursor from "./components/CustomCursor";
+import { OpticalGlassButton, OpticalGlassPill } from "./components/OpticalGlass";
 // @ts-ignore
 import profilePic from "./assets/images/WhatsApp Image 2026-06-03 at 13.15.20.jpeg";
 
@@ -121,31 +122,31 @@ export default function App() {
             </span>
 
             {/* Language Switch */}
-            <div className="flex items-center bg-neutral-900 rounded-full p-1 border border-neutral-800 select-none">
+            <div className="flex items-center optical-glass rounded-full p-1 border border-white/10 select-none">
               <button
                 onClick={() => setLanguage('pt')}
-                className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase transition-all tracking-wider font-mono cursor-pointer ${
-                  language === 'pt' ? 'bg-white text-black' : 'text-neutral-500 hover:text-white'
+                className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase transition-all tracking-wider font-mono cursor-pointer ${
+                  language === 'pt' ? 'bg-white text-black shadow-xs' : 'text-neutral-400 hover:text-white'
                 }`}
               >
                 PT
               </button>
               <button
                 onClick={() => setLanguage('en')}
-                className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase transition-all tracking-wider font-mono cursor-pointer ${
-                  language === 'en' ? 'bg-white text-black' : 'text-neutral-500 hover:text-white'
+                className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase transition-all tracking-wider font-mono cursor-pointer ${
+                  language === 'en' ? 'bg-white text-black shadow-xs' : 'text-neutral-400 hover:text-white'
                 }`}
               >
                 EN
               </button>
             </div>
 
-            <a 
+            <OpticalGlassButton 
               href="mailto:raissagfdhb@gmail.com" 
-              className="bg-white hover:bg-neutral-200 text-black px-4 py-2 rounded-full font-bold text-[10px] uppercase tracking-wider transition-all shadow-xs"
+              className="!px-4 !py-1.5 !text-[10px]"
             >
-              {language === 'pt' ? 'Falar →' : 'Talk →'}
-            </a>
+              <span>{language === 'pt' ? 'Falar →' : 'Talk →'}</span>
+            </OpticalGlassButton>
           </div>
 
         </div>
@@ -228,25 +229,25 @@ export default function App() {
                     href="https://github.com/raissamoria" 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="flex items-center justify-between p-3.5 bg-neutral-900 border border-neutral-800 hover:border-neutral-600 rounded-xl transition-all text-xs font-bold text-white hover:bg-neutral-850"
+                    className="optical-glass flex items-center justify-between p-3.5 rounded-xl transition-all text-xs font-bold text-white hover:text-white"
                   >
                     <span className="flex items-center gap-2">
                       <Github className="w-4 h-4" />
                       <span>Github</span>
                     </span>
-                    <span className="font-mono text-[9px] text-neutral-500">github.com/raissamoria</span>
+                    <span className="font-mono text-[9px] text-neutral-400">github.com/raissamoria</span>
                   </a>
                   <a 
                     href="https://linkedin.com/in/raissamoria" 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="flex items-center justify-between p-3.5 bg-neutral-900 border border-neutral-800 hover:border-neutral-600 rounded-xl transition-all text-xs font-bold text-white hover:bg-neutral-850"
+                    className="optical-glass flex items-center justify-between p-3.5 rounded-xl transition-all text-xs font-bold text-white hover:text-white"
                   >
                     <span className="flex items-center gap-2">
                       <Linkedin className="w-4 h-4" />
                       <span>LinkedIn</span>
                     </span>
-                    <span className="font-mono text-[9px] text-neutral-500 font-medium">linkedin.com/in/raissamoria</span>
+                    <span className="font-mono text-[9px] text-neutral-400 font-medium">linkedin.com/in/raissamoria</span>
                   </a>
                 </div>
               </div>
@@ -332,7 +333,7 @@ export default function App() {
                       "Cinema 4D", 
                       "Shaders & WebGL"
                     ].map((skill) => (
-                      <span key={skill} className="bg-neutral-900 hover:bg-neutral-800 transition-colors border border-neutral-800 text-[10px] text-neutral-300 font-mono px-2.5 py-1 rounded-md uppercase tracking-wider">
+                      <span key={skill} className="optical-glass text-[10px] text-neutral-300 font-mono px-3 py-1.5 rounded-full uppercase tracking-wider hover:text-white cursor-default">
                         {skill}
                       </span>
                     ))}

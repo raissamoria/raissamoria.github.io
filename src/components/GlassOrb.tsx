@@ -72,20 +72,20 @@ export const GlassOrb: React.FC<GlassOrbProps> = ({
     ctx.arc(radius, radius, radius - 1, 0, Math.PI * 2);
     ctx.clip();
 
-    // Magnification factor (simulating convex glass lens zoom)
-    const magnification = 1.32 + (orb.depth * 0.15);
+    // Magnification factor (subtle optical glass zoom)
+    const magnification = 1.16 + (orb.depth * 0.08);
     const sampleSize = size / magnification;
     const sampleX = orb.x - sampleSize / 2;
     const sampleY = orb.y - sampleSize / 2;
 
-    // Draw Chromatic Aberration: Red channel (offset -3px), Blue channel (offset +3px), Green (center)
-    // Red Channel Pass (Warm shift)
+    // Subtle chromatic dispersion near the lens edges:
+    // Red/Magenta channel (slight offset)
     ctx.globalCompositeOperation = 'source-over';
-    ctx.globalAlpha = 0.85;
+    ctx.globalAlpha = 0.95;
     ctx.drawImage(
       srcCanvas,
-      sampleX - 2.5 * orb.depth,
-      sampleY - 1.5 * orb.depth,
+      sampleX - 1.4 * orb.depth,
+      sampleY - 0.8 * orb.depth,
       sampleSize,
       sampleSize,
       0,
@@ -94,13 +94,13 @@ export const GlassOrb: React.FC<GlassOrbProps> = ({
       size
     );
 
-    // Blue/Cyan Channel Pass (Cool shift with chromatic displacement)
+    // Cyan/Blue channel (slight opposite offset)
     ctx.globalCompositeOperation = 'screen';
-    ctx.globalAlpha = 0.75;
+    ctx.globalAlpha = 0.65;
     ctx.drawImage(
       srcCanvas,
-      sampleX + 3.0 * orb.depth,
-      sampleY + 2.0 * orb.depth,
+      sampleX + 1.4 * orb.depth,
+      sampleY + 0.8 * orb.depth,
       sampleSize,
       sampleSize,
       0,
@@ -109,9 +109,9 @@ export const GlassOrb: React.FC<GlassOrbProps> = ({
       size
     );
 
-    // Primary Core Pass (High contrast center)
+    // Primary Core Pass (crisp, high-clarity typography)
     ctx.globalCompositeOperation = 'lighter';
-    ctx.globalAlpha = 0.9;
+    ctx.globalAlpha = 0.95;
     ctx.drawImage(
       srcCanvas,
       sampleX,
@@ -128,26 +128,23 @@ export const GlassOrb: React.FC<GlassOrbProps> = ({
     ctx.globalCompositeOperation = 'source-over';
     ctx.globalAlpha = 1.0;
 
-    // 2. Optical Lens Radial Vignette & Refractive Depth
-    const depthGradient = ctx.createRadialGradient(
-      radius * 0.75, radius * 0.7, radius * 0.1,
+    // 2. Optical Lens Radial Sheen: Center is completely transparent and colorless, edge has delicate glass sheen
+    const rimGradient = ctx.createRadialGradient(
+      radius, radius, radius * 0.72,
       radius, radius, radius
     );
-    depthGradient.addColorStop(0, 'rgba(255, 255, 255, 0.08)');
-    depthGradient.addColorStop(0.5, 'rgba(10, 15, 25, 0.25)');
-    depthGradient.addColorStop(0.85, 'rgba(0, 0, 0, 0.65)');
-    depthGradient.addColorStop(1, 'rgba(0, 0, 0, 0.88)');
+    rimGradient.addColorStop(0, 'rgba(255, 255, 255, 0)');
+    rimGradient.addColorStop(0.7, 'rgba(255, 255, 255, 0.015)');
+    rimGradient.addColorStop(0.95, 'rgba(255, 255, 255, 0.06)');
+    rimGradient.addColorStop(1, 'rgba(255, 255, 255, 0.12)');
 
-    ctx.fillStyle = depthGradient;
+    ctx.fillStyle = rimGradient;
     ctx.beginPath();
     ctx.arc(radius, radius, radius, 0, Math.PI * 2);
     ctx.fill();
 
     ctx.restore();
   }, [orb.x, orb.y, orb.size, orb.depth, containerWidth, containerHeight, textCanvasRef]);
-
-  // Color profiles based on causticAccent
-  const isAmber = orb.causticAccent === 'amber-blue' || orb.causticAccent === 'cyan-warm';
 
   return (
     <div
@@ -162,102 +159,82 @@ export const GlassOrb: React.FC<GlassOrbProps> = ({
         cursor: isDragged ? 'grabbing' : 'grab',
       }}
     >
-      {/* 1. Deep 3D Ambient Drop Shadow */}
+      {/* 1. Subtle, Soft Ambient Occlusion Shadow */}
       <div 
-        className="absolute inset-0 rounded-full pointer-events-none transition-all duration-300"
+        className="absolute inset-0 rounded-full pointer-events-none transition-opacity duration-300"
         style={{
-          transform: `translate3d(0, ${18 * orb.depth}px, 0) scale(${0.88 * orb.depth})`,
-          background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, transparent 75%)',
-          filter: `blur(${16 * orb.depth}px)`,
-          opacity: isDragged ? 0.95 : 0.75,
+          transform: `translate3d(0, ${8 * orb.depth}px, 0) scale(${0.92 * orb.depth})`,
+          background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 50%, transparent 75%)',
+          filter: `blur(${10 * orb.depth}px)`,
+          opacity: isDragged ? 0.7 : 0.45,
         }}
       />
 
-      {/* 2. Optical Refraction Dynamic Canvas (Draws distorted "MORIA" letters) */}
+      {/* 2. Optical Refraction Dynamic Canvas (Draws gently magnified letters underneath) */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full rounded-full pointer-events-none"
         style={{
-          filter: 'contrast(125%) brightness(110%)',
+          filter: 'contrast(108%) brightness(104%)',
         }}
       />
 
-      {/* 3. Liquid Glass 3D Body Composite (Multi-layered caustics & Fresnel) */}
+      {/* 3. Thin, Clear Optical Glass Bubble Shell */}
       <div 
         className="absolute inset-0 rounded-full pointer-events-none overflow-hidden"
         style={{
           border: '1px solid rgba(255, 255, 255, 0.22)',
           boxShadow: `
-            inset 0 0 1px 1px rgba(255, 255, 255, 0.6),
-            inset 0 2px 8px rgba(255, 255, 255, 0.35),
-            inset 0 -8px 24px rgba(0, 0, 0, 0.8),
-            0 12px 32px rgba(0, 0, 0, 0.6)
+            inset 0 1px 1px 0 rgba(255, 255, 255, 0.45),
+            inset 0 -1px 1px 0 rgba(255, 255, 255, 0.2),
+            0 8px 32px rgba(0, 0, 0, 0.3)
           `,
         }}
       >
-        {/* Caustic chromatic reflection arcs (Amber at top-left, Cyan at bottom-right) */}
+        {/* Very subtle iridescent edge with small hints of cyan, violet, magenta, green and yellow */}
         <div 
-          className="absolute inset-0 rounded-full mix-blend-screen opacity-90 transition-opacity duration-300"
+          className="absolute inset-0 rounded-full pointer-events-none opacity-85 transition-opacity duration-300"
           style={{
-            background: isAmber
-              ? `conic-gradient(
-                  from ${orb.deformAngle}deg at 50% 50%,
-                  rgba(255, 175, 75, 0.65) 0deg,
-                  rgba(255, 220, 150, 0.4) 45deg,
-                  rgba(255, 255, 255, 0.85) 75deg,
-                  rgba(90, 180, 255, 0.5) 120deg,
-                  rgba(20, 90, 220, 0.7) 180deg,
-                  rgba(0, 0, 0, 0) 240deg,
-                  rgba(255, 140, 40, 0.55) 320deg,
-                  rgba(255, 175, 75, 0.65) 360deg
-                )`
-              : `conic-gradient(
-                  from ${orb.deformAngle}deg at 50% 50%,
-                  rgba(100, 210, 255, 0.7) 0deg,
-                  rgba(255, 255, 255, 0.9) 60deg,
-                  rgba(220, 120, 255, 0.5) 140deg,
-                  rgba(0, 150, 255, 0.65) 200deg,
-                  rgba(0, 0, 0, 0) 270deg,
-                  rgba(100, 210, 255, 0.7) 360deg
-                )`,
-            filter: 'blur(1.5px)',
-            opacity: isHovered ? 1 : 0.82,
+            background: `conic-gradient(
+              from ${orb.deformAngle || 45}deg at 50% 50%,
+              rgba(80, 230, 245, 0.38) 0deg,
+              rgba(175, 120, 255, 0.34) 72deg,
+              rgba(245, 105, 195, 0.3) 144deg,
+              rgba(250, 230, 110, 0.26) 216deg,
+              rgba(100, 240, 170, 0.3) 288deg,
+              rgba(80, 230, 245, 0.38) 360deg
+            )`,
+            maskImage: 'radial-gradient(circle, transparent 86%, black 96%)',
+            WebkitMaskImage: 'radial-gradient(circle, transparent 86%, black 96%)',
+            filter: 'blur(0.8px)',
+            opacity: isHovered ? 1 : 0.85,
           }}
         />
 
-        {/* Sharp High-Gloss Light Highlight (Top Crest) */}
+        {/* Gentle Crescent Highlight (Top Edge Reflection) */}
         <div 
-          className="absolute top-[8%] left-[18%] w-[60%] h-[35%] rounded-full pointer-events-none"
+          className="absolute top-[3%] left-[16%] w-[68%] h-[28%] rounded-full pointer-events-none"
           style={{
-            background: 'radial-gradient(ellipse at center top, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.4) 45%, transparent 75%)',
-            transform: 'rotate(-18deg)',
+            background: 'radial-gradient(ellipse at center top, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.2) 40%, transparent 75%)',
+            transform: 'rotate(-12deg)',
             filter: 'blur(0.5px)',
           }}
         />
 
-        {/* Secondary Delicate Glint (Bottom Rim) */}
+        {/* Delicate Secondary Glint (Bottom Rim bounce) */}
         <div 
-          className="absolute bottom-[6%] right-[22%] w-[45%] h-[20%] rounded-full pointer-events-none opacity-75"
+          className="absolute bottom-[4%] right-[22%] w-[50%] h-[16%] rounded-full pointer-events-none opacity-60"
           style={{
-            background: 'radial-gradient(ellipse at center bottom, rgba(255, 240, 200, 0.8) 0%, rgba(130, 200, 255, 0.3) 50%, transparent 80%)',
-            transform: 'rotate(15deg)',
+            background: 'radial-gradient(ellipse at center bottom, rgba(255, 255, 255, 0.4) 0%, transparent 75%)',
+            transform: 'rotate(12deg)',
           }}
         />
 
-        {/* Luminous Outer Glass Rim Ring */}
+        {/* Hairline Internal Optical Edge */}
         <div 
           className="absolute inset-[1px] rounded-full pointer-events-none"
           style={{
-            background: 'radial-gradient(circle at 40% 35%, transparent 68%, rgba(255, 255, 255, 0.4) 85%, rgba(255, 255, 255, 0.8) 98%, transparent 100%)',
-          }}
-        />
-
-        {/* Internal Dark Glass Body Core (Fresnel Shadow) */}
-        <div 
-          className="absolute inset-[8%] rounded-full pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle at 60% 65%, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.2) 60%, transparent 85%)',
-            mixBlendMode: 'multiply',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
           }}
         />
       </div>
@@ -265,9 +242,9 @@ export const GlassOrb: React.FC<GlassOrbProps> = ({
       {/* 4. Subtle Interactive Pulse Glow on Active Drag */}
       {isDragged && (
         <div 
-          className="absolute -inset-2 rounded-full pointer-events-none animate-pulse"
+          className="absolute -inset-1.5 rounded-full pointer-events-none animate-pulse"
           style={{
-            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 70%)',
           }}
         />
       )}

@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'motion/react';
 import { ArrowDown, ArrowUpRight, Eye, Sparkles, Layers, Maximize2 } from 'lucide-react';
 import { ProjectItem } from '../types';
+import { OpticalGlassButton, OpticalGlassPill } from './OpticalGlass';
 
 // @ts-ignore
 import niponHeroImg from '../assets/images/nipon_spa_hero_1787305381037.jpg';
@@ -232,14 +233,14 @@ export const GalleryTunnel: React.FC<GalleryTunnelProps> = ({
           style={{ opacity: hudOpacity }}
           className="absolute top-8 left-6 md:left-12 right-6 md:right-12 z-30 flex justify-between items-center pointer-events-none text-neutral-400 font-mono text-[10px] uppercase tracking-[0.2em]"
         >
-          <div className="flex items-center gap-3 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10">
+          <div className="flex items-center gap-3 optical-glass px-4 py-2 rounded-full border border-white/10 text-white">
             <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
             <span>
               {language === 'pt' ? '3D TUNNEL GALLERY • SCROLL PARA AVANÇAR' : '3D TUNNEL GALLERY • SCROLL TO EXPLORE'}
             </span>
           </div>
 
-          <div className="hidden sm:flex items-center gap-4 bg-black/60 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/10 text-neutral-400">
+          <div className="hidden sm:flex items-center gap-4 optical-glass px-4 py-2 rounded-full border border-white/10 text-neutral-300">
             <span>SYS // MONOCHROME</span>
             <span className="text-white/20">•</span>
             <span>FOV 1200PX</span>
@@ -378,17 +379,17 @@ export const GalleryTunnel: React.FC<GalleryTunnelProps> = ({
                   ),
                   transformStyle: 'preserve-3d',
                 }}
-                className="absolute w-[320px] sm:w-[380px] md:w-[420px] bg-[#0A0A0A] border border-white/20 hover:border-white/50 rounded-2xl p-6 shadow-2xl backdrop-blur-xl transition-colors duration-300 pointer-events-auto group cursor-pointer"
+                className="absolute w-[320px] sm:w-[380px] md:w-[420px] optical-glass rounded-2xl p-6 shadow-2xl backdrop-blur-xl transition-colors duration-300 pointer-events-auto group cursor-pointer"
                 onClick={() => handleCardClick(card.project)}
               >
                 {/* Visual Header & Metadata */}
                 <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
-                  <div className="flex items-center gap-2 font-mono text-[10px] text-white/50 uppercase tracking-wider">
+                  <div className="flex items-center gap-2 font-mono text-[10px] text-white/70 uppercase tracking-wider">
                     <span className="text-white font-bold">{card.project.number}</span>
                     <span>//</span>
                     <span>{card.project.category}</span>
                   </div>
-                  <span className="font-mono text-[9px] text-white/40 bg-white/5 px-2 py-0.5 rounded border border-white/10">
+                  <span className="font-mono text-[9px] text-neutral-300 optical-glass px-2.5 py-0.5 rounded-full border border-white/10">
                     {card.project.year}
                   </span>
                 </div>
@@ -477,15 +478,15 @@ export const GalleryTunnel: React.FC<GalleryTunnelProps> = ({
           </p>
 
           {/* Core Interactive Action Button */}
-          <button
+          <OpticalGlassButton
             onClick={handleScrollToProjects}
-            className="group relative inline-flex items-center gap-3 bg-white text-black px-8 py-4 rounded-full font-bold text-xs sm:text-sm uppercase tracking-[0.15em] hover:bg-neutral-200 transition-all shadow-[0_0_50px_rgba(255,255,255,0.25)] hover:scale-105 cursor-pointer outline-none active:scale-95"
+            className="!px-8 !py-4 !text-xs sm:!text-sm !tracking-[0.15em] !rounded-full shadow-[0_0_50px_rgba(255,255,255,0.25)]"
           >
             <span>
               {language === 'pt' ? 'Entrar no Portfólio' : 'Enter Selected Works'}
             </span>
             <ArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
-          </button>
+          </OpticalGlassButton>
 
           <span className="mt-4 font-mono text-[9px] uppercase tracking-widest text-neutral-500">
             {language === 'pt' ? 'Ou continue o scroll para avançar' : 'Or continue scrolling to explore'}
@@ -493,13 +494,13 @@ export const GalleryTunnel: React.FC<GalleryTunnelProps> = ({
         </motion.div>
 
         {/* 6. Quick Skip / Jump to Portfolio button in bottom-right */}
-        <button
+        <OpticalGlassButton
           onClick={handleScrollToProjects}
-          className="absolute bottom-6 right-6 md:right-12 z-30 flex items-center gap-2 text-neutral-400 hover:text-white bg-black/60 hover:bg-black/90 backdrop-blur-md border border-white/10 hover:border-white/30 px-3.5 py-1.5 rounded-full text-[9px] font-mono font-bold uppercase tracking-wider transition-all cursor-pointer"
+          className="absolute bottom-6 right-6 md:right-12 z-30 !px-4 !py-1.5 !text-[9px]"
         >
           <span>{language === 'pt' ? 'Ver Todos os Projetos' : 'View All Projects'}</span>
           <ArrowDown className="w-3 h-3" />
-        </button>
+        </OpticalGlassButton>
 
       </div>
     </section>

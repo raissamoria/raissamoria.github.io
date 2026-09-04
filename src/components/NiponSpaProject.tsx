@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ArrowLeft, ArrowUpRight, CheckCircle2, Compass, Layers, CalendarCheck, Sparkles, ExternalLink, ShieldCheck } from 'lucide-react';
 import { Language } from '../types';
+import { OpticalGlassButton, OpticalGlassPill } from './OpticalGlass';
 
 // Images for Nipon Spa
 // @ts-ignore
@@ -49,15 +50,15 @@ export const NiponSpaProject: React.FC<NiponSpaProjectProps> = ({
             <span className="text-white font-bold">NIPON SPA</span>
           </div>
 
-          <a
+          <OpticalGlassButton
             href="https://www.niponspa.pt/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-white text-black hover:bg-neutral-200 px-4 py-1.5 rounded-full text-xs font-bold font-mono uppercase tracking-wider transition-all"
+            className="!px-4 !py-1.5 !text-xs"
           >
             <span>niponspa.pt</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
-          </a>
+          </OpticalGlassButton>
         </div>
       </div>
 
@@ -368,15 +369,15 @@ export const NiponSpaProject: React.FC<NiponSpaProjectProps> = ({
             <span>{language === 'pt' ? '← TODOS OS PROJETOS' : '← ALL PROJECTS'}</span>
           </button>
 
-          <a
+          <OpticalGlassButton
             href="https://www.niponspa.pt/"
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-3 bg-white hover:bg-neutral-200 text-black px-8 py-4 rounded-full font-bold text-xs sm:text-sm uppercase tracking-[0.15em] transition-all shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:scale-105"
+            className="!px-8 !py-4 !text-xs sm:!text-sm !tracking-[0.15em] !rounded-full shadow-[0_0_40px_rgba(255,255,255,0.2)]"
           >
             <span>{language === 'pt' ? 'VER WEBSITE AO VIVO' : 'VIEW LIVE WEBSITE'}</span>
             <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </a>
+          </OpticalGlassButton>
 
         </footer>
 

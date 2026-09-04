@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useSpring } from 'motion/react';
 import { ArrowUpRight, ExternalLink, Sparkles, Layers, Eye } from 'lucide-react';
 import { ProjectItem } from '../types';
 import { PORTFOLIO_PROJECTS } from './GalleryTunnel';
+import { OpticalGlassButton, OpticalGlassPill } from './OpticalGlass';
 
 interface ProjectsSectionProps {
   language: 'pt' | 'en';
@@ -127,22 +128,19 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
             </h2>
           </div>
 
-          {/* Category Filter Pills (Monochrome Style) */}
+          {/* Category Filter Pills (Optical Glass System) */}
           <div className="flex flex-wrap gap-2">
             {categories.map((cat) => {
               const isSelected = selectedCategory === cat.id;
               return (
-                <button
+                <OpticalGlassPill
                   key={cat.id}
+                  active={isSelected}
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-4 py-2 rounded-full text-[10px] font-mono uppercase tracking-wider transition-all cursor-pointer border ${
-                    isSelected
-                      ? 'bg-white text-black font-bold border-white shadow-[0_0_20px_rgba(255,255,255,0.15)]'
-                      : 'bg-neutral-900/80 text-neutral-400 border-neutral-800 hover:text-white hover:border-neutral-700'
-                  }`}
+                  className="!px-4 !py-2 cursor-pointer"
                 >
                   {language === 'pt' ? cat.labelPt : cat.labelEn}
-                </button>
+                </OpticalGlassPill>
               );
             })}
           </div>
@@ -254,7 +252,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                       {project.tags.map((tag) => (
                         <span 
                           key={tag} 
-                          className="bg-neutral-900 text-neutral-400 border border-neutral-800/80 text-[9px] font-mono uppercase px-2 py-0.5 rounded"
+                          className="optical-glass text-neutral-400 text-[9px] font-mono uppercase px-2.5 py-0.5 rounded-md"
                         >
                           #{tag}
                         </span>
@@ -275,16 +273,16 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <button
+                        <OpticalGlassButton
                           onClick={(e) => {
                             e.stopPropagation();
                             handleProjectClick(project);
                           }}
-                          className="inline-flex items-center gap-2 bg-white hover:bg-neutral-200 text-black px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-all duration-200 shadow-sm group-hover:scale-105 cursor-pointer"
+                          className="!px-4 !py-1.5 !text-xs !rounded-full"
                         >
                           <span>{project.hasCaseStudy ? (language === 'pt' ? 'Explorar' : 'Explore') : (language === 'pt' ? 'Ver' : 'View')}</span>
                           <ArrowUpRight className="w-3.5 h-3.5" />
-                        </button>
+                        </OpticalGlassButton>
                       </div>
                     </div>
 

@@ -61,8 +61,8 @@ export default function CustomCursor() {
     return null;
   }
 
-  // Circle is 90px wide/high by default, and expands to 130px on hover
-  const size = isHovered ? 130 : 90;
+  // Optical lens reticle size: 26px default, 44px on hover
+  const size = isHovered ? 44 : 26;
 
   return (
     <>
@@ -82,9 +82,20 @@ export default function CustomCursor() {
         }
       `}</style>
 
-      {/* Modern, creative, and playful spotlight mask cursor */}
+      {/* Optical precision central dot */}
       <motion.div
-        className="custom-cursor fixed top-0 left-0 rounded-full bg-white mix-blend-difference pointer-events-none z-[99999]"
+        className="fixed top-0 left-0 w-1 h-1 rounded-full bg-white pointer-events-none z-[99999]"
+        style={{
+          x: mouseX,
+          y: mouseY,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
+      />
+
+      {/* Subtle Optical Glass Lens Ring with Chromatic Edge */}
+      <motion.div
+        className="custom-cursor fixed top-0 left-0 rounded-full pointer-events-none z-[99998] border border-white/40 backdrop-blur-[2px] bg-white/[0.03]"
         style={{
           x: cursorX,
           y: cursorY,
@@ -92,11 +103,14 @@ export default function CustomCursor() {
           translateY: "-50%",
           width: size,
           height: size,
+          boxShadow: isHovered
+            ? "0 0 12px -1px rgba(56, 189, 248, 0.4), 0 0 16px -2px rgba(236, 72, 153, 0.3), inset 0 1px 0.5px rgba(255, 255, 255, 0.6)"
+            : "0 0 8px -2px rgba(255, 255, 255, 0.2), inset 0 1px 0.5px rgba(255, 255, 255, 0.3)",
         }}
         transition={{
           type: "spring",
-          damping: 30,
-          stiffness: 250,
+          damping: 26,
+          stiffness: 280,
         }}
       />
     </>
