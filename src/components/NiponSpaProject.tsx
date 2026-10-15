@@ -4,13 +4,13 @@ import { ArrowLeft, ArrowUpRight, CheckCircle2, Compass, Layers, CalendarCheck, 
 import { Language } from '../types';
 import { OpticalGlassButton, OpticalGlassPill } from './OpticalGlass';
 
-// Images for Nipon Spa
+// Authentic Images for Nipon Spa sourced directly from https://www.niponspa.pt
 // @ts-ignore
-import heroImage from '../assets/images/nipon_spa_hero_1787305381037.jpg';
+import heroHouseImage from '../assets/images/nipon_real_house.png';
 // @ts-ignore
-import treatmentsImage from '../assets/images/nipon_treatments_1787305392435.jpg';
+import realRoomImage from '../assets/images/nipon_real_room.jpeg';
 // @ts-ignore
-import detailsImage from '../assets/images/nipon_details_1787305409273.jpg';
+import realLogoImage from '../assets/images/nipon_real_logo.jpeg';
 
 interface NiponSpaProjectProps {
   language: Language;
@@ -42,7 +42,7 @@ export const NiponSpaProject: React.FC<NiponSpaProjectProps> = ({
             className="group flex items-center gap-3 text-neutral-400 hover:text-white transition-colors text-xs font-mono font-bold uppercase tracking-widest cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            <span>{language === 'pt' ? '← TODOS OS PROJETOS' : '← ALL PROJECTS'}</span>
+            <span>{language === 'pt' ? 'TODOS OS PROJETOS' : 'ALL PROJECTS'}</span>
           </button>
 
           <div className="flex items-center gap-4 text-xs font-mono text-neutral-500 uppercase tracking-widest">
@@ -119,9 +119,9 @@ export const NiponSpaProject: React.FC<NiponSpaProjectProps> = ({
 
           <div className="relative overflow-hidden aspect-[16/9] w-full bg-neutral-900">
             <img 
-              src={heroImage} 
-              alt="Nipon Spa Digital Experience Homepage" 
-              className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.01]"
+              src={heroHouseImage} 
+              alt="Nipon Spa Authentic Website Hero - Japanese House & Onsen Sanctuary (niponspa.pt)" 
+              className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.01]"
               referrerPolicy="no-referrer"
             />
           </div>
@@ -287,7 +287,7 @@ export const NiponSpaProject: React.FC<NiponSpaProjectProps> = ({
           {/* Staggered Editorial Layout */}
           <div className="flex flex-col gap-12 md:gap-20">
             
-            {/* FULL WIDTH SCREENSHOT 1: Treatments section */}
+            {/* FULL WIDTH SCREENSHOT 1: Real Spa Room Photography */}
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -296,32 +296,49 @@ export const NiponSpaProject: React.FC<NiponSpaProjectProps> = ({
               className="w-full rounded-2xl md:rounded-3xl overflow-hidden border border-neutral-800 bg-neutral-950 shadow-2xl group"
             >
               <div className="p-4 bg-neutral-900/80 border-b border-neutral-800 flex justify-between items-center text-[10px] font-mono text-neutral-400">
-                <span>CATALOGUE & TREATMENT SELECTION</span>
-                <span>NIPON SPA LISBON</span>
+                <span className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  {language === 'pt' ? 'FOTOGRAFIA REAL DO ESPAÇO • NIPON SPA TELHEIRAS' : 'AUTHENTIC VENUE PHOTOGRAPHY • NIPON SPA LISBON'}
+                </span>
+                <span>niponspa.pt</span>
               </div>
-              <img 
-                src={treatmentsImage} 
-                alt="Nipon Spa Treatments Grid and Discovery" 
-                className="w-full object-cover transition-transform duration-700 group-hover:scale-[1.01]"
-                referrerPolicy="no-referrer"
-              />
+              <div className="relative aspect-[16/10] md:aspect-[21/9] w-full overflow-hidden bg-neutral-900">
+                <img 
+                  src={realRoomImage} 
+                  alt="Nipon Spa Real Venue and Treatment Room in Lisbon" 
+                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.01]"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 max-w-lg bg-black/80 backdrop-blur-md border border-white/10 p-4 rounded-xl">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 block mb-1">
+                    {language === 'pt' ? 'O Nosso Legado • Telheiras' : 'Our Legacy • Lisbon'}
+                  </span>
+                  <p className="text-xs md:text-sm text-neutral-200 font-light">
+                    {language === 'pt'
+                      ? 'Ambiente autêntico de cura manual japonesa com caligrafia kanji tradicional, iluminação quente e privacidade total.'
+                      : 'Authentic Japanese healing atmosphere featuring traditional kanji calligraphy, warm lighting, and complete serenity.'
+                    }
+                  </p>
+                </div>
+              </div>
             </motion.div>
 
-            {/* STAGGERED ROW: SCREENSHOT RIGHT & SCREENSHOT LEFT */}
+            {/* STAGGERED ROW: AUTHENTIC BRANDING & WEBSITE DETAILS */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center">
               
               {/* Left Column Text / Context */}
               <div className="lg:col-span-5 flex flex-col gap-6">
                 <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">
-                  INTERACTIVE DETAIL
+                  {language === 'pt' ? 'IDENTIDADE & TRADIÇÃO' : 'IDENTITY & TRADITION'}
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
-                  Japanese Serenity & High Contrast Clarity
+                  {language === 'pt' ? 'Serenidade Japonesa & Identidade Autêntica' : 'Japanese Serenity & Authentic Identity'}
                 </h3>
                 <p className="text-neutral-300 font-light text-sm md:text-base leading-relaxed">
                   {language === 'pt'
-                    ? 'A interface equilibra fotografia terapêutica autêntica de rituais japoneses com tipografia contemporânea. Os detalhes dos tratamentos informam de forma direta duração, benefícios corporais e valores.'
-                    : 'The interface balances authentic therapeutic imagery of Japanese rituals with contemporary typography. Treatment details clearly highlight duration, bodily benefits, and pricing.'
+                    ? 'A presença digital reflete a essência do conceito japonês "Ichi-go ichi-e" (um encontro, uma oportunidade única na vida), unindo fotografia autêntica da casa Nipon Spa a uma experiência digital moderna e sem atrito.'
+                    : 'The digital presence captures the essence of the Japanese concept "Ichi-go ichi-e" (one encounter, one lifetime opportunity), connecting authentic imagery from Nipon Spa to a seamless modern web platform.'
                   }
                 </p>
                 <div className="flex flex-wrap gap-2 pt-2">
@@ -329,28 +346,44 @@ export const NiponSpaProject: React.FC<NiponSpaProjectProps> = ({
                     Shiatsu & Seitai
                   </span>
                   <span className="font-mono text-[10px] uppercase bg-neutral-900 border border-neutral-800 px-3 py-1 rounded-full text-neutral-300">
-                    Hot Stone Therapy
+                    Kobido Facial
                   </span>
                   <span className="font-mono text-[10px] uppercase bg-neutral-900 border border-neutral-800 px-3 py-1 rounded-full text-neutral-300">
-                    Oriental Reflexology
+                    Drenagem Japonesa
                   </span>
                 </div>
               </div>
 
-              {/* Right Column Screenshot */}
+              {/* Right Column Authentic Logo & Brand Asset */}
               <motion.div 
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="lg:col-span-7 rounded-2xl md:rounded-3xl overflow-hidden border border-neutral-800 bg-neutral-950 shadow-2xl group"
+                className="lg:col-span-7 rounded-2xl md:rounded-3xl overflow-hidden border border-neutral-800 bg-[#0c0c0c] p-8 md:p-12 flex flex-col items-center justify-center shadow-2xl group text-center relative"
               >
-                <img 
-                  src={detailsImage} 
-                  alt="Nipon Spa Treatment Detail and Booking Flow" 
-                  className="w-full object-cover transition-transform duration-700 group-hover:scale-[1.01]"
-                  referrerPolicy="no-referrer"
-                />
+                <div className="w-full max-w-sm rounded-xl overflow-hidden shadow-lg border border-neutral-800 bg-white/95 p-6 mb-6">
+                  <img 
+                    src={realLogoImage} 
+                    alt="Nipon Spa Official Logo" 
+                    className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <span className="font-mono text-[11px] uppercase tracking-widest text-neutral-400">
+                    {language === 'pt' ? 'Logótipo Oficial Nipon Spa' : 'Official Nipon Spa Brandmark'}
+                  </span>
+                  <a
+                    href="https://www.niponspa.pt/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-xs font-mono text-emerald-400 hover:text-emerald-300 underline underline-offset-4 mt-2"
+                  >
+                    <span>https://www.niponspa.pt</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
               </motion.div>
 
             </div>
@@ -366,7 +399,7 @@ export const NiponSpaProject: React.FC<NiponSpaProjectProps> = ({
             className="group flex items-center gap-3 text-neutral-400 hover:text-white transition-colors text-xs font-mono font-bold uppercase tracking-widest cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            <span>{language === 'pt' ? '← TODOS OS PROJETOS' : '← ALL PROJECTS'}</span>
+            <span>{language === 'pt' ? 'TODOS OS PROJETOS' : 'ALL PROJECTS'}</span>
           </button>
 
           <OpticalGlassButton

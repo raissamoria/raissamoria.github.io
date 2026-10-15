@@ -87,7 +87,7 @@ export default function App() {
       <CustomCursor />
       
       {/* 1. Header/Navigation: Ultra-minimal dark navigation bar */}
-      <header className="sticky top-0 z-50 w-full bg-black/85 backdrop-blur-xl border-b border-neutral-900 px-6 md:px-12 py-4 text-white">
+      <header className="sticky top-0 z-30 w-full bg-black/85 backdrop-blur-xl border-b border-neutral-900 px-6 md:px-12 py-4 text-white">
         <div className="max-w-[1720px] mx-auto flex justify-between items-center">
           
           {/* Logo & Identity */}
@@ -145,7 +145,8 @@ export default function App() {
               href="mailto:raissagfdhb@gmail.com" 
               className="!px-4 !py-1.5 !text-[10px]"
             >
-              <span>{language === 'pt' ? 'Falar →' : 'Talk →'}</span>
+              <span>{language === 'pt' ? 'Falar' : 'Talk'}</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
             </OpticalGlassButton>
           </div>
 

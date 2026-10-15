@@ -307,7 +307,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
             className="flex items-center gap-2 text-neutral-400 hover:text-white transition-colors"
           >
             <span>{language === 'pt' ? 'Avançar para Sobre Mim' : 'Proceed to About'}</span>
-            <span>→</span>
+            <ArrowUpRight className="w-3.5 h-3.5" />
           </a>
         </div>
 
