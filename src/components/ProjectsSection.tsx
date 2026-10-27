@@ -44,7 +44,11 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
 
   const filteredProjects = selectedCategory === 'all'
     ? PORTFOLIO_PROJECTS
-    : PORTFOLIO_PROJECTS.filter(p => p.category === selectedCategory || (selectedCategory === 'UX/UI & Web' && p.category.includes('UX/UI')));
+    : PORTFOLIO_PROJECTS.filter(p => 
+        p.category === selectedCategory || 
+        (selectedCategory === 'UX/UI & Web' && (p.category.includes('UX/UI') || p.category.includes('Mobile'))) ||
+        (selectedCategory === 'Product Design' && (p.category.includes('Product') || p.category.includes('Mobile')))
+      );
 
   const handleProjectClick = (project: ProjectItem) => {
     if (project.hasCaseStudy && project.slug && onSelectProject) {
@@ -298,7 +302,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
           <div className="flex items-center gap-3">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-neutral-300">
-              {language === 'pt' ? 'Nipon Spa e novas plataformas em destaque' : 'Nipon Spa & featured live digital platforms'}
+              {language === 'pt' ? 'Nipon Spa, SUE Mobile App e plataformas em destaque' : 'Nipon Spa, SUE Mobile App & featured digital platforms'}
             </span>
           </div>
 

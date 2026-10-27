@@ -7,6 +7,9 @@ import { OpticalGlassButton, OpticalGlassPill } from './OpticalGlass';
 // Authentic website image from https://www.niponspa.pt
 // @ts-ignore
 import niponHeroImg from '../assets/images/nipon_real_house.png';
+// Cover image for SUE app mobile
+// @ts-ignore
+import sueCapaImg from '../assets/images/sue-capa.png';
 
 export const PORTFOLIO_PROJECTS: ProjectItem[] = [
   {
@@ -30,6 +33,24 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
   {
     id: 2,
     number: "02",
+    title: "SUE",
+    subtitle: "App Mobile to Support Emigration (UX/UI)",
+    description: "End-to-end UX/UI mobile app design for SUE (Serviços de União a Emigração / Union Services for Emigration), a migration facility platform dedicated to assisting emigrants and immigrants with quick access services, relocation process tracking, and 24/7 conversational support.",
+    descriptionPt: "Design UX/UI de aplicação mobile para o SUE (Serviços de União a Emigração), concebido para apoiar imigrantes e emigrantes com navegação simplificada de serviços públicos, acompanhamento de pedidos e apoio conversacional 24/7.",
+    category: "Mobile UX/UI",
+    roles: ["UX/UI DESIGN", "MOBILE APP", "PRODUCT DESIGN", "DESIGN SYSTEM"],
+    year: "2024",
+    link: "#projects/sue-app",
+    liveUrl: "#projects/sue-app",
+    slug: "sue-app",
+    hasCaseStudy: true,
+    image: sueCapaImg,
+    metrics: "Figma • iOS & Android • UX Research • Design System",
+    tags: ["UX/UI Design", "Mobile App", "Emigration Support", "Design System", "Figma"]
+  },
+  {
+    id: 3,
+    number: "03",
     title: "Creative Code",
     subtitle: "Kinetic Typography & Shaders",
     description: "An exploration of motion and typography using custom canvas scripts and shaders to create organic, interactive text behaviors.",
@@ -40,20 +61,6 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
     link: "https://raissamoria.github.io/project4.html",
     metrics: "WebGL • Shaders • Canvas API",
     tags: ["WebGL", "Typography", "Interactive", "GLSL"]
-  },
-  {
-    id: 3,
-    number: "03",
-    title: "SUE App",
-    subtitle: "Emigration Support Platform",
-    description: "End-to-end UX/UI design for a mobile application dedicated to simplifying international relocating processes and emotional support.",
-    descriptionPt: "Design UX/UI completo para uma aplicação mobile dedicada a simplificar processos de relocalização internacional e suporte emocional.",
-    category: "Product Design",
-    roles: ["UX RESEARCH", "PRODUCT DESIGN", "DESIGN SYSTEM"],
-    year: "2023",
-    link: "https://raissamoria.github.io/project2.html",
-    metrics: "Figma • iOS Design System • UX Research",
-    tags: ["UX Research", "Mobile App", "Design System", "Figma"]
   },
   {
     id: 4,
@@ -545,27 +552,29 @@ export const GalleryTunnel: React.FC<GalleryTunnelProps> = ({
                 {/* Card Artwork / Live Preview Banner */}
                 <div className="w-full h-44 sm:h-52 rounded-xl bg-[#080808] border border-white/10 relative overflow-hidden mb-5 flex items-center justify-center">
                   
-                  {card.project.slug === 'nipon-spa' && niponHeroImg ? (
-                    // Real imagery for Nipon Spa
-                    <div className="relative w-full h-full overflow-hidden">
+                  {card.project.image ? (
+                    // Real imagery for project (Nipon Spa, SUE App, etc.)
+                    <div className="relative w-full h-full overflow-hidden bg-neutral-900">
                       <img 
-                        src={niponHeroImg} 
-                        alt="Nipon Spa" 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        src={card.project.image} 
+                        alt={card.project.title} 
+                        className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
                       <div className="absolute bottom-3 left-4 right-4 flex justify-between items-end">
-                        <div>
-                          <span className="font-sans font-black text-lg uppercase tracking-tight text-white block">
-                            Nipon Spa
+                        <div className="max-w-[70%]">
+                          <span className="font-sans font-black text-lg uppercase tracking-tight text-white block truncate">
+                            {card.project.title}
                           </span>
-                          <span className="font-mono text-[9px] text-neutral-300 tracking-wider uppercase">
-                            Japanese Wellness Experience
+                          <span className="font-mono text-[9px] text-neutral-300 tracking-wider uppercase block truncate">
+                            {card.project.subtitle}
                           </span>
                         </div>
-                        <span className="font-mono text-[8px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full">
-                          CASE STUDY
-                        </span>
+                        {card.project.hasCaseStudy && (
+                          <span className="font-mono text-[8px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full whitespace-nowrap">
+                            CASE STUDY
+                          </span>
+                        )}
                       </div>
                     </div>
                   ) : (

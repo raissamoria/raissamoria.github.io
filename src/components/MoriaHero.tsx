@@ -386,6 +386,13 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
             <span>Nipon Spa</span>
           </OpticalGlassButton>
 
+          <OpticalGlassButton
+            href="#projects/sue-app"
+            className="hidden sm:inline-flex"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
+            <span>SUE App</span>
+          </OpticalGlassButton>
         </div>
 
       </div>

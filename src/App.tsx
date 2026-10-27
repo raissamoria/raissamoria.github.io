@@ -10,6 +10,7 @@ import { MoriaHero } from "./components/MoriaHero";
 import { GalleryTunnel } from "./components/GalleryTunnel";
 import { ProjectsSection } from "./components/ProjectsSection";
 import { NiponSpaProject } from "./components/NiponSpaProject";
+import { SueAppProject } from "./components/SueAppProject";
 import Marquee from "./components/Marquee";
 import CustomCursor from "./components/CustomCursor";
 import { OpticalGlassButton, OpticalGlassPill } from "./components/OpticalGlass";
@@ -27,6 +28,8 @@ export default function App() {
       const hash = window.location.hash;
       if (hash === '#projects/nipon-spa' || hash === '#nipon-spa') {
         setCurrentProject('nipon-spa');
+      } else if (hash === '#projects/sue-app' || hash === '#sue-app' || hash === '#projects/sue' || hash === '#sue') {
+        setCurrentProject('sue-app');
       } else if (!hash.startsWith('#projects/')) {
         setCurrentProject(null);
       }
@@ -78,6 +81,15 @@ export default function App() {
       <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans antialiased">
         <CustomCursor />
         <NiponSpaProject language={language} onBack={handleBackToPortfolio} />
+      </div>
+    );
+  }
+
+  if (currentProject === 'sue-app') {
+    return (
+      <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans antialiased">
+        <CustomCursor />
+        <SueAppProject language={language} onBack={handleBackToPortfolio} />
       </div>
     );
   }
