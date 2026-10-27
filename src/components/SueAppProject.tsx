@@ -15,7 +15,10 @@ import {
   Clock, 
   Sparkles,
   Search,
-  ExternalLink
+  ExternalLink,
+  Volume2,
+  VolumeX,
+  RotateCcw
 } from 'lucide-react';
 import { Language } from '../types';
 import { OpticalGlassButton, OpticalGlassPill } from './OpticalGlass';
@@ -243,6 +246,99 @@ export const SueAppProject: React.FC<SueAppProjectProps> = ({
       if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
     };
   }, [isPlaying, handleNext, currentIndex]);
+
+  // Video player state & controls for SUE PROMO.mp4
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
+  const [isVideoMuted, setIsVideoMuted] = useState(true);
+  const [videoProgress, setVideoProgress] = useState(0);
+  const [videoCurrentTime, setVideoCurrentTime] = useState('00:00');
+  const [videoDuration, setVideoDuration] = useState('01:05');
+
+  // Automatically start the video on mount
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (vid) {
+      vid.defaultMuted = true;
+      vid.muted = true;
+      const playPromise = vid.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsVideoPlaying(true);
+          })
+          .catch(() => {
+            vid.muted = true;
+            vid.play().catch(() => {});
+          });
+      }
+    }
+  }, []);
+
+  const formatVideoTime = (seconds: number) => {
+    if (isNaN(seconds)) return '00:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const handleVideoTimeUpdate = () => {
+    if (videoRef.current) {
+      const cur = videoRef.current.currentTime;
+      const dur = videoRef.current.duration || 65.33;
+      setVideoProgress((cur / dur) * 100);
+      setVideoCurrentTime(formatVideoTime(cur));
+    }
+  };
+
+  const handleVideoLoadedMetadata = () => {
+    if (videoRef.current) {
+      setVideoDuration(formatVideoTime(videoRef.current.duration));
+    }
+  };
+
+  const toggleVideoPlay = () => {
+    if (!videoRef.current) return;
+    if (videoRef.current.paused) {
+      videoRef.current.play();
+      setIsVideoPlaying(true);
+    } else {
+      videoRef.current.pause();
+      setIsVideoPlaying(false);
+    }
+  };
+
+  const toggleVideoMute = () => {
+    if (!videoRef.current) return;
+    videoRef.current.muted = !videoRef.current.muted;
+    setIsVideoMuted(videoRef.current.muted);
+  };
+
+  const handleVideoSeek = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!videoRef.current) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    const dur = videoRef.current.duration || 65.33;
+    videoRef.current.currentTime = pos * dur;
+    setVideoProgress(pos * 100);
+  };
+
+  const toggleVideoFullscreen = () => {
+    if (!videoContainerRef.current) return;
+    if (!document.fullscreenElement) {
+      videoContainerRef.current.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  };
+
+  const restartVideo = () => {
+    if (!videoRef.current) return;
+    videoRef.current.currentTime = 0;
+    videoRef.current.play();
+    setIsVideoPlaying(true);
+  };
 
   const currentSlide = SLIDES[currentIndex];
 
@@ -505,7 +601,147 @@ export const SueAppProject: React.FC<SueAppProjectProps> = ({
           </div>
         </section>
 
-        {/* 3. PROJECT INFORMATION SPEC GRID */}
+        {/* 3. VIDEO SHOWCASE: Video about the app and usability test presentation (Autoplay) */}
+        <section className="flex flex-col gap-6 pt-2">
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-3">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-widest font-bold">
+                {language === 'pt' ? 'VÍDEO DE APRESENTAÇÃO & TESTE DE USABILIDADE' : 'VIDEO SHOWCASE • APP & USABILITY TEST'}
+              </span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-white">
+              Video about the app and usability test presentation
+            </h2>
+            <p className="text-neutral-400 text-xs sm:text-sm font-light max-w-3xl">
+              {language === 'pt'
+                ? 'Demonstração em vídeo com animação 3D da aplicação mobile SUE (Feed, serviços, acolhimento, IA conversacional e testes de usabilidade). O vídeo inicia automaticamente em alta definição.'
+                : '3D promotional video demonstration of the SUE mobile application (Feed, services, settlement, conversational AI, and usability testing). Video begins automatically in full HD.'
+              }
+            </p>
+          </div>
+
+          {/* Video Container Box */}
+          <div 
+            ref={videoContainerRef}
+            className="w-full rounded-2xl md:rounded-3xl overflow-hidden border border-neutral-800 bg-neutral-950 shadow-[0_25px_70px_rgba(0,0,0,0.9)] relative group flex flex-col"
+          >
+            {/* Top Bar for Video */}
+            <div className="bg-neutral-900/90 backdrop-blur-md px-4 sm:px-6 py-3 border-b border-neutral-800 flex items-center justify-between font-mono text-[11px] text-neutral-400">
+              <div className="flex items-center gap-3">
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-white font-bold tracking-wider">SUE PROMO // 1080P HD</span>
+                <span className="text-neutral-600 hidden sm:inline">•</span>
+                <span className="text-neutral-400 hidden sm:inline text-[10px]">
+                  {language === 'pt' ? 'INÍCIO AUTOMÁTICO' : 'AUTOPLAY ENABLED'}
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="font-mono text-[10px] text-neutral-300 bg-black/60 px-2.5 py-1 rounded-full border border-neutral-800">
+                  {videoCurrentTime} / {videoDuration}
+                </span>
+              </div>
+            </div>
+
+            {/* Video Canvas */}
+            <div className="relative w-full aspect-[16/9] bg-black flex items-center justify-center overflow-hidden">
+              <video
+                ref={videoRef}
+                src="/project-sue/sue-promo.mp4"
+                poster="/project-sue/sue-promo-poster.jpg"
+                autoPlay
+                muted={isVideoMuted}
+                playsInline
+                loop
+                onTimeUpdate={handleVideoTimeUpdate}
+                onLoadedMetadata={handleVideoLoadedMetadata}
+                onClick={toggleVideoPlay}
+                className="w-full h-full object-contain cursor-pointer"
+              />
+
+              {/* Center Play button overlay when paused */}
+              {!isVideoPlaying && (
+                <div 
+                  onClick={toggleVideoPlay}
+                  className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-xs cursor-pointer z-20"
+                >
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white text-black flex items-center justify-center shadow-2xl transition-transform hover:scale-110">
+                    <Play className="w-8 h-8 ml-1" />
+                  </div>
+                </div>
+              )}
+
+              {/* Floating Bottom Glass Controls */}
+              <div className="absolute bottom-0 inset-x-0 p-4 sm:p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex flex-col gap-3 z-30 transition-opacity duration-300">
+                {/* Progress bar scrubber */}
+                <div 
+                  onClick={handleVideoSeek}
+                  className="w-full h-2 rounded-full bg-white/20 hover:h-3 transition-all cursor-pointer relative overflow-hidden group/bar"
+                >
+                  <div 
+                    className="h-full bg-gradient-to-r from-sky-500 via-sky-400 to-emerald-400 transition-all"
+                    style={{ width: `${videoProgress}%` }}
+                  />
+                </div>
+
+                {/* Controls Row */}
+                <div className="flex items-center justify-between text-white text-xs">
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={toggleVideoPlay}
+                      className="p-2 rounded-full bg-white/10 hover:bg-white text-white hover:text-black transition-colors cursor-pointer"
+                      title={isVideoPlaying ? 'Pausa' : 'Play'}
+                    >
+                      {isVideoPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                    </button>
+
+                    <button
+                      onClick={restartVideo}
+                      className="p-2 rounded-full bg-white/10 hover:bg-white text-white hover:text-black transition-colors cursor-pointer"
+                      title="Reiniciar"
+                    >
+                      <RotateCcw className="w-4 h-4" />
+                    </button>
+
+                    <button
+                      onClick={toggleVideoMute}
+                      className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white text-white hover:text-black transition-colors cursor-pointer text-xs font-mono"
+                    >
+                      {isVideoMuted ? (
+                        <>
+                          <VolumeX className="w-4 h-4 text-neutral-300" />
+                          <span>{language === 'pt' ? 'Ativar Som' : 'Unmute'}</span>
+                        </>
+                      ) : (
+                        <>
+                          <Volume2 className="w-4 h-4 text-emerald-400" />
+                          <span>{language === 'pt' ? 'Silenciar' : 'Mute'}</span>
+                        </>
+                      )}
+                    </button>
+
+                    <span className="font-mono text-neutral-300 text-xs hidden sm:inline">
+                      {videoCurrentTime} / {videoDuration}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={toggleVideoFullscreen}
+                      className="p-2 rounded-full bg-white/10 hover:bg-white text-white hover:text-black transition-colors cursor-pointer"
+                      title="Ecrã Inteiro"
+                    >
+                      <Maximize2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* 4. PROJECT INFORMATION SPEC GRID */}
         <section className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-6 py-10 border-t border-b border-neutral-800 font-mono text-xs">
           <div className="flex flex-col gap-2">
             <span className="text-neutral-500 uppercase tracking-widest text-[10px]">PROJECT</span>
