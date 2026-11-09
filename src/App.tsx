@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "motion/react";
 import { ArrowUpRight, Github, Linkedin, Mail, Sparkles, ArrowRight, ArrowDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import { MoriaHero } from "./components/MoriaHero";
-import { GalleryTunnel } from "./components/GalleryTunnel";
 import { ProjectsSection } from "./components/ProjectsSection";
 import { NiponSpaProject } from "./components/NiponSpaProject";
 import { SueAppProject } from "./components/SueAppProject";
@@ -135,9 +134,6 @@ export default function App() {
 
           {/* Clean minimal navigation links */}
           <nav className="flex items-center gap-8 md:gap-10 text-[11px] tracking-[0.15em] font-mono font-bold text-neutral-400 uppercase">
-            <a href="#tunnel-section" className="hover:text-white transition-colors">
-              {language === 'pt' ? 'Túnel 3D' : '3D Tunnel'}
-            </a>
             <a href="#portfolio-grid-section" className="hover:text-white transition-colors">
               {language === 'pt' ? 'Portfólio' : 'Portfolio'}
             </a>
@@ -192,17 +188,7 @@ export default function App() {
         <MoriaHero language={language} />
       </main>
 
-      {/* 3. 3D GALLERY TUNNEL (Originkit Gallery Tunnel Concept in Monochromatic Black & White) */}
-      <GalleryTunnel 
-        language={language} 
-        onSelectProject={handleOpenProject}
-        onEnterPortfolio={() => {
-          const el = document.getElementById('portfolio-grid-section');
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }}
-      />
-
-      {/* 4. PROJECTS SHOWCASE ARCHIVE */}
+      {/* 3. PROJECTS SHOWCASE ARCHIVE */}
       <ProjectsSection 
         language={language} 
         onSelectProject={handleOpenProject}

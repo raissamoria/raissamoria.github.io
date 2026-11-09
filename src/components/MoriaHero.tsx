@@ -259,11 +259,6 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleScrollToTunnel = () => {
-    const el = document.getElementById('tunnel-section');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <section
       ref={containerRef}
@@ -369,13 +364,6 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
           >
             <span>{language === 'pt' ? 'Ver Trabalhos' : 'Explore Works'}</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
-          </OpticalGlassButton>
-
-          <OpticalGlassButton 
-            onClick={handleScrollToTunnel}
-          >
-            <Layers className="w-3.5 h-3.5 text-neutral-400" />
-            <span>{language === 'pt' ? 'Túnel 3D' : '3D Tunnel'}</span>
           </OpticalGlassButton>
 
           <OpticalGlassButton
