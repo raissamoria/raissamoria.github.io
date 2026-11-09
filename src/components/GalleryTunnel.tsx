@@ -10,6 +10,9 @@ import niponHeroImg from '../assets/images/nipon_real_house.png';
 // Cover image for SUE app mobile
 // @ts-ignore
 import sueCapaImg from '../assets/images/sue-capa.png';
+// Cover image for Plataforma de Helpdesk
+// @ts-ignore
+import helpdeskCoverImg from '../assets/images/help.png';
 
 export const PORTFOLIO_PROJECTS: ProjectItem[] = [
   {
@@ -51,6 +54,24 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
   {
     id: 3,
     number: "03",
+    title: "Plataforma de Helpdesk",
+    subtitle: "From informal support requests to a structured digital experience",
+    description: "A centralized Helpdesk platform built to transform informal, scattered support requests into a structured, role-based operational experience for Requesters, Agents, and Administrators using Lovable and Design Thinking.",
+    descriptionPt: "Plataforma centralizada de Helpdesk desenvolvida para transformar pedidos de suporte informais e dispersos numa experiência operacional estruturada por perfis (Requerente, Agente, Administrador) com recurso a Lovable e Design Thinking.",
+    category: "UX/UI & Product",
+    roles: ["UX/UI DESIGN", "PRODUCT DESIGN", "DESIGN THINKING", "LOVABLE"],
+    year: "2024",
+    link: "#projects/plataforma-helpdesk",
+    liveUrl: "#projects/plataforma-helpdesk",
+    slug: "plataforma-helpdesk",
+    hasCaseStudy: true,
+    image: helpdeskCoverImg,
+    metrics: "Design Thinking • Lovable • Role-Based UX",
+    tags: ["UX/UI Design", "Product Design", "Design Thinking", "Internal Tools", "Lovable"]
+  },
+  {
+    id: 4,
+    number: "04",
     title: "Creative Code",
     subtitle: "Kinetic Typography & Shaders",
     description: "An exploration of motion and typography using custom canvas scripts and shaders to create organic, interactive text behaviors.",
@@ -63,8 +84,8 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
     tags: ["WebGL", "Typography", "Interactive", "GLSL"]
   },
   {
-    id: 4,
-    number: "04",
+    id: 5,
+    number: "05",
     title: "Amarelo C4ralho",
     subtitle: "Expressive Motion Design",
     description: "A fast-paced audio-visual motion design study examining high-impact typography pairings and rhythmic video editing.",
@@ -77,8 +98,8 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
     tags: ["Motion Graphics", "Audio-Visual", "Kinetic", "Typography"]
   },
   {
-    id: 5,
-    number: "05",
+    id: 6,
+    number: "06",
     title: "Two Points",
     subtitle: "Parametric Typography System",
     description: "A modular typographic design system built around architectural grid geometry and responsive vector anchors.",
@@ -236,7 +257,7 @@ export const GalleryTunnel: React.FC<GalleryTunnelProps> = ({
   const tunnelCards = [
     {
       project: PORTFOLIO_PROJECTS[0],
-      z: -380,
+      z: -350,
       x: -sideOffset,
       y: -20,
       rotationY: isMobile ? 0 : 16,
@@ -245,38 +266,47 @@ export const GalleryTunnel: React.FC<GalleryTunnelProps> = ({
     },
     {
       project: PORTFOLIO_PROJECTS[1],
-      z: -880,
+      z: -780,
       x: sideOffset,
       y: 20,
       rotationY: isMobile ? 0 : -16,
       rotationZ: isMobile ? 0 : 1,
-      accent: 'cyan',
+      accent: 'sky',
     },
     {
       project: PORTFOLIO_PROJECTS[2],
-      z: -1380,
+      z: -1220,
       x: -sideOffset,
-      y: 25,
+      y: -15,
       rotationY: isMobile ? 0 : 16,
       rotationZ: isMobile ? 0 : -1.5,
-      accent: 'indigo',
+      accent: 'blue',
     },
     {
       project: PORTFOLIO_PROJECTS[3],
-      z: -1880,
+      z: -1660,
       x: sideOffset,
-      y: -25,
+      y: 25,
       rotationY: isMobile ? 0 : -16,
       rotationZ: isMobile ? 0 : 1,
-      accent: 'amber',
+      accent: 'indigo',
     },
     {
       project: PORTFOLIO_PROJECTS[4],
-      z: -2380,
+      z: -2100,
       x: -sideOffset,
-      y: 10,
+      y: -25,
       rotationY: isMobile ? 0 : 16,
       rotationZ: isMobile ? 0 : -1,
+      accent: 'amber',
+    },
+    {
+      project: PORTFOLIO_PROJECTS[5],
+      z: -2540,
+      x: sideOffset,
+      y: 10,
+      rotationY: isMobile ? 0 : -16,
+      rotationZ: isMobile ? 0 : 1,
       accent: 'neutral',
     }
   ];

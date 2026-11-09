@@ -393,6 +393,14 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
             <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
             <span>SUE App</span>
           </OpticalGlassButton>
+
+          <OpticalGlassButton
+            href="#projects/plataforma-helpdesk"
+            className="hidden sm:inline-flex"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6]" />
+            <span>{language === 'pt' ? 'Plataforma de Helpdesk' : 'Helpdesk Platform'}</span>
+          </OpticalGlassButton>
         </div>
 
       </div>

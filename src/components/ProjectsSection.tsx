@@ -36,6 +36,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
   const categories = [
     { id: 'all', labelPt: 'Todos', labelEn: 'All Works' },
     { id: 'UX/UI & Web', labelPt: 'UX/UI & Web', labelEn: 'UX/UI & Web' },
+    { id: 'Service Design', labelPt: 'Service Design', labelEn: 'Service Design' },
     { id: 'Creative Dev', labelPt: 'Desenvolvimento', labelEn: 'Creative Dev' },
     { id: 'Product Design', labelPt: 'Design de Produto', labelEn: 'Product Design' },
     { id: 'Motion Design', labelPt: 'Motion Design', labelEn: 'Motion Design' },
@@ -46,8 +47,9 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
     ? PORTFOLIO_PROJECTS
     : PORTFOLIO_PROJECTS.filter(p => 
         p.category === selectedCategory || 
-        (selectedCategory === 'UX/UI & Web' && (p.category.includes('UX/UI') || p.category.includes('Mobile'))) ||
-        (selectedCategory === 'Product Design' && (p.category.includes('Product') || p.category.includes('Mobile')))
+        (selectedCategory === 'UX/UI & Web' && (p.category.includes('UX/UI') || p.category.includes('Mobile') || p.category.includes('Service'))) ||
+        (selectedCategory === 'Product Design' && (p.category.includes('Product') || p.category.includes('Mobile') || p.category.includes('Service'))) ||
+        (selectedCategory === 'Service Design' && (p.category.includes('Service') || p.category.includes('UX/UI') || p.category.includes('Mobile')))
       );
 
   const handleProjectClick = (project: ProjectItem) => {
@@ -300,9 +302,9 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
         {/* Bottom Minimalist Status / Next Section Navigation */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-6 border-t border-neutral-800 pt-8 text-xs font-mono text-neutral-500 uppercase tracking-widest">
           <div className="flex items-center gap-3">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
             <span className="text-neutral-300">
-              {language === 'pt' ? 'Nipon Spa, SUE Mobile App e plataformas em destaque' : 'Nipon Spa, SUE Mobile App & featured digital platforms'}
+              {language === 'pt' ? 'Nipon Spa, SUE Mobile App, Plataforma de Helpdesk e novos projetos' : 'Nipon Spa, SUE Mobile App, Helpdesk Platform & live platforms'}
             </span>
           </div>
 

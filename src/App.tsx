@@ -11,6 +11,7 @@ import { GalleryTunnel } from "./components/GalleryTunnel";
 import { ProjectsSection } from "./components/ProjectsSection";
 import { NiponSpaProject } from "./components/NiponSpaProject";
 import { SueAppProject } from "./components/SueAppProject";
+import { MakingSupportVisibleProject } from "./components/MakingSupportVisibleProject";
 import Marquee from "./components/Marquee";
 import CustomCursor from "./components/CustomCursor";
 import { OpticalGlassButton, OpticalGlassPill } from "./components/OpticalGlass";
@@ -30,6 +31,18 @@ export default function App() {
         setCurrentProject('nipon-spa');
       } else if (hash === '#projects/sue-app' || hash === '#sue-app' || hash === '#projects/sue' || hash === '#sue') {
         setCurrentProject('sue-app');
+      } else if (
+        hash === '#projects/plataforma-helpdesk' || 
+        hash === '#plataforma-helpdesk' || 
+        hash === '#projects/plataforma-de-helpdesk' || 
+        hash === '#plataforma-de-helpdesk' || 
+        hash === '#projects/helpdesk' || 
+        hash === '#helpdesk' ||
+        hash === '#projects/making-support-visible' || 
+        hash === '#making-support-visible' || 
+        hash === '#projects/support-visible'
+      ) {
+        setCurrentProject('plataforma-helpdesk');
       } else if (!hash.startsWith('#projects/')) {
         setCurrentProject(null);
       }
@@ -90,6 +103,15 @@ export default function App() {
       <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans antialiased">
         <CustomCursor />
         <SueAppProject language={language} onBack={handleBackToPortfolio} />
+      </div>
+    );
+  }
+
+  if (currentProject === 'plataforma-helpdesk' || currentProject === 'making-support-visible') {
+    return (
+      <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans antialiased">
+        <CustomCursor />
+        <MakingSupportVisibleProject language={language} onBack={handleBackToPortfolio} />
       </div>
     );
   }
