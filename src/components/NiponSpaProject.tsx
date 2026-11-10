@@ -1,8 +1,19 @@
-import React, { useEffect } from 'react';
-import { motion } from 'motion/react';
-import { ArrowLeft, ArrowUpRight, CheckCircle2, Compass, Layers, CalendarCheck, Sparkles, ExternalLink, ShieldCheck } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { 
+  Maximize2, 
+  ExternalLink, 
+  CheckCircle2, 
+  Sparkles, 
+  ShieldCheck, 
+  Layers, 
+  Compass, 
+  CalendarCheck,
+  Heart,
+  X
+} from 'lucide-react';
 import { Language } from '../types';
-import { OpticalGlassButton, OpticalGlassPill } from './OpticalGlass';
+import { RetroProjectLayout, RetroProjectTab } from './retro/RetroProjectLayout';
 
 // Authentic Images for Nipon Spa sourced directly from https://www.niponspa.pt
 // @ts-ignore
@@ -15,406 +26,461 @@ import realLogoImage from '../assets/images/nipon_real_logo.jpeg';
 interface NiponSpaProjectProps {
   language: Language;
   onBack: () => void;
+  onNextProject?: () => void;
+  onPrevProject?: () => void;
 }
 
 export const NiponSpaProject: React.FC<NiponSpaProjectProps> = ({
   language,
   onBack,
+  onNextProject = () => {},
+  onPrevProject = () => {},
 }) => {
-  // Scroll to top when entering the project page
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  }, []);
+  const [expandedImage, setExpandedImage] = useState<string | null>(null);
+  const isPt = language === 'pt';
 
-  return (
-    <motion.article 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans antialiased pb-32"
-    >
-      {/* Top Floating Navigation Header */}
-      <div className="sticky top-0 z-50 w-full bg-black/90 backdrop-blur-md border-b border-neutral-900 px-6 md:px-12 py-4">
-        <div className="max-w-[1720px] mx-auto flex justify-between items-center">
-          <button
-            onClick={onBack}
-            className="group flex items-center gap-3 text-neutral-400 hover:text-white transition-colors text-xs font-mono font-bold uppercase tracking-widest cursor-pointer"
-          >
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            <span>{language === 'pt' ? 'TODOS OS PROJETOS' : 'ALL PROJECTS'}</span>
-          </button>
+  // =========================================================================
+  // TAB 1: OVERVIEW.TXT
+  // =========================================================================
+  const OverviewTab = (
+    <div className="flex flex-col gap-8 text-[#1A1A1A]">
+      <div className="bg-[#FFFFEE] border border-[#d0c8a8] p-4 sm:p-6 shadow-sm rounded-[2px]">
+        <div className="flex items-center gap-2 border-b border-[#e0d8b8] pb-2 mb-4 font-mono text-xs text-neutral-600">
+          <span className="font-bold text-[#000080]">C:\DOCUMENTS\NIPON_SPA\OVERVIEW.TXT</span>
+          <span className="text-neutral-400">|</span>
+          <span>ESTUDO DE CASO COMPLETO</span>
+        </div>
 
-          <div className="flex items-center gap-4 text-xs font-mono text-neutral-500 uppercase tracking-widest">
-            <span className="hidden sm:inline">01 / SELECTED WORK</span>
-            <span className="text-white font-bold">NIPON SPA</span>
-          </div>
-
-          <OpticalGlassButton
-            href="https://www.niponspa.pt/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="!px-4 !py-1.5 !text-xs"
-          >
-            <span>niponspa.pt</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
-          </OpticalGlassButton>
+        <div className="flex flex-col gap-3 font-sans">
+          <span className="font-mono text-xs font-bold text-[#000080] uppercase tracking-wider">
+            {isPt ? 'VISÃO GERAL DO PROJETO' : 'PROJECT OVERVIEW'}
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#073859]">
+            {isPt ? 'Nipon Spa — Japanese Wellness Digital Experience' : 'Nipon Spa — Japanese Wellness Digital Experience'}
+          </h2>
+          <p className="text-base sm:text-lg text-neutral-800 leading-relaxed">
+            {isPt 
+              ? 'O Nipon Spa é um refúgio exclusivo de bem-estar e rituais japoneses tradicionais em Portugal. O desafio de design foi conceber uma presença digital que refletisse a mesma serenidade, elegância e atenção meticulosa aos detalhes que caracterizam o espaço físico.'
+              : 'Nipon Spa is an exclusive sanctuary of traditional Japanese wellness and holistic rituals in Portugal. The design challenge was to craft a digital presence reflecting the exact serenity, quiet elegance, and meticulous attention to detail experienced within the physical space.'}
+          </p>
+          <p className="text-sm sm:text-base text-neutral-700 leading-relaxed">
+            {isPt
+              ? 'Desenvolvemos uma experiência digital imersiva com tipografia contemplativa, arquitetura de informação focada em rituais e um fluxo de marcação claro e sereno, integrando fotografia autêntica das salas e tratamentos.'
+              : 'We developed an immersive digital experience characterized by contemplative typography, ritual-oriented information architecture, and a fluid booking journey integrating authentic photography of rooms and treatments.'}
+          </p>
         </div>
       </div>
 
-      <div className="max-w-[1720px] mx-auto px-6 md:px-12 xl:px-16 pt-16 md:pt-24 flex flex-col gap-24 md:gap-32">
-        
-        {/* 1. PROJECT HEADER */}
-        <header className="flex flex-col gap-8 max-w-5xl">
-          <div className="flex items-center gap-4 text-neutral-500 font-mono text-xs uppercase tracking-[0.25em]">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>01 // CASE STUDY</span>
-            <span className="text-neutral-700">•</span>
-            <span>2026</span>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="flex flex-col gap-3"
-          >
-            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tight text-white leading-none">
-              NIPON SPA
-            </h1>
-            <p className="text-xl sm:text-2xl md:text-3xl text-neutral-400 font-light tracking-tight mt-2">
-              Japanese Wellness <br className="hidden sm:inline" />
-              <span className="text-neutral-200">Digital Experience</span>
-            </p>
-          </motion.div>
-        </header>
-
-        {/* 2. HERO LARGE SCREENSHOT (80-90% viewport width with original vibrant colors) */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.98, y: 30 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="w-full max-w-[92vw] mx-auto rounded-2xl md:rounded-3xl overflow-hidden border border-neutral-800 bg-neutral-950 shadow-[0_20px_60px_rgba(0,0,0,0.9)] group relative"
+      {/* Live Website Retro Banner */}
+      <div className="bg-[#eef4fa] border-2 border-[#000080] p-4 font-mono text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div>
+          <span className="font-bold text-[#000080] uppercase block">
+            {isPt ? 'PRODUTO REAL EM PRODUÇÃO' : 'LIVE PRODUCTION PRODUCT'}
+          </span>
+          <span className="text-neutral-700 font-sans text-xs">
+            {isPt ? 'Disponível online no domínio oficial do spa' : 'Available online at the official spa domain'}
+          </span>
+        </div>
+        <a
+          href="https://www.niponspa.pt/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-4 py-2 bg-[#000080] text-white font-mono text-xs font-bold border border-white hover:bg-[#0a389c] flex items-center gap-2 cursor-pointer shadow-sm"
         >
-          {/* Subtle browser chrome bar for realistic preview */}
-          <div className="bg-neutral-900/90 backdrop-blur-md px-4 py-3 border-b border-neutral-800 flex items-center justify-between font-mono text-[11px] text-neutral-400">
-            <div className="flex items-center gap-2">
-              <div className="w-2.5 h-2.5 rounded-full bg-neutral-700" />
-              <div className="w-2.5 h-2.5 rounded-full bg-neutral-700" />
-              <div className="w-2.5 h-2.5 rounded-full bg-neutral-700" />
-            </div>
-            <div className="bg-black/60 px-6 py-1 rounded-full border border-neutral-800 text-neutral-300 text-[10px] tracking-wider flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              <span>https://www.niponspa.pt</span>
-            </div>
-            <a 
-              href="https://www.niponspa.pt/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-neutral-400 hover:text-white flex items-center gap-1 transition-colors"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
-          </div>
-
-          <div className="relative overflow-hidden aspect-[16/9] w-full bg-neutral-900">
-            <img 
-              src={heroHouseImage} 
-              alt="Nipon Spa Authentic Website Hero - Japanese House & Onsen Sanctuary (niponspa.pt)" 
-              className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.01]"
-              referrerPolicy="no-referrer"
-            />
-          </div>
-        </motion.div>
-
-        {/* 3. PROJECT INFORMATION SPEC GRID */}
-        <section className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-6 py-10 border-t border-b border-neutral-800 font-mono text-xs">
-          <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 uppercase tracking-widest text-[10px]">PROJECT</span>
-            <span className="text-white font-bold text-sm">Nipon Spa</span>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 uppercase tracking-widest text-[10px]">ROLE</span>
-            <span className="text-white font-medium leading-relaxed">
-              UX/UI Design<br />
-              Web Design<br />
-              Development
-            </span>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 uppercase tracking-widest text-[10px]">YEAR</span>
-            <span className="text-white font-bold text-sm">2026</span>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 uppercase tracking-widest text-[10px]">TYPE</span>
-            <span className="text-white font-medium">Wellness / Spa Website</span>
-          </div>
-
-          <div className="flex flex-col gap-2 col-span-2 md:col-span-1">
-            <span className="text-neutral-500 uppercase tracking-widest text-[10px]">LIVE WEBSITE</span>
-            <a 
-              href="https://www.niponspa.pt/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-white hover:text-neutral-300 font-bold underline underline-offset-4 flex items-center gap-1.5"
-            >
-              <span>niponspa.pt</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </a>
-          </div>
-        </section>
-
-        {/* 4. ABOUT THE PROJECT */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-          <div className="lg:col-span-4">
-            <span className="text-neutral-500 font-mono text-xs uppercase tracking-[0.25em]">
-              ABOUT THE PROJECT
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white mt-3">
-              Japanese Wellness & Therapeutic Spa
-            </h2>
-          </div>
-          
-          <div className="lg:col-span-8 flex flex-col gap-6 text-neutral-300 text-base md:text-lg font-light leading-relaxed">
-            <p className="text-white text-lg md:text-xl font-normal leading-relaxed">
-              &quot;Nipon Spa is a Japanese-inspired wellness and therapeutic spa in Lisbon with more than 20 years of experience. The project focused on creating a modern digital presence that communicates its Japanese heritage while making treatments easier to discover and understand.&quot;
-            </p>
-            <p className="text-neutral-400 text-sm md:text-base">
-              {language === 'pt'
-                ? 'O redesenho e desenvolvimento da experiência digital focou-se em transmitir a serenidade e a essência da cultura japonesa de bem-estar, simplificando ao mesmo tempo a jornada de marcação através de fluxos de navegação intuitivos e design responsivo de alto desempenho.'
-                : 'The redesign and development aimed to evoke the calmness and authenticity of Japanese therapeutic wellness, creating intuitive paths for users to discover customized treatments and make direct bookings with minimal friction.'
-              }
-            </p>
-          </div>
-        </section>
-
-        {/* 5. THE CHALLENGE & THE SOLUTION */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 bg-neutral-950 border border-neutral-800 rounded-3xl p-8 md:p-14">
-          
-          {/* The Challenge */}
-          <div className="flex flex-col gap-5 border-b md:border-b-0 md:border-r border-neutral-800 pb-8 md:pb-0 md:pr-10">
-            <div className="flex items-center gap-2 text-neutral-500 font-mono text-xs uppercase tracking-widest">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-              <span>THE CHALLENGE</span>
-            </div>
-            <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white">
-              Complex Catalogue & Service Discovery
-            </h3>
-            <p className="text-neutral-300 font-light text-sm md:text-base leading-relaxed">
-              &quot;Transform a large catalogue of treatments and information into a clearer digital experience, helping users understand which treatment is most appropriate for their needs while creating a stronger premium identity.&quot;
-            </p>
-          </div>
-
-          {/* The Solution */}
-          <div className="flex flex-col gap-5 md:pl-4">
-            <div className="flex items-center gap-2 text-neutral-500 font-mono text-xs uppercase tracking-widest">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              <span>THE SOLUTION</span>
-            </div>
-            <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white">
-              Goal-Centred Structure & Direct Booking Paths
-            </h3>
-            <p className="text-neutral-300 font-light text-sm md:text-base leading-relaxed">
-              &quot;A new experience centred around treatment goals rather than overwhelming users with a long list of services. The interface introduces clearer content hierarchy, strong visual storytelling and direct paths towards booking.&quot;
-            </p>
-          </div>
-
-        </section>
-
-        {/* 6. UX HIGHLIGHTS (3 Visual Concepts) */}
-        <section className="flex flex-col gap-10">
-          <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 font-mono text-xs uppercase tracking-[0.25em]">
-              METHODOLOGY & ARCHITECTURE
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white">
-              UX Highlights
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            
-            {/* Highlight 01 */}
-            <div className="flex flex-col gap-4 bg-[#0A0A0A] border border-neutral-800 hover:border-neutral-600 rounded-2xl p-8 transition-colors">
-              <span className="text-3xl font-black font-mono text-neutral-600">01</span>
-              <h3 className="text-xl font-bold uppercase tracking-tight text-white">
-                Treatment Discovery
-              </h3>
-              <p className="text-neutral-400 font-light text-sm leading-relaxed">
-                Simplified navigation based on what the user wants to achieve.
-              </p>
-            </div>
-
-            {/* Highlight 02 */}
-            <div className="flex flex-col gap-4 bg-[#0A0A0A] border border-neutral-800 hover:border-neutral-600 rounded-2xl p-8 transition-colors">
-              <span className="text-3xl font-black font-mono text-neutral-600">02</span>
-              <h3 className="text-xl font-bold uppercase tracking-tight text-white">
-                Clear Information
-              </h3>
-              <p className="text-neutral-400 font-light text-sm leading-relaxed">
-                Improved hierarchy to make services, benefits and treatment information easier to understand.
-              </p>
-            </div>
-
-            {/* Highlight 03 */}
-            <div className="flex flex-col gap-4 bg-[#0A0A0A] border border-neutral-800 hover:border-neutral-600 rounded-2xl p-8 transition-colors">
-              <span className="text-3xl font-black font-mono text-neutral-600">03</span>
-              <h3 className="text-xl font-bold uppercase tracking-tight text-white">
-                Booking Journey
-              </h3>
-              <p className="text-neutral-400 font-light text-sm leading-relaxed">
-                Clear calls-to-action guide the user naturally from discovering a treatment to making a booking.
-              </p>
-            </div>
-
-          </div>
-        </section>
-
-        {/* 7. WEBSITE PREVIEW: EDITORIAL ASYMMETRICAL SHOWCASE */}
-        <section className="flex flex-col gap-12 md:gap-16 pt-8">
-          <div className="flex flex-col gap-2">
-            <span className="text-neutral-500 font-mono text-xs uppercase tracking-[0.25em]">
-              VISUAL REVEAL
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white">
-              Website Showcase & UI Layouts
-            </h2>
-          </div>
-
-          {/* Staggered Editorial Layout */}
-          <div className="flex flex-col gap-12 md:gap-20">
-            
-            {/* FULL WIDTH SCREENSHOT 1: Real Spa Room Photography */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="w-full rounded-2xl md:rounded-3xl overflow-hidden border border-neutral-800 bg-neutral-950 shadow-2xl group"
-            >
-              <div className="p-4 bg-neutral-900/80 border-b border-neutral-800 flex justify-between items-center text-[10px] font-mono text-neutral-400">
-                <span className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  {language === 'pt' ? 'FOTOGRAFIA REAL DO ESPAÇO • NIPON SPA TELHEIRAS' : 'AUTHENTIC VENUE PHOTOGRAPHY • NIPON SPA LISBON'}
-                </span>
-                <span>niponspa.pt</span>
-              </div>
-              <div className="relative aspect-[16/10] md:aspect-[21/9] w-full overflow-hidden bg-neutral-900">
-                <img 
-                  src={realRoomImage} 
-                  alt="Nipon Spa Real Venue and Treatment Room in Lisbon" 
-                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.01]"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 max-w-lg bg-black/80 backdrop-blur-md border border-white/10 p-4 rounded-xl">
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 block mb-1">
-                    {language === 'pt' ? 'O Nosso Legado • Telheiras' : 'Our Legacy • Lisbon'}
-                  </span>
-                  <p className="text-xs md:text-sm text-neutral-200 font-light">
-                    {language === 'pt'
-                      ? 'Ambiente autêntico de cura manual japonesa com caligrafia kanji tradicional, iluminação quente e privacidade total.'
-                      : 'Authentic Japanese healing atmosphere featuring traditional kanji calligraphy, warm lighting, and complete serenity.'
-                    }
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* STAGGERED ROW: AUTHENTIC BRANDING & WEBSITE DETAILS */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center">
-              
-              {/* Left Column Text / Context */}
-              <div className="lg:col-span-5 flex flex-col gap-6">
-                <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">
-                  {language === 'pt' ? 'IDENTIDADE & TRADIÇÃO' : 'IDENTITY & TRADITION'}
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
-                  {language === 'pt' ? 'Serenidade Japonesa & Identidade Autêntica' : 'Japanese Serenity & Authentic Identity'}
-                </h3>
-                <p className="text-neutral-300 font-light text-sm md:text-base leading-relaxed">
-                  {language === 'pt'
-                    ? 'A presença digital reflete a essência do conceito japonês "Ichi-go ichi-e" (um encontro, uma oportunidade única na vida), unindo fotografia autêntica da casa Nipon Spa a uma experiência digital moderna e sem atrito.'
-                    : 'The digital presence captures the essence of the Japanese concept "Ichi-go ichi-e" (one encounter, one lifetime opportunity), connecting authentic imagery from Nipon Spa to a seamless modern web platform.'
-                  }
-                </p>
-                <div className="flex flex-wrap gap-2 pt-2">
-                  <span className="font-mono text-[10px] uppercase bg-neutral-900 border border-neutral-800 px-3 py-1 rounded-full text-neutral-300">
-                    Shiatsu & Seitai
-                  </span>
-                  <span className="font-mono text-[10px] uppercase bg-neutral-900 border border-neutral-800 px-3 py-1 rounded-full text-neutral-300">
-                    Kobido Facial
-                  </span>
-                  <span className="font-mono text-[10px] uppercase bg-neutral-900 border border-neutral-800 px-3 py-1 rounded-full text-neutral-300">
-                    Drenagem Japonesa
-                  </span>
-                </div>
-              </div>
-
-              {/* Right Column Authentic Logo & Brand Asset */}
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="lg:col-span-7 rounded-2xl md:rounded-3xl overflow-hidden border border-neutral-800 bg-[#0c0c0c] p-8 md:p-12 flex flex-col items-center justify-center shadow-2xl group text-center relative"
-              >
-                <div className="w-full max-w-sm rounded-xl overflow-hidden shadow-lg border border-neutral-800 bg-white/95 p-6 mb-6">
-                  <img 
-                    src={realLogoImage} 
-                    alt="Nipon Spa Official Logo" 
-                    className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-                <div className="flex flex-col items-center gap-2">
-                  <span className="font-mono text-[11px] uppercase tracking-widest text-neutral-400">
-                    {language === 'pt' ? 'Logótipo Oficial Nipon Spa' : 'Official Nipon Spa Brandmark'}
-                  </span>
-                  <a
-                    href="https://www.niponspa.pt/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-xs font-mono text-emerald-400 hover:text-emerald-300 underline underline-offset-4 mt-2"
-                  >
-                    <span>https://www.niponspa.pt</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-              </motion.div>
-
-            </div>
-
-          </div>
-        </section>
-
-        {/* 8. LIVE WEBSITE CTA & RETURN TO ALL PROJECTS */}
-        <footer className="flex flex-col sm:flex-row justify-between items-center gap-8 pt-16 border-t border-neutral-800">
-          
-          <button
-            onClick={onBack}
-            className="group flex items-center gap-3 text-neutral-400 hover:text-white transition-colors text-xs font-mono font-bold uppercase tracking-widest cursor-pointer"
-          >
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            <span>{language === 'pt' ? 'TODOS OS PROJETOS' : 'ALL PROJECTS'}</span>
-          </button>
-
-          <OpticalGlassButton
-            href="https://www.niponspa.pt/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="!px-8 !py-4 !text-xs sm:!text-sm !tracking-[0.15em] !rounded-full shadow-[0_0_40px_rgba(255,255,255,0.2)]"
-          >
-            <span>{language === 'pt' ? 'VER WEBSITE AO VIVO' : 'VIEW LIVE WEBSITE'}</span>
-            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </OpticalGlassButton>
-
-        </footer>
-
+          <span>niponspa.pt</span>
+          <ExternalLink className="w-3.5 h-3.5" />
+        </a>
       </div>
-    </motion.article>
+
+      {/* Project Specs Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
+        <div className="bg-white border-2 border-[#808080] p-4 flex flex-col gap-1">
+          <span className="text-neutral-500 uppercase text-[10px]">CLIENTE & LOCALIZAÇÃO</span>
+          <span className="text-base font-bold text-[#073859]">Nipon Spa</span>
+          <span className="text-neutral-600 font-sans text-xs">Portugal • Spa Japonês</span>
+        </div>
+
+        <div className="bg-white border-2 border-[#808080] p-4 flex flex-col gap-1">
+          <span className="text-neutral-500 uppercase text-[10px]">O MEU PAPEL</span>
+          <span className="text-base font-bold text-[#000080]">UX/UI Designer</span>
+          <span className="text-neutral-600 font-sans text-xs">Direção de Arte & Prototipagem</span>
+        </div>
+
+        <div className="bg-white border-2 border-[#808080] p-4 flex flex-col gap-1">
+          <span className="text-neutral-500 uppercase text-[10px]">DISCIPLINA</span>
+          <span className="text-base font-bold text-emerald-800">Hospitality & Luxury</span>
+          <span className="text-neutral-600 font-sans text-xs">Web Experience & Booking Flow</span>
+        </div>
+      </div>
+
+      {/* Cover Image */}
+      <div className="flex flex-col gap-2">
+        <div 
+          onClick={() => setExpandedImage(heroHouseImage)}
+          className="group cursor-pointer bg-neutral-950 border-2 border-[#808080] overflow-hidden rounded-[2px] relative aspect-[16/9] shadow-md"
+        >
+          <img 
+            src={heroHouseImage} 
+            alt="Nipon Spa House" 
+            className="w-full h-full object-cover transition-transform group-hover:scale-[1.01]"
+          />
+          <div className="absolute bottom-3 right-3 bg-black/80 text-white font-mono text-xs px-3 py-1.5 flex items-center gap-2">
+            <Maximize2 className="w-3.5 h-3.5 text-[#3B82F6]" />
+            <span>{isPt ? 'Fotografia do Espaço Real' : 'Authentic Spa Photography'}</span>
+          </div>
+        </div>
+        <div className="flex items-center justify-between font-mono text-[11px] text-neutral-600 px-1">
+          <span>FIGURA 1.1 — Edifício Real do Nipon Spa em Portugal (niponspa.pt)</span>
+          <span className="text-[#000080] font-bold">Produção Real</span>
+        </div>
+      </div>
+    </div>
+  );
+
+  // =========================================================================
+  // TAB 2: RESEARCH.EXE
+  // =========================================================================
+  const ResearchTab = (
+    <div className="flex flex-col gap-8 text-[#1A1A1A]">
+      <div className="bg-[#F0F4F8] border border-[#B0C4DE] p-4 sm:p-6 shadow-sm">
+        <div className="flex items-center gap-2 font-mono text-xs text-[#000080] font-bold mb-2">
+          <span>[ ⛩️ PESQUISA DE HOSPITALIDADE JAPONESA ]</span>
+        </div>
+        <h3 className="text-xl sm:text-2xl font-bold text-[#073859] mb-3">
+          {isPt ? 'Filosofia de Bem-Estar & Análise do Utilizador' : 'Japanese Wellness Philosophy & User Behaviour'}
+        </h3>
+        <p className="text-sm sm:text-base text-neutral-700 leading-relaxed font-sans">
+          {isPt 
+            ? 'A pesquisa partiu da necessidade de traduzir princípios orientais de hospitalidade (Omotenashi) e conceitos de espaço (Ma) para o contexto de um cliente que procura alívio do ritmo frenético do quotidiano ocidental.'
+            : 'Our research focused on translating traditional Japanese hospitality principles (Omotenashi) and spatial rhythm (Ma) for modern clients seeking refuge from frantic urban schedules.'}
+        </p>
+      </div>
+
+      {/* 3 Core Insights */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="bg-white border-2 border-[#808080] p-4">
+          <div className="font-mono text-xs font-bold text-[#000080] mb-1">01 • DESACELERAÇÃO</div>
+          <h4 className="font-bold text-sm text-[#073859] mb-1">
+            {isPt ? 'Pausa Visual Imediata' : 'Immediate Visual Calming'}
+          </h4>
+          <p className="text-xs text-neutral-600 font-sans">
+            {isPt 
+              ? 'Ao entrar no site, o utilizador deve sentir imediatamente o ritmo desacelerar através de espaço negativo e contrastes suaves.'
+              : 'The digital touchpoint must immediately decelerate visitor pulse through generous negative space and soothing tones.'}
+          </p>
+        </div>
+
+        <div className="bg-white border-2 border-[#808080] p-4">
+          <div className="font-mono text-xs font-bold text-emerald-800 mb-1">02 • AUTENTICIDADE</div>
+          <h4 className="font-bold text-sm text-[#073859] mb-1">
+            {isPt ? 'Fotografia Real do Espaço' : 'Real Space Photography'}
+          </h4>
+          <p className="text-xs text-neutral-600 font-sans">
+            {isPt 
+              ? 'Evitar bancos de imagens genéricos. Mostrar as salas reais, tatamis de bambu e iluminação quente de lanternas.'
+              : 'Zero generic stock imagery. Showcase authentic treatment suites, bamboo elements, and warm lantern lighting.'}
+          </p>
+        </div>
+
+        <div className="bg-white border-2 border-[#808080] p-4">
+          <div className="font-mono text-xs font-bold text-amber-800 mb-1">03 • MARCAÇÃO TRANQUILA</div>
+          <h4 className="font-bold text-sm text-[#073859] mb-1">
+            {isPt ? 'Zero Pressão de Venda' : 'Non-Aggressive Booking'}
+          </h4>
+          <p className="text-xs text-neutral-600 font-sans">
+            {isPt 
+              ? 'Substituir temporizadores e botões agressivos por convites delicados à reserva e contacto direto.'
+              : 'Replace intrusive popups and aggressive urgency timers with gentle, dignified booking invitations.'}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+
+  // =========================================================================
+  // TAB 3: DESIGN_PROCESS.FOLDER
+  // =========================================================================
+  const DesignProcessTab = (
+    <div className="flex flex-col gap-8 text-[#1A1A1A]">
+      <div className="bg-[#F0F4F8] border border-[#B0C4DE] p-4 sm:p-6 shadow-sm">
+        <div className="flex items-center gap-2 font-mono text-xs text-[#000080] font-bold mb-2">
+          <span>[ 📁 PRINCÍPIOS DE DESIGN & ARQUITETURA ]</span>
+        </div>
+        <h3 className="text-xl sm:text-2xl font-bold text-[#073859] mb-3">
+          {isPt ? 'Os Três Pilares da Experiência Visual' : 'The Three Pillars of the Visual Experience'}
+        </h3>
+        <p className="text-sm sm:text-base text-neutral-700 leading-relaxed font-sans">
+          {isPt 
+            ? 'A linguagem visual foi desenhada para estabelecer uma conexão direta com os sentidos do visitante, combinando tradição japonesa com design web de luxo contemporâneo.'
+            : 'The visual language connects visitors directly with sensory tranquility, harmonizing Japanese tradition with modern luxury digital standards.'}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div 
+          onClick={() => setExpandedImage(realRoomImage)}
+          className="group cursor-pointer bg-neutral-900 border-2 border-[#808080] overflow-hidden rounded-[2px] relative aspect-[4/3]"
+        >
+          <img 
+            src={realRoomImage} 
+            alt="Nipon Spa Treatment Room" 
+            className="w-full h-full object-cover transition-transform group-hover:scale-105"
+          />
+          <div className="absolute bottom-2 right-2 bg-black/80 text-white font-mono text-[10px] px-2 py-1 flex items-center gap-1.5">
+            <Maximize2 className="w-3 h-3 text-[#3B82F6]" />
+            <span>{isPt ? 'Sala de Tratamento Real' : 'Real Treatment Suite'}</span>
+          </div>
+        </div>
+
+        <div 
+          onClick={() => setExpandedImage(realLogoImage)}
+          className="group cursor-pointer bg-neutral-900 border-2 border-[#808080] overflow-hidden rounded-[2px] relative aspect-[4/3]"
+        >
+          <img 
+            src={realLogoImage} 
+            alt="Nipon Spa Logo & Identity" 
+            className="w-full h-full object-contain p-6 bg-[#0d0d0d] transition-transform group-hover:scale-105"
+          />
+          <div className="absolute bottom-2 right-2 bg-black/80 text-white font-mono text-[10px] px-2 py-1 flex items-center gap-1.5">
+            <Maximize2 className="w-3 h-3 text-[#3B82F6]" />
+            <span>{isPt ? 'Identidade & Logótipo Autêntico' : 'Authentic Spa Identity'}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // =========================================================================
+  // TAB 4: PROTOTYPE.FIG
+  // =========================================================================
+  const PrototypeTab = (
+    <div className="flex flex-col gap-8 text-[#1A1A1A]">
+      <div className="bg-[#F0F4F8] border border-[#B0C4DE] p-4 sm:p-6 shadow-sm">
+        <div className="flex items-center gap-2 font-mono text-xs text-[#000080] font-bold mb-2">
+          <span>[ 🌿 ARQUITETURA DE RITUAIS & CATÁLOGO ]</span>
+        </div>
+        <h3 className="text-xl sm:text-2xl font-bold text-[#073859] mb-3">
+          {isPt ? 'Catálogo de Rituais & Componentes Interativos' : 'Ritual Catalogue & Component Hierarchy'}
+        </h3>
+        <p className="text-sm sm:text-base text-neutral-700 leading-relaxed font-sans">
+          {isPt 
+            ? 'Em vez de uma lista estática de preços, os tratamentos foram organizados por sensações corporais e objetivos de bem-estar.'
+            : 'Rather than a stark price list, wellness treatments were structured around sensory goals and holistic body benefits.'}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="bg-white border-2 border-[#808080] p-4">
+          <span className="font-mono text-xs font-bold text-[#000080] uppercase">RITUAL 01</span>
+          <h4 className="font-bold text-sm text-[#073859] mt-1 mb-2">
+            {isPt ? 'Massagem Tradicional Shiatsu' : 'Traditional Shiatsu Massage'}
+          </h4>
+          <p className="text-xs text-neutral-600 font-sans">
+            {isPt ? 'Pressão digital sobre meridianos para restaurar a energia vital e aliviar tensões musculares profundas.' : 'Acupressure along meridians to restore natural energy flow and release deep tension.'}
+          </p>
+        </div>
+
+        <div className="bg-white border-2 border-[#808080] p-4">
+          <span className="font-mono text-xs font-bold text-emerald-800 uppercase">RITUAL 02</span>
+          <h4 className="font-bold text-sm text-[#073859] mt-1 mb-2">
+            {isPt ? 'Banho Japonês de Ofurô' : 'Japanese Ofuro Soak'}
+          </h4>
+          <p className="text-xs text-neutral-600 font-sans">
+            {isPt ? 'Imersão em água aromática enriquecida com ervas e sais minerais em banheira tradicional de cedro.' : 'Immersion in cedar tubs scented with authentic herbs and therapeutic minerals.'}
+          </p>
+        </div>
+
+        <div className="bg-white border-2 border-[#808080] p-4">
+          <span className="font-mono text-xs font-bold text-purple-800 uppercase">RITUAL 03</span>
+          <h4 className="font-bold text-sm text-[#073859] mt-1 mb-2">
+            {isPt ? 'Ritual Exclusivo a Dois' : 'Signature Couples Ritual'}
+          </h4>
+          <p className="text-xs text-neutral-600 font-sans">
+            {isPt ? 'Experiência combinada de esfoliação suave, banho aromático e massagem relaxante com óleos quentes.' : 'Combined gentle exfoliation, aromatic bath, and relaxing warm oil massage for two.'}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+
+  // =========================================================================
+  // TAB 5: FINAL_RESULT.PNG
+  // =========================================================================
+  const FinalResultTab = (
+    <div className="flex flex-col gap-8 text-[#1A1A1A]">
+      <div className="bg-[#F0F4F8] border border-[#B0C4DE] p-4 sm:p-6 shadow-sm">
+        <div className="flex items-center gap-2 font-mono text-xs text-[#000080] font-bold mb-2">
+          <span>[ 🌟 O RESULTADO FINAL EM PRODUÇÃO ]</span>
+        </div>
+        <h3 className="text-xl sm:text-2xl font-bold text-[#073859] mb-2">
+          {isPt ? 'A Experiência Nipon Spa Online' : 'The Nipon Spa Online Presence'}
+        </h3>
+        <p className="text-sm sm:text-base text-neutral-700 leading-relaxed font-sans">
+          {isPt 
+            ? 'O website está em funcionamento ativo, servindo clientes em Portugal e visitantes internacionais que procuram rituais de bem-estar autênticos.'
+            : 'The live website is in active production, welcoming local and international visitors seeking authentic Japanese wellbeing rituals.'}
+        </p>
+      </div>
+
+      <div className="bg-[#c0c0c0] border-2 border-white border-r-[#404040] border-b-[#404040] p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <span className="font-mono text-xs font-bold text-[#000080] block mb-1">
+            DOMÍNIO OFICIAL: HTTPS://WWW.NIPONSPA.PT
+          </span>
+          <p className="text-xs text-neutral-700 font-sans">
+            {isPt 
+              ? 'Visite o produto real em funcionamento para experienciar a navegação, imagens e catálogo em tempo real.'
+              : 'Visit the live production product to explore real interactions, visuals, and booking flows.'}
+          </p>
+        </div>
+
+        <a
+          href="https://www.niponspa.pt/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-5 py-2.5 bg-[#000080] text-white font-mono text-xs font-bold border-2 border-white hover:bg-[#0a389c] flex items-center gap-2 cursor-pointer shadow-md shrink-0"
+        >
+          <span>{isPt ? 'Abrir niponspa.pt' : 'Open niponspa.pt'}</span>
+          <ExternalLink className="w-4 h-4" />
+        </a>
+      </div>
+    </div>
+  );
+
+  // =========================================================================
+  // TAB 6: LEARNINGS.TXT
+  // =========================================================================
+  const LearningsTab = (
+    <div className="flex flex-col gap-8 text-[#1A1A1A]">
+      <div className="bg-[#FFFFEE] border border-[#d0c8a8] p-4 sm:p-6 shadow-sm rounded-[2px]">
+        <div className="flex items-center gap-2 border-b border-[#e0d8b8] pb-2 mb-4 font-mono text-xs text-neutral-600">
+          <span className="font-bold text-[#000080]">C:\DOCUMENTS\NIPON_SPA\LEARNINGS.TXT</span>
+          <span className="text-neutral-400">|</span>
+          <span>AUTORA: RAÍSSA MORIÁ</span>
+        </div>
+
+        <div className="flex flex-col gap-4 font-sans">
+          <h3 className="text-xl sm:text-2xl font-bold text-[#073859]">
+            {isPt ? 'Serenidade Digital e Hospitalidade' : 'Digital Serenity & Hospitality'}
+          </h3>
+
+          <p className="text-sm sm:text-base text-neutral-800 leading-relaxed">
+            {isPt 
+              ? 'Projetar para o setor de bem-estar de luxo ensinou-me que muitas vezes o design mais poderoso é o que remove ruído em vez de adicionar ornamentação. Cada espaço em branco cumpre uma função emocional: dar espaço para o visitante respirar.'
+              : 'Designing for luxury wellness underscored that the most powerful design often eliminates noise rather than adding decoration. Every pocket of white space serves an emotional role: giving the visitor breathing room.'}
+          </p>
+
+          <p className="text-sm sm:text-base text-neutral-800 leading-relaxed">
+            {isPt 
+              ? 'A harmonia entre fotografia autêntica e micro-interações calmas provou que um website pode ser simultaneamente comercialmente eficaz e visualmente repousante.'
+              : 'The harmony between authentic photography and calm micro-interactions proved that an interface can achieve high business conversion while maintaining supreme aesthetic composure.'}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+
+  const retroTabs: RetroProjectTab[] = [
+    {
+      id: 'overview',
+      labelPt: '01 — Overview.txt',
+      labelEn: '01 — Overview.txt',
+      iconName: 'overview',
+      badge: 'TXT',
+      content: OverviewTab,
+    },
+    {
+      id: 'research',
+      labelPt: '02 — Research.exe',
+      labelEn: '02 — Research.exe',
+      iconName: 'research',
+      badge: 'EXE',
+      content: ResearchTab,
+    },
+    {
+      id: 'process',
+      labelPt: '03 — Design_Process.folder',
+      labelEn: '03 — Design_Process.folder',
+      iconName: 'process',
+      badge: 'DIR',
+      content: DesignProcessTab,
+    },
+    {
+      id: 'prototype',
+      labelPt: '04 — Prototype.fig',
+      labelEn: '04 — Prototype.fig',
+      iconName: 'prototype',
+      badge: 'FIG',
+      content: PrototypeTab,
+    },
+    {
+      id: 'result',
+      labelPt: '05 — Final_Result.png',
+      labelEn: '05 — Final_Result.png',
+      iconName: 'result',
+      badge: 'WEB',
+      content: FinalResultTab,
+    },
+    {
+      id: 'learnings',
+      labelPt: '06 — Learnings.txt',
+      labelEn: '06 — Learnings.txt',
+      iconName: 'learnings',
+      badge: 'TXT',
+      content: LearningsTab,
+    },
+  ];
+
+  return (
+    <>
+      <RetroProjectLayout
+        projectId="nipon-spa"
+        projectNumber="01"
+        projectExeName="Project_NiponSpa.exe"
+        title="Nipon Spa"
+        subtitle="Japanese Wellness • Digital Experience"
+        category={isPt ? "BEM-ESTAR & LUXO DIGITAL" : "WELLNESS & DIGITAL LUXURY"}
+        year="2026"
+        roles={["UX/UI Design", "Visual Identity", "Design System", "Live Production"]}
+        liveUrl="https://www.niponspa.pt/"
+        language={language}
+        onBack={onBack}
+        onNextProject={onNextProject}
+        onPrevProject={onPrevProject}
+        prevProjectName={isPt ? "Plataforma de Helpdesk" : "Helpdesk Platform"}
+        nextProjectName="SUE Mobile App"
+        tabs={retroTabs}
+      />
+
+      {/* Expanded Modal */}
+      <AnimatePresence>
+        {expandedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setExpandedImage(null)}
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 cursor-pointer"
+          >
+            <div className="relative max-w-5xl w-full bg-[#c0c0c0] border-2 border-white p-1 shadow-2xl">
+              <div className="bg-[#000080] text-white p-1 px-2 flex justify-between items-center font-mono text-xs mb-1">
+                <span>[ VISUALIZADOR DE IMAGEM 98 ]</span>
+                <button 
+                  onClick={() => setExpandedImage(null)}
+                  className="w-4 h-4 bg-[#c0c0c0] text-black border border-white flex items-center justify-center text-[10px] font-bold"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </div>
+              <img 
+                src={expandedImage} 
+                alt="Expanded View" 
+                className="w-full max-h-[80vh] object-contain bg-black"
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };

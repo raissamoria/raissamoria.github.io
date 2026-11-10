@@ -1,86 +1,153 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bebas Neue", Impact, sans-serif;
+  --font-handwriting: "Caveat", cursive, sans-serif;
+  --font-typewriter: "Special Elite", "Courier New", monospace;
+  --font-pixel: "VT323", monospace;
+  --color-win-grey: #C0C0C0;
+  --color-win-dark: #808080;
+  --color-win-darker: #404040;
+  --color-win-blue: #000080;
+  --color-win-light-blue: #1084d0;
+  --color-win-desktop: #008080;
 }
 
 @layer base {
   body {
-    @apply bg-[#050505] text-[#F4F4F5] font-sans selection:bg-white selection:text-black antialiased;
-    background-color: #050505;
-    color: #f4f4f5;
+    background-color: #008080;
+    color: #000000;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
   }
 }
 
-/* 
-  Subtle Transparent Optical Glass System
-  - Flat or slightly convex thin optical lens
-  - Almost colorless and transparent
-  - Soft blur and light refraction
-  - Subtle chromatic edges: small hints of cyan, violet, magenta, green, yellow
-  - 1px hairline edge; never thick, never a floating sphere
-*/
-.optical-glass {
-  position: relative;
-  background: rgba(255, 255, 255, 0.035);
-  backdrop-filter: blur(14px) saturate(130%);
-  -webkit-backdrop-filter: blur(14px) saturate(130%);
-  box-shadow: 
-    inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.4),
-    inset 0 -1px 0.5px 0 rgba(255, 255, 255, 0.06),
-    0 4px 20px -2px rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+/* Custom font utilities */
+.font-pixel {
+  font-family: "VT323", monospace;
 }
 
-.optical-glass::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    135deg,
-    rgba(56, 189, 248, 0.32) 0%,   /* subtle cyan */
-    rgba(139, 92, 246, 0.28) 25%,  /* subtle violet */
-    rgba(236, 72, 153, 0.26) 50%,  /* subtle magenta */
-    rgba(52, 211, 153, 0.24) 75%,  /* subtle green */
-    rgba(250, 204, 21, 0.22) 90%,  /* subtle yellow */
-    rgba(56, 189, 248, 0.32) 100%
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  opacity: 0.45;
-  transition: opacity 0.3s ease;
+.font-display {
+  font-family: var(--font-display), "Bebas Neue", sans-serif;
 }
 
-.optical-glass:hover::before {
-  opacity: 0.9;
+.font-handwriting {
+  font-family: var(--font-handwriting), "Caveat", cursive;
 }
 
-.optical-glass:hover {
-  background: rgba(255, 255, 255, 0.06);
-  box-shadow: 
-    inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.6),
-    inset 0 -1px 0.5px 0 rgba(255, 255, 255, 0.1),
-    0 0 16px -2px rgba(56, 189, 248, 0.15),
-    0 0 20px -4px rgba(236, 72, 153, 0.1),
-    0 8px 30px -4px rgba(0, 0, 0, 0.7);
+.font-typewriter {
+  font-family: var(--font-typewriter), "Special Elite", monospace;
 }
 
-.optical-glass-active {
-  background: rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 
-    inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.7),
-    0 0 18px -2px rgba(56, 189, 248, 0.2),
-    0 0 24px -4px rgba(236, 72, 153, 0.15) !important;
+/* Authentic Windows 95/98 3D Bevels */
+.win-border-raised {
+  background-color: #C0C0C0;
+  border-top: 2px solid #FFFFFF;
+  border-left: 2px solid #FFFFFF;
+  border-right: 2px solid #404040;
+  border-bottom: 2px solid #404040;
+  box-shadow: 1px 1px 0px #000000;
 }
 
-.optical-glass-active::before {
-  opacity: 1 !important;
+.win-border-sunken {
+  background-color: #FFFFFF;
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-right: 2px solid #FFFFFF;
+  border-bottom: 2px solid #FFFFFF;
+  box-shadow: inset 1px 1px 0px #000000;
+}
+
+.win-border-sunken-grey {
+  background-color: #C0C0C0;
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-right: 2px solid #FFFFFF;
+  border-bottom: 2px solid #FFFFFF;
+  box-shadow: inset 1px 1px 0px #000000;
+}
+
+.win-btn {
+  background-color: #C0C0C0;
+  border-top: 2px solid #FFFFFF;
+  border-left: 2px solid #FFFFFF;
+  border-right: 2px solid #404040;
+  border-bottom: 2px solid #404040;
+  box-shadow: 1px 1px 0px #000000;
+  color: #000000;
+  user-select: none;
+  transition: none;
+}
+
+.win-btn:active, .win-btn-pressed {
+  border-top: 2px solid #404040;
+  border-left: 2px solid #404040;
+  border-right: 2px solid #FFFFFF;
+  border-bottom: 2px solid #FFFFFF;
+  box-shadow: inset 1px 1px 0px #000000;
+  transform: translate(1px, 1px);
+}
+
+.win-titlebar-active {
+  background: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+  color: #FFFFFF;
+}
+
+.win-titlebar-inactive {
+  background: linear-gradient(90deg, #808080 0%, #B5B5B5 100%);
+  color: #D4D0C8;
+}
+
+/* Windows 95 Retro Scrollbar */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+  background: #DFDFDF;
+}
+
+::-webkit-scrollbar-track {
+  background: repeating-conic-gradient(#C0C0C0 0% 25%, #FFFFFF 0% 50%) 50% / 2px 2px;
+  border-left: 1px solid #808080;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C0C0C0;
+  border-top: 2px solid #FFFFFF;
+  border-left: 2px solid #FFFFFF;
+  border-right: 2px solid #404040;
+  border-bottom: 2px solid #404040;
+  box-shadow: 1px 1px 0px #000000;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #A0A0A0;
+}
+
+/* Paper and Collage Shadows */
+.paper-shadow {
+  box-shadow: 2px 5px 15px rgba(3, 20, 32, 0.38), 0 1px 4px rgba(3, 20, 32, 0.22);
+}
+
+.paper-shadow-lg {
+  box-shadow: 4px 10px 32px rgba(3, 20, 32, 0.45), 0 2px 8px rgba(3, 20, 32, 0.28);
+}
+
+/* Washi Tape styling */
+.washi-tape {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(242, 235, 217, 0.85) 100%);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  border-left: 2px dashed rgba(0, 0, 0, 0.12);
+  border-right: 2px dashed rgba(0, 0, 0, 0.12);
+}
+
+.washi-tape-yellow {
+  background: linear-gradient(135deg, rgba(254, 240, 138, 0.8) 0%, rgba(234, 179, 8, 0.85) 100%);
+  backdrop-filter: blur(2px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  border-left: 2px dashed rgba(0, 0, 0, 0.15);
+  border-right: 2px dashed rgba(0, 0, 0, 0.15);
 }
 
