@@ -500,8 +500,9 @@ export default function App() {
       <MakingSupportVisibleProject
         language={language}
         onBack={handleBackToDesktop}
-        onNextProject={() => handleOpenProject('sue-app')}
-        onPrevProject={() => handleOpenProject('nipon-spa')}
+        onNextProject={() => handleOpenProject('nipon-spa')}
+        onPrevProject={() => handleOpenProject('sue-app')}
+        onToggleLanguage={handleToggleLanguage}
       />
     );
   }
@@ -511,8 +512,8 @@ export default function App() {
       <SueAppProject
         language={language}
         onBack={handleBackToDesktop}
-        onNextProject={() => handleOpenProject('nipon-spa')}
-        onPrevProject={() => handleOpenProject('plataforma-helpdesk')}
+        onNextProject={() => handleOpenProject('plataforma-helpdesk')}
+        onPrevProject={() => handleOpenProject('nipon-spa')}
       />
     );
   }
@@ -522,8 +523,8 @@ export default function App() {
       <NiponSpaProject
         language={language}
         onBack={handleBackToDesktop}
-        onNextProject={() => handleOpenProject('plataforma-helpdesk')}
-        onPrevProject={() => handleOpenProject('sue-app')}
+        onNextProject={() => handleOpenProject('sue-app')}
+        onPrevProject={() => handleOpenProject('plataforma-helpdesk')}
       />
     );
   }

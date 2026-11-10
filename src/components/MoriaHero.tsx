@@ -5,6 +5,7 @@ import { GlassOrbPhysicsEngine, DEFAULT_PHYSICS_CONFIG } from './GlassOrbPhysics
 import { GlassOrbData } from '../types';
 import { OpticalGlassButton, OpticalGlassPill } from './OpticalGlass';
 import { ArrowUpRight, Layers, Compass } from 'lucide-react';
+import { MORIA_SURF_PATH_ALL } from './MoriaSurfLettering';
 
 interface MoriaHeroProps {
   language?: 'pt' | 'en';
@@ -127,14 +128,27 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
     ctx.textBaseline = 'middle';
     ctx.fillText('RAÍSSA MORIÁ // UX/UI & PRODUCT DESIGN', w / 2, h / 2 - Math.min(w * 0.12, 140));
 
-    // High-resolution bold MORIA display text
-    const fontSize = Math.min(w * 0.21, h * 0.44);
-    ctx.font = `900 ${fontSize}px Inter, "Plus Jakarta Sans", system-ui, -apple-system, sans-serif`;
+    // High-resolution surf MORIA display text onto refraction buffer
+    ctx.save();
+    const targetW = Math.min(w * 0.88, 1200);
+    const targetH = targetW * (360 / 1200);
+    const startX = (w - targetW) / 2;
+    const startY = (h - targetH) / 2 - 10;
+
+    ctx.translate(startX, startY);
+    ctx.scale(targetW / 1200, targetH / 360);
     ctx.fillStyle = '#FFFFFF';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.letterSpacing = '-0.045em';
-    ctx.fillText('MORIA', w / 2, h / 2);
+    try {
+      const path2d = new Path2D(MORIA_SURF_PATH_ALL);
+      ctx.fill(path2d, 'evenodd');
+    } catch {
+      const fontSize = Math.min(w * 0.21, h * 0.44);
+      ctx.font = `900 ${fontSize}px sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('MORIA', 600, 180);
+    }
+    ctx.restore();
 
     // Technical metadata below text
     ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
@@ -293,11 +307,11 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
         aria-hidden="true"
       />
 
-      {/* 4. Large Crisp Monochromatic Background Title "MORIA" */}
-      <BackgroundTitle text="MORIA" />
+      {/* 4. Large 3D Surf-Inspired Background Title "MORIA" */}
+      <BackgroundTitle />
 
       {/* 5. FLOATING CIRCULAR OPTICAL GLASS BALLS (Round, transparent, interactive) */}
-      <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden">
         {orbs.map((orb) => (
           <div key={orb.id} className="pointer-events-auto">
             <GlassOrb
@@ -313,7 +327,7 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
       </div>
 
       {/* 6. TOP METADATA & STATUS BAR */}
-      <div className="relative z-20 w-full max-w-[1720px] mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-2 pointer-events-none">
+      <div className="relative z-30 w-full max-w-[1720px] mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-2 pointer-events-none">
         {/* Availability Status Badge */}
         <div className="pointer-events-auto">
           <OpticalGlassPill>
@@ -334,7 +348,7 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
       </div>
 
       {/* 7. HERO BOTTOM DOCK & ACTION BUTTONS */}
-      <div className="relative z-20 w-full max-w-[1720px] mx-auto flex flex-col md:flex-row justify-between items-end md:items-center gap-6 pb-2 pointer-events-none">
+      <div className="relative z-30 w-full max-w-[1720px] mx-auto flex flex-col md:flex-row justify-between items-end md:items-center gap-6 pb-2 pointer-events-none">
         
         {/* Editorial Subtitle & Role */}
         <div className="flex flex-col gap-1 max-w-xl pointer-events-auto">
