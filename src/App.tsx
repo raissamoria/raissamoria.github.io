@@ -3,356 +3,26 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
-import { RetroDesktop } from './components/retro/RetroDesktop';
-import { RetroTaskbar } from './components/retro/RetroTaskbar';
-import { RetroStartMenu } from './components/retro/RetroStartMenu';
-import { RetroShutdownDialog } from './components/retro/RetroShutdownDialog';
-import { RetroProjectLayout } from './components/retro/RetroProjectLayout';
-import { WindowId, WindowState, Language } from './components/retro/RetroTypes';
-import { retroAudio } from './components/retro/RetroAudio';
-
-// Projects
-import { MakingSupportVisibleProject } from './components/MakingSupportVisibleProject';
-import { SueAppProject } from './components/SueAppProject';
-import { NiponSpaProject } from './components/NiponSpaProject';
-
-const getInitialWindows = (): WindowState[] => {
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  const isTablet = typeof window !== 'undefined' && window.innerWidth < 1024;
-
-  if (isMobile) {
-    return [
-      {
-        id: 'portfolio',
-        title: 'Portfólio da Raíssa',
-        isOpen: true,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 20,
-        position: { x: 12, y: 16 },
-        size: { width: 'calc(100vw - 24px)', height: 'auto' },
-        iconType: '📁',
-      },
-      {
-        id: 'sobre',
-        title: 'Sobre',
-        isOpen: false,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 15,
-        position: { x: 12, y: 30 },
-        size: { width: 'calc(100vw - 24px)', height: 'auto' },
-        iconType: '📄',
-      },
-      {
-        id: 'projetos',
-        title: 'Projetos',
-        isOpen: false,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 16,
-        position: { x: 12, y: 30 },
-        size: { width: 'calc(100vw - 24px)', height: 'auto' },
-        iconType: '📁',
-      },
-      {
-        id: 'trajetoria',
-        title: 'Trajetória',
-        isOpen: false,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 17,
-        position: { x: 12, y: 30 },
-        size: { width: 'calc(100vw - 24px)', height: 'auto' },
-        iconType: '📊',
-      },
-      {
-        id: 'viagens',
-        title: 'Viagens ✈',
-        isOpen: false,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 12,
-        position: { x: 12, y: 30 },
-        size: { width: 'calc(100vw - 24px)', height: 'auto' },
-        iconType: '✈️',
-      },
-      {
-        id: 'surf',
-        title: 'Surf 🌊',
-        isOpen: false,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 14,
-        position: { x: 12, y: 30 },
-        size: { width: 'calc(100vw - 24px)', height: 'auto' },
-        iconType: '🌊',
-      },
-      {
-        id: 'natureza',
-        title: 'Natureza',
-        isOpen: false,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 10,
-        position: { x: 12, y: 30 },
-        size: { width: 'calc(100vw - 24px)', height: 'auto' },
-        iconType: '🌿',
-      },
-      {
-        id: 'contacto',
-        title: 'Contacto',
-        isOpen: false,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 13,
-        position: { x: 12, y: 30 },
-        size: { width: 'calc(100vw - 24px)', height: 'auto' },
-        iconType: '✉',
-      },
-      {
-        id: 'lixeira',
-        title: 'Lixeira',
-        isOpen: false,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 10,
-        position: { x: 12, y: 30 },
-        size: { width: 'calc(100vw - 24px)', height: 'auto' },
-        iconType: '🗑️',
-      },
-    ];
-  }
-
-  if (isTablet) {
-    return [
-      {
-        id: 'portfolio',
-        title: 'Portfólio da Raíssa',
-        isOpen: true,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 20,
-        position: { x: 90, y: 20 },
-        size: { width: '540px', height: 'auto' },
-        iconType: '📁',
-      },
-      {
-        id: 'sobre',
-        title: 'Sobre',
-        isOpen: true,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 15,
-        position: { x: 650, y: 30 },
-        size: { width: '300px', height: 'auto' },
-        iconType: '📄',
-      },
-      {
-        id: 'projetos',
-        title: 'Projetos',
-        isOpen: true,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 16,
-        position: { x: 100, y: 360 },
-        size: { width: '360px', height: 'auto' },
-        iconType: '📁',
-      },
-      {
-        id: 'trajetoria',
-        title: 'Trajetória',
-        isOpen: true,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 17,
-        position: { x: 480, y: 360 },
-        size: { width: '320px', height: 'auto' },
-        iconType: '📊',
-      },
-      {
-        id: 'viagens',
-        title: 'Viagens ✈',
-        isOpen: true,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 12,
-        position: { x: 660, y: 240 },
-        size: { width: '240px', height: 'auto' },
-        iconType: '✈️',
-      },
-      {
-        id: 'surf',
-        title: 'Surf 🌊',
-        isOpen: false,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 14,
-        position: { x: 680, y: 260 },
-        size: { width: '220px', height: 'auto' },
-        iconType: '🌊',
-      },
-      {
-        id: 'natureza',
-        title: 'Natureza',
-        isOpen: false,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 10,
-        position: { x: 200, y: 150 },
-        size: { width: '260px', height: 'auto' },
-        iconType: '🌿',
-      },
-      {
-        id: 'contacto',
-        title: 'Contacto',
-        isOpen: true,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 13,
-        position: { x: 660, y: 420 },
-        size: { width: '300px', height: 'auto' },
-        iconType: '✉',
-      },
-      {
-        id: 'lixeira',
-        title: 'Lixeira',
-        isOpen: false,
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: 10,
-        position: { x: 200, y: 150 },
-        size: { width: '260px', height: 'auto' },
-        iconType: '🗑️',
-      },
-    ];
-  }
-
-  // Full Desktop Coordinates (faithfully matches the user's reference image)
-  return [
-    {
-      id: 'portfolio',
-      title: 'Portfólio da Raíssa',
-      isOpen: true,
-      isMinimized: false,
-      isMaximized: false,
-      zIndex: 25,
-      position: { x: 120, y: 25 },
-      size: { width: '560px', height: 'auto' },
-      iconType: '📁',
-    },
-    {
-      id: 'sobre',
-      title: 'Sobre',
-      isOpen: true,
-      isMinimized: false,
-      isMaximized: false,
-      zIndex: 18,
-      position: { x: 700, y: 30 },
-      size: { width: '310px', height: 'auto' },
-      iconType: '📄',
-    },
-    {
-      id: 'viagens',
-      title: 'Viagens ✈',
-      isOpen: true,
-      isMinimized: false,
-      isMaximized: false,
-      zIndex: 14,
-      position: { x: 690, y: 250 },
-      size: { width: '200px', height: 'auto' },
-      iconType: '✈️',
-    },
-    {
-      id: 'surf',
-      title: 'Surf 🌊',
-      isOpen: true,
-      isMinimized: false,
-      isMaximized: false,
-      zIndex: 15,
-      position: { x: 865, y: 265 },
-      size: { width: '190px', height: 'auto' },
-      iconType: '🌊',
-    },
-    {
-      id: 'projetos',
-      title: 'Projetos',
-      isOpen: true,
-      isMinimized: false,
-      isMaximized: false,
-      zIndex: 20,
-      position: { x: 120, y: 400 },
-      size: { width: '310px', height: 'auto' },
-      iconType: '📁',
-    },
-    {
-      id: 'trajetoria',
-      title: 'Trajetória',
-      isOpen: true,
-      isMinimized: false,
-      isMaximized: false,
-      zIndex: 22,
-      position: { x: 445, y: 390 },
-      size: { width: '430px', height: 'auto' },
-      iconType: '📊',
-    },
-    {
-      id: 'contacto',
-      title: 'Contacto',
-      isOpen: true,
-      isMinimized: false,
-      isMaximized: false,
-      zIndex: 19,
-      position: { x: 750, y: 425 },
-      size: { width: '295px', height: 'auto' },
-      iconType: '✉',
-    },
-    {
-      id: 'natureza',
-      title: 'Natureza',
-      isOpen: false,
-      isMinimized: false,
-      isMaximized: false,
-      zIndex: 10,
-      position: { x: 300, y: 150 },
-      size: { width: '280px', height: 'auto' },
-      iconType: '🌿',
-    },
-    {
-      id: 'lixeira',
-      title: 'Lixeira',
-      isOpen: false,
-      isMinimized: false,
-      isMaximized: false,
-      zIndex: 10,
-      position: { x: 260, y: 180 },
-      size: { width: '280px', height: 'auto' },
-      iconType: '🗑️',
-    },
-  ];
-};
+import { motion, AnimatePresence } from "motion/react";
+import { ArrowUpRight, Github, Linkedin, Mail, Sparkles, ArrowRight, ArrowDown } from "lucide-react";
+import { useState, useEffect } from "react";
+import { MoriaHero } from "./components/MoriaHero";
+import { ProjectsSection } from "./components/ProjectsSection";
+import { NiponSpaProject } from "./components/NiponSpaProject";
+import { SueAppProject } from "./components/SueAppProject";
+import { MakingSupportVisibleProject } from "./components/MakingSupportVisibleProject";
+import Marquee from "./components/Marquee";
+import CustomCursor from "./components/CustomCursor";
+import { OpticalGlassButton, OpticalGlassPill } from "./components/OpticalGlass";
+// @ts-ignore
+import profilePic from "./assets/images/WhatsApp Image 2026-06-03 at 13.15.20.jpeg";
 
 export default function App() {
-  const [language, setLanguage] = useState<Language>('pt');
+  const [language, setLanguage] = useState<'pt' | 'en'>('pt');
+  const [time, setTime] = useState("");
   const [currentProject, setCurrentProject] = useState<string | null>(null);
-  const [windows, setWindows] = useState<WindowState[]>(getInitialWindows);
-  const [activeWindowId, setActiveWindowId] = useState<WindowId | null>('portfolio');
-  const [startMenuOpen, setStartMenuOpen] = useState(false);
-  const [shutdownOpen, setShutdownOpen] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
 
-  // Play startup sound on first interaction
-  useEffect(() => {
-    const handleFirstClick = () => {
-      retroAudio.playStartup();
-      window.removeEventListener('click', handleFirstClick);
-    };
-    window.addEventListener('click', handleFirstClick, { once: true });
-    return () => window.removeEventListener('click', handleFirstClick);
-  }, []);
-
-  // Hash-based routing synchronization
+  // Hash-based navigation and back-button synchronization
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
@@ -382,207 +52,507 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // Window Management Actions
-  const handleFocusWindow = (id: WindowId) => {
-    setActiveWindowId(id);
-    setWindows((prev) => {
-      const maxZ = Math.max(...prev.map((w) => w.zIndex), 20);
-      return prev.map((w) => (w.id === id ? { ...w, zIndex: maxZ + 1, isMinimized: false } : w));
-    });
-  };
-
-  const handleCloseWindow = (id: WindowId) => {
-    setWindows((prev) =>
-      prev.map((w) => (w.id === id ? { ...w, isOpen: false, isMinimized: false } : w))
-    );
-    if (activeWindowId === id) {
-      setActiveWindowId(null);
-    }
-  };
-
-  const handleMinimizeWindow = (id: WindowId) => {
-    setWindows((prev) =>
-      prev.map((w) => (w.id === id ? { ...w, isMinimized: true } : w))
-    );
-    if (activeWindowId === id) {
-      setActiveWindowId(null);
-    }
-  };
-
-  const handleMaximizeWindow = (id: WindowId) => {
-    setWindows((prev) =>
-      prev.map((w) => (w.id === id ? { ...w, isMaximized: !w.isMaximized } : w))
-    );
-  };
-
-  const handleOpenWindow = (id: WindowId | string) => {
-    retroAudio.playWindowOpen();
-    const targetId = id as WindowId;
-    setWindows((prev) => {
-      const maxZ = Math.max(...prev.map((w) => w.zIndex), 20);
-      return prev.map((w) =>
-        w.id === targetId ? { ...w, isOpen: true, isMinimized: false, zIndex: maxZ + 1 } : w
-      );
-    });
-    setActiveWindowId(targetId);
-  };
-
-  const handleTaskbarWindowClick = (id: string) => {
-    const targetId = id as WindowId;
-    const win = windows.find((w) => w.id === targetId);
-    if (!win) return;
-
-    if (win.isMinimized) {
-      // Restore
-      handleFocusWindow(targetId);
-    } else if (activeWindowId === targetId) {
-      // Minimize if currently focused
-      handleMinimizeWindow(targetId);
-    } else {
-      // Bring to focus
-      handleFocusWindow(targetId);
-    }
-  };
-
-  // Project navigation
   const handleOpenProject = (slug: string) => {
-    retroAudio.playWindowOpen();
     setCurrentProject(slug);
     window.location.hash = `projects/${slug}`;
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleBackToDesktop = () => {
-    retroAudio.playClick();
+  const handleBackToPortfolio = () => {
     setCurrentProject(null);
-    window.location.hash = '';
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  };
-
-  // Language & Sound toggles
-  const handleToggleLanguage = () => {
-    const newLang = language === 'pt' ? 'en' : 'pt';
-    setLanguage(newLang);
-    retroAudio.playClick();
-  };
-
-  const handleToggleMute = () => {
-    const newMuted = !isMuted;
-    setIsMuted(newMuted);
-    retroAudio.isMuted = newMuted;
-  };
-
-  // Reset desktop windows
-  const handleResetWindows = () => {
-    setWindows(getInitialWindows());
-    setActiveWindowId('portfolio');
-  };
-
-  const handleMaximizeMain = () => {
-    setWindows((prev) =>
-      prev.map((w) => (w.id === 'portfolio' ? { ...w, isOpen: true, isMaximized: true, zIndex: 99 } : w))
-    );
-    setActiveWindowId('portfolio');
-  };
-
-  // Close start menu when clicking on desktop
-  const handleDesktopClick = () => {
-    if (startMenuOpen) {
-      setStartMenuOpen(false);
+    window.location.hash = 'portfolio-grid-section';
+    const el = document.getElementById('portfolio-grid-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  // ==========================================================
-  // CASE STUDY PAGES (Each component renders RetroProjectLayout with full tabs)
-  // ==========================================================
-  if (currentProject === 'plataforma-helpdesk' || currentProject === 'making-support-visible') {
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: "Europe/Lisbon",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+      }).formatToParts(now);
+
+      const m = parts.find(p => p.type === 'month')?.value || '11';
+      const d = parts.find(p => p.type === 'day')?.value || '11';
+      const h = parts.find(p => p.type === 'hour')?.value || '01';
+      const min = parts.find(p => p.type === 'minute')?.value || '00';
+      const sec = parts.find(p => p.type === 'second')?.value || '00';
+      const dayPeriod = parts.find(p => p.type === 'dayPeriod')?.value?.toUpperCase() || 'PM';
+
+      setTime(`${d}/${m}, ${h}:${min}:${sec} ${dayPeriod}`);
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // If viewing a detailed project case study
+  if (currentProject === 'nipon-spa') {
     return (
-      <MakingSupportVisibleProject
-        language={language}
-        onBack={handleBackToDesktop}
-        onNextProject={() => handleOpenProject('nipon-spa')}
-        onPrevProject={() => handleOpenProject('sue-app')}
-        onToggleLanguage={handleToggleLanguage}
-      />
+      <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans antialiased">
+        <CustomCursor />
+        <NiponSpaProject 
+          language={language} 
+          onBack={handleBackToPortfolio} 
+          onNextProject={() => handleOpenProject('sue-app')}
+          onPrevProject={() => handleOpenProject('plataforma-helpdesk')}
+        />
+      </div>
     );
   }
 
   if (currentProject === 'sue-app') {
     return (
-      <SueAppProject
-        language={language}
-        onBack={handleBackToDesktop}
-        onNextProject={() => handleOpenProject('plataforma-helpdesk')}
-        onPrevProject={() => handleOpenProject('nipon-spa')}
-      />
+      <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans antialiased">
+        <CustomCursor />
+        <SueAppProject 
+          language={language} 
+          onBack={handleBackToPortfolio} 
+          onNextProject={() => handleOpenProject('plataforma-helpdesk')}
+          onPrevProject={() => handleOpenProject('nipon-spa')}
+        />
+      </div>
     );
   }
 
-  if (currentProject === 'nipon-spa') {
+  if (currentProject === 'plataforma-helpdesk' || currentProject === 'making-support-visible') {
     return (
-      <NiponSpaProject
-        language={language}
-        onBack={handleBackToDesktop}
-        onNextProject={() => handleOpenProject('sue-app')}
-        onPrevProject={() => handleOpenProject('plataforma-helpdesk')}
-      />
+      <div className="min-h-screen bg-[#FBFBFC] text-[#111118] selection:bg-neutral-900 selection:text-white font-sans antialiased">
+        <CustomCursor />
+        <MakingSupportVisibleProject 
+          language={language} 
+          onBack={handleBackToPortfolio} 
+          onNextProject={() => handleOpenProject('nipon-spa')}
+          onPrevProject={() => handleOpenProject('sue-app')}
+        />
+      </div>
     );
   }
 
-  // ==========================================================
-  // MAIN RETRO OS DESKTOP
-  // ==========================================================
   return (
-    <div 
-      onClick={handleDesktopClick}
-      className="relative min-h-screen w-full bg-[#008080] overflow-x-hidden font-sans select-none"
-    >
-      {/* 1. Interactive Windows 95 Desktop */}
-      <RetroDesktop
-        language={language}
-        windows={windows}
-        activeWindowId={activeWindowId}
-        onOpenProject={handleOpenProject}
-        onFocusWindow={handleFocusWindow}
-        onCloseWindow={handleCloseWindow}
-        onMinimizeWindow={handleMinimizeWindow}
-        onMaximizeWindow={handleMaximizeWindow}
-        onOpenWindow={handleOpenWindow}
+    <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans antialiased">
+      <CustomCursor />
+      
+      {/* 1. Header/Navigation: Ultra-minimal dark navigation bar */}
+      <header className="sticky top-0 z-30 w-full bg-black/85 backdrop-blur-xl border-b border-neutral-900 px-6 md:px-12 py-4 text-white">
+        <div className="max-w-[1720px] mx-auto flex justify-between items-center">
+          
+          {/* Logo & Identity */}
+          <a href="#inicio" onClick={() => setCurrentProject(null)} className="flex items-center gap-2 select-none group">
+            <span className="font-sans font-black text-sm tracking-[-0.03em] uppercase text-white group-hover:text-neutral-300 transition-colors">
+              RAÍSSA MORIÁ
+            </span>
+            <div className="w-1.5 h-1.5 rounded-full bg-white" />
+            <span className="text-[11px] text-neutral-400 uppercase tracking-widest font-mono hidden sm:inline">PORTFOLIO</span>
+          </a>
+
+          {/* Clean minimal navigation links */}
+          <nav className="flex items-center gap-8 md:gap-10 text-[11px] tracking-[0.18em] font-mono font-bold text-neutral-400 uppercase">
+            <a href="#portfolio-grid-section" className="hover:text-white transition-colors">
+              {language === 'pt' ? 'PORTFÓLIO' : 'PORTFOLIO'}
+            </a>
+            <a href="#sobre" className="hover:text-white transition-colors">
+              {language === 'pt' ? 'SOBRE' : 'ABOUT'}
+            </a>
+            <a href="#contacto" className="hover:text-white transition-colors">
+              {language === 'pt' ? 'CONTACTO' : 'CONTACT'}
+            </a>
+          </nav>
+
+          {/* Time, Language Switcher & Quick Direct Email */}
+          <div className="flex items-center gap-4 sm:gap-6">
+            <span className="text-[11px] text-neutral-400 font-mono font-medium hidden md:inline tracking-wider">
+              {time || "11/11, 01:08:08 PM"}
+            </span>
+
+            {/* Language Switch */}
+            <div className="flex items-center optical-glass rounded-full p-1 border border-white/10 select-none">
+              <button
+                onClick={() => setLanguage('pt')}
+                className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase transition-all tracking-wider font-mono cursor-pointer ${
+                  language === 'pt' ? 'bg-white text-black shadow-xs' : 'text-neutral-400 hover:text-white'
+                }`}
+              >
+                PT
+              </button>
+              <button
+                onClick={() => setLanguage('en')}
+                className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase transition-all tracking-wider font-mono cursor-pointer ${
+                  language === 'en' ? 'bg-white text-black shadow-xs' : 'text-neutral-400 hover:text-white'
+                }`}
+              >
+                EN
+              </button>
+            </div>
+
+            <OpticalGlassButton 
+              href="mailto:raissagfdhb@gmail.com" 
+              className="!px-4 !py-1.5 !text-[10px] !tracking-widest"
+            >
+              <span>{language === 'pt' ? 'FALAR' : 'TALK'}</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </OpticalGlassButton>
+          </div>
+
+        </div>
+      </header>
+
+      {/* 2. HERO: 3D Refractive / Liquid Glass Interactive Hero Sandbox */}
+      <main id="inicio">
+        <MoriaHero language={language} />
+      </main>
+
+      {/* 3. PROJECTS SHOWCASE ARCHIVE */}
+      <ProjectsSection 
+        language={language} 
+        onSelectProject={handleOpenProject}
       />
 
-      {/* 2. Start Menu Popup */}
-      <RetroStartMenu
-        isOpen={startMenuOpen}
-        language={language}
-        onClose={() => setStartMenuOpen(false)}
-        onOpenWindow={handleOpenWindow}
-        onOpenProject={handleOpenProject}
-        onToggleLanguage={handleToggleLanguage}
-        onShutdown={() => setShutdownOpen(true)}
-        isMuted={isMuted}
-        onToggleMute={handleToggleMute}
-      />
+      {/* 5. Biography, Trajectory & Background */}
+      <section id="sobre" className="border-t border-b border-neutral-900 bg-[#050505] text-white py-24 px-6 md:px-12 xl:px-16 selection:bg-white selection:text-black">
+        <div className="max-w-[1720px] mx-auto flex flex-col gap-12">
+          
+          {/* Header of Section */}
+          <div className="flex flex-col gap-3">
+            <div className="text-neutral-500 text-[10px] font-mono uppercase tracking-[0.25em] select-none">
+              <span>02 / {language === 'pt' ? 'SOBRE & PERCURSO DE DESIGN' : 'ABOUT & DESIGN JOURNEY'}</span>
+            </div>
+            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white leading-tight">
+              {language === 'pt' ? 'Design de Experiências & Produtos Digitais.' : 'Designing Experiences & Digital Products.'}
+            </h2>
+          </div>
 
-      {/* 3. Windows 95 Bottom Taskbar */}
-      <RetroTaskbar
-        windows={windows}
-        activeWindowId={activeWindowId}
-        startMenuOpen={startMenuOpen}
-        language={language}
-        onToggleStartMenu={() => setStartMenuOpen((prev) => !prev)}
-        onWindowClick={handleTaskbarWindowClick}
-        onToggleLanguage={handleToggleLanguage}
-        isMuted={isMuted}
-        onToggleMute={handleToggleMute}
-      />
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+            
+            {/* LEFT COLUMN: Portrait & Direct Contact Card */}
+            <div className="lg:col-span-4 flex flex-col gap-6 lg:sticky lg:top-[100px]">
+              <div className="w-full aspect-[4/5] rounded-2xl overflow-hidden border border-neutral-800 p-2.5 bg-neutral-950 shadow-2xl group">
+                <img 
+                  src={profilePic} 
+                  alt="Raíssa Moriá portrait" 
+                  className="w-full h-full object-cover rounded-xl grayscale contrast-125 transition-all duration-700 group-hover:scale-[1.02] group-hover:grayscale-0"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
 
-      {/* 4. Shutdown / Reset Dialog */}
-      <RetroShutdownDialog
-        isOpen={shutdownOpen}
-        onClose={() => setShutdownOpen(false)}
-        onResetWindows={handleResetWindows}
-        onMaximizeMain={handleMaximizeMain}
-      />
+              <div className="flex flex-col gap-4 px-2">
+                <div>
+                  <h3 className="text-xl font-black uppercase tracking-tight text-white">Raíssa Moriá</h3>
+                  <p className="text-xs text-neutral-400 uppercase tracking-widest font-bold font-mono mt-1">
+                    UX/UI & Product Designer • AI & Vibe Coding
+                  </p>
+                </div>
+                
+                <div className="flex flex-col gap-2 text-xs text-neutral-400 pt-3 border-t border-neutral-800 font-mono">
+                  <div className="flex justify-between">
+                    <span className="text-neutral-500">TEL:</span>
+                    <a href="tel:+351935360284" className="text-white hover:text-neutral-300 font-bold">+351 935 360 284</a>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-neutral-500">{language === 'pt' ? 'LOCAL:' : 'LOCATION:'}</span>
+                    <span className="text-white font-bold">Lisboa & Porto, PT</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-neutral-500">EMAIL:</span>
+                    <a href="mailto:raissagfdhb@gmail.com" className="text-white hover:text-neutral-300 font-bold">raissagfdhb@gmail.com</a>
+                  </div>
+                </div>
+
+                {/* Social links */}
+                <div className="flex flex-col gap-2 pt-2">
+                  <a 
+                    href="https://github.com/raissamoria" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="optical-glass flex items-center justify-between p-3.5 rounded-xl transition-all text-xs font-bold text-white hover:text-white"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Github className="w-4 h-4" />
+                      <span>Github</span>
+                    </span>
+                    <span className="font-mono text-[9px] text-neutral-400">github.com/raissamoria</span>
+                  </a>
+                  <a 
+                    href="https://linkedin.com/in/raissamoria" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="optical-glass flex items-center justify-between p-3.5 rounded-xl transition-all text-xs font-bold text-white hover:text-white"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Linkedin className="w-4 h-4" />
+                      <span>LinkedIn</span>
+                    </span>
+                    <span className="font-mono text-[9px] text-neutral-400 font-medium">linkedin.com/in/raissamoria</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN: Biografia, Educação, Competências & Linha do Tempo */}
+            <div className="lg:col-span-8 flex flex-col gap-12">
+              
+              {/* Biografia text block */}
+              <div className="flex flex-col gap-5 text-neutral-300 text-sm md:text-base font-light leading-relaxed">
+                {language === 'pt' ? (
+                  <>
+                    <p className="text-lg md:text-xl text-white leading-relaxed tracking-tight font-normal">
+                      Sou <strong className="font-bold text-white">UX/UI Designer com foco em produtos e plataformas digitais</strong>, combinando pesquisa, estratégia, interface e tecnologia para criar experiências intuitivas e centradas no utilizador.
+                    </p>
+                    <p className="text-neutral-300">
+                      Trabalho desde a definição de requisitos e fluxos até à prototipagem e experimentação em front-end, utilizando ferramentas como <strong className="text-white font-medium">Figma, Cursor e Google AI Studio</strong>. Também acompanho a implementação dos projetos através de <strong className="text-white font-medium">GitHub, deployment na Vercel e configuração de domínios e DNS</strong>.
+                    </p>
+                    <p className="text-neutral-300">
+                      Atualmente, exploro cada vez mais a interseção entre <strong className="text-white font-medium">UX/UI, Product Design, IA e Vibe Coding</strong>, aproximando design e desenvolvimento para transformar ideias em produtos digitais funcionais.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-lg md:text-xl text-white leading-relaxed tracking-tight font-normal">
+                      I am a <strong className="font-bold text-white">UX/UI Designer focused on digital products and platforms</strong>, combining research, strategy, interface, and technology to build intuitive, user-centered experiences.
+                    </p>
+                    <p className="text-neutral-300">
+                      I work end-to-end from defining requirements and flows to prototyping and front-end experimentation using tools like <strong className="text-white font-medium">Figma, Cursor, and Google AI Studio</strong>. I also oversee project implementation via <strong className="text-white font-medium">GitHub, Vercel deployments, and domain/DNS configuration</strong>.
+                    </p>
+                    <p className="text-neutral-300">
+                      Currently, I increasingly explore the intersection of <strong className="text-white font-medium">UX/UI, Product Design, AI, and Vibe Coding</strong>, bridging design and development to turn ideas into functional digital products.
+                    </p>
+                  </>
+                )}
+              </div>
+
+              {/* Educação e Competências */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-neutral-800">
+                
+                {/* Educação */}
+                <div className="flex flex-col gap-4">
+                  <h4 className="text-xs font-mono uppercase tracking-widest font-black text-neutral-400">
+                    {language === 'pt' ? 'Educação' : 'Education'}
+                  </h4>
+                  <div className="flex flex-col gap-4">
+                    <div>
+                      <h5 className="text-xs font-mono font-bold text-white">
+                        {language === 'pt' ? 'Licenciatura em Design Gráfico e Multimédia' : 'BA in Graphic and Multimedia Design'}
+                      </h5>
+                      <p className="text-xs text-neutral-400">ESAD, Caldas da Rainha • 2021 – 2024</p>
+                    </div>
+                    <div>
+                      <h5 className="text-xs font-mono font-bold text-white">
+                        {language === 'pt' ? 'Curso de Fotografia Profissional' : 'Professional Photography Program'}
+                      </h5>
+                      <p className="text-xs text-neutral-400">Escola Profissional Magestil, Lisboa • 2013 – 2016</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Competências */}
+                <div className="flex flex-col gap-4">
+                  <h4 className="text-xs font-mono uppercase tracking-widest font-black text-neutral-400">
+                    {language === 'pt' ? 'Ferramentas & Competências' : 'Tools & Expertise'}
+                  </h4>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[
+                      "Figma", 
+                      "Cursor", 
+                      "Google AI Studio", 
+                      "Vercel Deployment", 
+                      "GitHub", 
+                      "DNS & Domínios", 
+                      "Vibe Coding", 
+                      "Product Design", 
+                      "UX Research & Flows", 
+                      "Prototipagem", 
+                      "Design Systems", 
+                      "Front-end / React", 
+                      "TypeScript / HTML / CSS", 
+                      "After Effects", 
+                      "Cinema 4D", 
+                      "Shaders & WebGL"
+                    ].map((skill) => (
+                      <span key={skill} className="optical-glass text-[10px] text-neutral-300 font-mono px-3 py-1.5 rounded-full uppercase tracking-wider hover:text-white cursor-default">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Experiência Profissional */}
+              <div className="flex flex-col gap-6 pt-8 border-t border-neutral-800">
+                <h4 className="text-xs font-mono uppercase tracking-widest font-black text-neutral-400">
+                  {language === 'pt' ? 'Experiência Profissional' : 'Professional Experience'}
+                </h4>
+                
+                <div className="flex flex-col gap-8">
+                  
+                  {/* Experience item 1: Ursoinvencivel / UNGRID App */}
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6">
+                    <div className="sm:col-span-4 font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-wider">
+                      {language === 'pt' ? '2025 — Presente' : '2025 — Present'}
+                    </div>
+                    <div className="sm:col-span-8 flex flex-col gap-2">
+                      <h5 className="text-sm font-black uppercase text-white tracking-tight">
+                        UX Designer — Ursoinvencível (UNGRID App)
+                      </h5>
+                      <p className="text-xs text-neutral-400 leading-relaxed font-light">
+                        {language === 'pt'
+                          ? 'Design de experiência de utilizador (UX) para a aplicação mobile UNGRID, focada na preparação, gestão de risco e resposta rápida perante catástrofes naturais. Estruturação de fluxos de navegação críticos, arquitetura de informação de emergência, testes de usabilidade e prototipagem interativa.'
+                          : 'UX Design for the UNGRID mobile application, focused on preparedness, risk management, and rapid response for natural disasters. Structuring critical user flows, emergency information architecture, usability testing, and interactive prototyping.'
+                        }
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Experience item 2 */}
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6">
+                    <div className="sm:col-span-4 font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-wider">
+                      {language === 'pt' ? 'Dez 2025 — Presente' : 'Dec 2025 — Present'}
+                    </div>
+                    <div className="sm:col-span-8 flex flex-col gap-2">
+                      <h5 className="text-sm font-black uppercase text-white tracking-tight">
+                        UX/UI Designer — VOQIN’ (futureLabs)
+                      </h5>
+                      <p className="text-xs text-neutral-400 leading-relaxed font-light">
+                        {language === 'pt'
+                          ? 'Liderança de processos de Design Thinking, UX e UI para a criação de plataformas digitais de suporte corporativo internas e aceleração de fluxos de eventos. Desenvolvimento de websites interativos na rede Cvent, organizando jornadas de usuário e fluxos comunicacionais eficazes.'
+                          : 'Leading Design Thinking, UX and UI processes for corporate digital support platforms and interactive event management solutions. Designing intuitive user journeys and clear visual systems.'
+                        }
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Experience item 2 */}
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6">
+                    <div className="sm:col-span-4 font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-wider">
+                      {language === 'pt' ? 'Abr 2025' : 'Apr 2025'}
+                    </div>
+                    <div className="sm:col-span-8 flex flex-col gap-2">
+                      <h5 className="text-sm font-black uppercase text-white tracking-tight">
+                        Photography Coordinator — SEEDS (Iceland)
+                      </h5>
+                      <p className="text-xs text-neutral-400 leading-relaxed font-light">
+                        {language === 'pt'
+                          ? 'Coordenação de workshops de fotografia e audiovisual para voluntários internacionais. Gestão e polimento de presença digital através da concepção de layouts no Figma e animações em vídeo.'
+                          : 'Coordination of photography and audiovisual workshops for international volunteers. Digital presence development through Figma layouts and motion video assets.'
+                        }
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Experience item 3 */}
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6">
+                    <div className="sm:col-span-4 font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-wider">
+                      2023 — 2024
+                    </div>
+                    <div className="sm:col-span-8 flex flex-col gap-2">
+                      <h5 className="text-sm font-black uppercase text-white tracking-tight">
+                        Video Editor — Six Seconds (California)
+                      </h5>
+                      <p className="text-xs text-neutral-400 leading-relaxed font-light">
+                        {language === 'pt'
+                          ? 'Edição e finalização de vídeos educativos e de marketing promocional voltados para campanhas de redes sociais, atuando em forte sinergia com equipes de criação globais.'
+                          : 'Editing and post-production of educational and promotional media for social media campaigns, collaborating across international creative teams.'
+                        }
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Experience item 4 */}
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-6">
+                    <div className="sm:col-span-4 font-mono text-[11px] text-neutral-400 font-bold uppercase tracking-wider">
+                      2022 — 2024
+                    </div>
+                    <div className="sm:col-span-8 flex flex-col gap-2">
+                      <h5 className="text-sm font-black uppercase text-white tracking-tight">
+                        Multimedia Volunteer — ESAD (Portugal)
+                      </h5>
+                      <p className="text-xs text-neutral-400 leading-relaxed font-light">
+                        {language === 'pt'
+                          ? 'Apoio ao laboratório audiovisual de design gráfico e multimédia, auxiliando na execução prática de instalações interativas, fotografia experimental e edição de motion graphics.'
+                          : 'Audiovisual lab assistant in graphic and multimedia design, supporting interactive installations, experimental photography, and motion graphics.'
+                        }
+                      </p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* Clean Monochromatic Marquee Strip */}
+      <div className="w-full py-4 bg-black border-b border-neutral-900 text-neutral-400">
+        <Marquee text="• RAÍSSA MORIÁ • 3D TUNNEL GALLERY • EXPERIMENTAL DESIGN & CODE • LISBOA & PORTO •" speed={16} />
+      </div>
+
+      {/* 6. Contact Footer with generous monochromatic dark theme */}
+      <footer id="contacto" className="bg-black text-white py-24 px-6 md:px-12 xl:px-16 border-t border-neutral-900">
+        <div className="max-w-[1720px] mx-auto flex flex-col gap-16">
+          
+          <div className="flex flex-col gap-4">
+            <span className="text-[10px] text-neutral-500 font-mono uppercase tracking-[0.25em] font-bold">
+              03 / {language === 'pt' ? 'CONTACTO DIRECTO' : 'DIRECT INQUIRY'}
+            </span>
+            <h2 className="text-4xl md:text-6xl font-light uppercase tracking-tight leading-none text-neutral-200">
+              {language === 'pt' ? (
+                <>
+                  Inicie uma <br />
+                  <span className="text-neutral-500">nova conversa</span>.
+                </>
+              ) : (
+                <>
+                  Let&apos;s start a <br />
+                  <span className="text-neutral-500">new conversation</span>.
+                </>
+              )}
+            </h2>
+          </div>
+
+          <div>
+            <a 
+              href="mailto:raissagfdhb@gmail.com" 
+              className="text-2xl md:text-5xl font-mono text-neutral-200 hover:text-white transition-colors inline-block break-all border-b border-white/10 pb-2 hover:border-white"
+            >
+              raissagfdhb@gmail.com
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 pt-16 border-t border-neutral-900 text-xs text-neutral-400 font-medium">
+            <div>
+              <p className="text-neutral-500 uppercase tracking-widest mb-1.5 text-[10px] font-mono">
+                {language === 'pt' ? 'LOCALIZAÇÃO ATUAL' : 'CURRENT LOCATION'}
+              </p>
+              <p className="text-white text-sm">Portugal • Lisboa & Porto</p>
+            </div>
+            <div>
+              <p className="text-neutral-500 uppercase tracking-widest mb-1.5 text-[10px] font-mono">
+                {language === 'pt' ? 'ESPECIALIZAÇÕES' : 'EXPERTISE'}
+              </p>
+              <p className="text-white text-sm">UX/UI, Product Design, IA & Vibe Coding, Prototipagem & Front-end</p>
+            </div>
+            <div className="flex flex-col md:items-end justify-end">
+              <p className="text-[10px] tracking-widest uppercase text-neutral-600 font-mono">
+                © 2026 Raíssa Moriá • ALL RIGHTS RESERVED
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </footer>
+
     </div>
   );
 }

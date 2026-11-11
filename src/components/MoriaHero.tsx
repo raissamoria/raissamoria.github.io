@@ -5,7 +5,6 @@ import { GlassOrbPhysicsEngine, DEFAULT_PHYSICS_CONFIG } from './GlassOrbPhysics
 import { GlassOrbData } from '../types';
 import { OpticalGlassButton, OpticalGlassPill } from './OpticalGlass';
 import { ArrowUpRight, Layers, Compass } from 'lucide-react';
-import { MORIA_SURF_PATH_ALL } from './MoriaSurfLettering';
 
 interface MoriaHeroProps {
   language?: 'pt' | 'en';
@@ -88,7 +87,22 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
   const [orbs, setOrbs] = useState<GlassOrbData[]>([]);
   const [draggedOrbId, setDraggedOrbId] = useState<number | null>(null);
 
-  // Render high-contrast typography and subtle grid coordinates onto the optical refraction reference canvas
+  const letteringImgRef = useRef<HTMLImageElement | null>(null);
+  const currentRotationRef = useRef({ x: 0, y: 0 });
+
+  // Preload approved 3D lettering asset for optical refraction canvas
+  useEffect(() => {
+    const img = new Image();
+    img.src = '/moria-3d-lettering.png';
+    img.onload = () => {
+      letteringImgRef.current = img;
+      if (dimensions.width > 0 && dimensions.height > 0) {
+        renderTextBuffer(dimensions.width, dimensions.height);
+      }
+    };
+  }, [dimensions.width, dimensions.height]);
+
+  // Render high-contrast typography, 3D lettering, and subtle grid coordinates onto the optical refraction reference canvas
   const renderTextBuffer = useCallback((w: number, h: number) => {
     const canvas = textCanvasRef.current;
     if (!canvas) return;
@@ -128,33 +142,51 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
     ctx.textBaseline = 'middle';
     ctx.fillText('RAÍSSA MORIÁ // UX/UI & PRODUCT DESIGN', w / 2, h / 2 - Math.min(w * 0.12, 140));
 
-    // High-resolution surf MORIA display text onto refraction buffer
-    ctx.save();
-    const targetW = Math.min(w * 0.88, 1200);
-    const targetH = targetW * (360 / 1200);
-    const startX = (w - targetW) / 2;
-    const startY = (h - targetH) / 2 - 10;
+    // High-resolution approved 3D black glossy lettering onto refraction buffer with 3D rotation projection
+    const img = letteringImgRef.current;
+    if (img && img.complete && img.naturalWidth > 0) {
+      const maxW = Math.min(w * 0.76, 1220);
+      const aspect = img.naturalWidth / img.naturalHeight;
+      const imgW = maxW;
+      const imgH = maxW / aspect;
 
-    ctx.translate(startX, startY);
-    ctx.scale(targetW / 1200, targetH / 360);
-    ctx.fillStyle = '#FFFFFF';
-    try {
-      const path2d = new Path2D(MORIA_SURF_PATH_ALL);
-      ctx.fill(path2d, 'evenodd');
-    } catch {
+      const rx = currentRotationRef.current.x * (Math.PI / 180);
+      const ry = currentRotationRef.current.y * (Math.PI / 180);
+
+      ctx.save();
+      ctx.translate(w / 2, h / 2);
+      ctx.transform(
+        Math.cos(ry),
+        Math.sin(rx) * 0.25,
+        -Math.sin(ry) * 0.15,
+        Math.cos(rx),
+        0,
+        0
+      );
+      ctx.drawImage(img, -imgW / 2, -imgH / 2, imgW, imgH);
+      ctx.restore();
+    } else {
       const fontSize = Math.min(w * 0.21, h * 0.44);
-      ctx.font = `900 ${fontSize}px sans-serif`;
+      ctx.font = `900 ${fontSize}px Inter, "Plus Jakarta Sans", system-ui, -apple-system, sans-serif`;
+      ctx.fillStyle = '#FFFFFF';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('MORIA', 600, 180);
+      ctx.letterSpacing = '-0.045em';
+      ctx.fillText('MORIA', w / 2, h / 2);
     }
-    ctx.restore();
 
     // Technical metadata below text
     ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
     ctx.font = '600 11px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace';
     ctx.fillText('OPTICAL LIQUID SURFACE // 2026 // LISBOA & PORTO', w / 2, h / 2 + Math.min(w * 0.12, 140));
   }, []);
+
+  const handleRotateChange = useCallback((rx: number, ry: number) => {
+    currentRotationRef.current = { x: rx, y: ry };
+    if (dimensions.width > 0 && dimensions.height > 0) {
+      renderTextBuffer(dimensions.width, dimensions.height);
+    }
+  }, [dimensions.width, dimensions.height, renderTextBuffer]);
 
   // Initialize orbs with responsive sizing
   const initializeOrbs = useCallback((w: number, h: number) => {
@@ -307,11 +339,15 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
         aria-hidden="true"
       />
 
-      {/* 4. Large 3D Surf-Inspired Background Title "MORIA" */}
-      <BackgroundTitle />
+      {/* 4. Large Crisp Interactive 3D Lettering "MORIA" */}
+      <BackgroundTitle 
+        imageSrc="/moria-3d-lettering.png" 
+        onRotateChange={handleRotateChange}
+        language={language}
+      />
 
       {/* 5. FLOATING CIRCULAR OPTICAL GLASS BALLS (Round, transparent, interactive) */}
-      <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
         {orbs.map((orb) => (
           <div key={orb.id} className="pointer-events-auto">
             <GlassOrb
@@ -327,20 +363,22 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
       </div>
 
       {/* 6. TOP METADATA & STATUS BAR */}
-      <div className="relative z-30 w-full max-w-[1720px] mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-2 pointer-events-none">
+      <div className="relative z-20 w-full max-w-[1720px] mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-2 pointer-events-none">
         {/* Availability Status Badge */}
         <div className="pointer-events-auto">
           <OpticalGlassPill>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-white font-bold">
-              {language === 'pt' ? 'Disponível para Projetos Q3/Q4' : 'Available for Q3/Q4 Projects'}
+            <span className="text-white font-bold tracking-wider">
+              {language === 'pt' ? 'DISPONÍVEL PARA PROJETOS Q3/Q4' : 'AVAILABLE FOR Q3/Q4 PROJECTS'}
             </span>
             <span className="text-white/20">•</span>
-            <span className="text-neutral-400">Lisboa & Porto</span>
+            <span className="text-neutral-400 tracking-wider">
+              {language === 'pt' ? 'LISBOA & PORTO' : 'LISBON & PORTO'}
+            </span>
           </OpticalGlassPill>
         </div>
 
-        <div className="hidden sm:flex items-center gap-2 font-mono text-[10px] text-neutral-500 uppercase tracking-widest pointer-events-auto">
+        <div className="hidden sm:flex items-center gap-2 font-mono text-[10px] text-neutral-400 uppercase tracking-widest pointer-events-auto">
           <span>PORTFOLIO // SELECTED WORKS</span>
           <span className="text-white/20">•</span>
           <span className="text-neutral-400">2026</span>
@@ -348,12 +386,12 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
       </div>
 
       {/* 7. HERO BOTTOM DOCK & ACTION BUTTONS */}
-      <div className="relative z-30 w-full max-w-[1720px] mx-auto flex flex-col md:flex-row justify-between items-end md:items-center gap-6 pb-2 pointer-events-none">
+      <div className="relative z-20 w-full max-w-[1720px] mx-auto flex flex-col md:flex-row justify-between items-end md:items-center gap-6 pb-2 pointer-events-none">
         
         {/* Editorial Subtitle & Role */}
         <div className="flex flex-col gap-1 max-w-xl pointer-events-auto">
           <div className="flex items-center gap-2 font-mono text-[10px] text-neutral-400 uppercase tracking-[0.2em]">
-            <Compass className="w-3.5 h-3.5 text-neutral-400" />
+            <span className="text-neutral-400 text-xs">⎊</span>
             <span>{language === 'pt' ? 'DESIGN DE PRODUTO & SISTEMAS DIGITAIS' : 'PRODUCT DESIGN & DIGITAL SYSTEMS'}</span>
           </div>
           <p className="text-sm md:text-base text-neutral-300 font-light leading-snug">
@@ -376,7 +414,7 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
             onClick={handleScrollToProjects}
             className="shadow-[0_0_20px_rgba(255,255,255,0.06)]"
           >
-            <span>{language === 'pt' ? 'Ver Trabalhos' : 'Explore Works'}</span>
+            <span>{language === 'pt' ? 'VER TRABALHOS' : 'EXPLORE WORKS'}</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </OpticalGlassButton>
 
@@ -384,24 +422,21 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
             href="#projects/nipon-spa"
             className="hidden sm:inline-flex"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span>Nipon Spa</span>
+            <span>NIPON SPA</span>
           </OpticalGlassButton>
 
           <OpticalGlassButton
             href="#projects/sue-app"
             className="hidden sm:inline-flex"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
-            <span>SUE App</span>
+            <span>SUE APP</span>
           </OpticalGlassButton>
 
           <OpticalGlassButton
             href="#projects/plataforma-helpdesk"
             className="hidden sm:inline-flex"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6]" />
-            <span>{language === 'pt' ? 'Plataforma de Helpdesk' : 'Helpdesk Platform'}</span>
+            <span>{language === 'pt' ? 'PLATAFORMA DE HELPDESK' : 'HELPDESK PLATFORM'}</span>
           </OpticalGlassButton>
         </div>
 

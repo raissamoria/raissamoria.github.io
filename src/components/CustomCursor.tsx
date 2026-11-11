@@ -80,9 +80,9 @@ export default function CustomCursor() {
         }
       `}</style>
 
-      {/* Central mustard/warm dot */}
+      {/* Central optical precision dot with blend inversion */}
       <motion.div
-        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-[#E8AF30] pointer-events-none z-[99999] shadow-sm"
+        className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full bg-white pointer-events-none z-[99999] shadow-xs mix-blend-difference"
         style={{
           x: mouseX,
           y: mouseY,
@@ -91,9 +91,9 @@ export default function CustomCursor() {
         }}
       />
 
-      {/* Outer paper-ring cursor with slight organic lag */}
+      {/* Outer subtle optical ring with blend inversion */}
       <motion.div
-        className="custom-cursor fixed top-0 left-0 rounded-full pointer-events-none z-[99998] border border-[#F8F6F0]/60 bg-[#F8F6F0]/[0.08]"
+        className="custom-cursor fixed top-0 left-0 rounded-full pointer-events-none z-[99998] border border-white/80 bg-white/10 backdrop-blur-[1px] mix-blend-difference"
         style={{
           x: cursorX,
           y: cursorY,
@@ -102,7 +102,7 @@ export default function CustomCursor() {
           width: size,
           height: size,
           boxShadow: isHovered
-            ? "0 0 14px rgba(232, 175, 48, 0.45), inset 0 0 6px rgba(248, 246, 240, 0.4)"
+            ? "0 0 16px rgba(255, 255, 255, 0.4), inset 0 0 6px rgba(255, 255, 255, 0.3)"
             : "0 0 8px rgba(0, 0, 0, 0.2)",
         }}
         transition={{

@@ -128,15 +128,30 @@ export const GlassOrb: React.FC<GlassOrbProps> = ({
     ctx.globalCompositeOperation = 'source-over';
     ctx.globalAlpha = 1.0;
 
-    // 2. Optical Lens Radial Sheen: Center is completely transparent and colorless, edge has delicate glass sheen
+    // 2. Optical Glass Radial Depth / Dark Crystal Tint (matching physical glass spheres in screenshot)
+    const sphereDepth = ctx.createRadialGradient(
+      radius * 0.45, radius * 0.4, radius * 0.05,
+      radius, radius, radius
+    );
+    sphereDepth.addColorStop(0, 'rgba(255, 255, 255, 0.04)');
+    sphereDepth.addColorStop(0.5, 'rgba(10, 10, 14, 0.14)');
+    sphereDepth.addColorStop(0.85, 'rgba(5, 5, 8, 0.42)');
+    sphereDepth.addColorStop(1, 'rgba(0, 0, 0, 0.65)');
+
+    ctx.fillStyle = sphereDepth;
+    ctx.beginPath();
+    ctx.arc(radius, radius, radius, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 3. Optical Lens Radial Sheen: edge has delicate glass sheen
     const rimGradient = ctx.createRadialGradient(
       radius, radius, radius * 0.72,
       radius, radius, radius
     );
     rimGradient.addColorStop(0, 'rgba(255, 255, 255, 0)');
-    rimGradient.addColorStop(0.7, 'rgba(255, 255, 255, 0.015)');
-    rimGradient.addColorStop(0.95, 'rgba(255, 255, 255, 0.06)');
-    rimGradient.addColorStop(1, 'rgba(255, 255, 255, 0.12)');
+    rimGradient.addColorStop(0.7, 'rgba(255, 255, 255, 0.02)');
+    rimGradient.addColorStop(0.95, 'rgba(255, 255, 255, 0.08)');
+    rimGradient.addColorStop(1, 'rgba(255, 255, 255, 0.18)');
 
     ctx.fillStyle = rimGradient;
     ctx.beginPath();
@@ -183,11 +198,11 @@ export const GlassOrb: React.FC<GlassOrbProps> = ({
       <div 
         className="absolute inset-0 rounded-full pointer-events-none overflow-hidden"
         style={{
-          border: '1px solid rgba(255, 255, 255, 0.22)',
+          border: '1px solid rgba(255, 255, 255, 0.24)',
           boxShadow: `
-            inset 0 1px 1px 0 rgba(255, 255, 255, 0.45),
-            inset 0 -1px 1px 0 rgba(255, 255, 255, 0.2),
-            0 8px 32px rgba(0, 0, 0, 0.3)
+            inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.6),
+            inset 0 -1px 1px 0 rgba(255, 255, 255, 0.25),
+            0 8px 32px rgba(0, 0, 0, 0.35)
           `,
         }}
       >
@@ -211,22 +226,22 @@ export const GlassOrb: React.FC<GlassOrbProps> = ({
           }}
         />
 
-        {/* Gentle Crescent Highlight (Top Edge Reflection) */}
+        {/* Crisp Top Crescent Specular Highlight */}
         <div 
-          className="absolute top-[3%] left-[16%] w-[68%] h-[28%] rounded-full pointer-events-none"
+          className="absolute top-[2%] left-[14%] w-[72%] h-[30%] rounded-full pointer-events-none"
           style={{
-            background: 'radial-gradient(ellipse at center top, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.2) 40%, transparent 75%)',
-            transform: 'rotate(-12deg)',
-            filter: 'blur(0.5px)',
+            background: 'radial-gradient(ellipse at center top, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.25) 35%, transparent 72%)',
+            transform: 'rotate(-10deg)',
+            filter: 'blur(0.3px)',
           }}
         />
 
         {/* Delicate Secondary Glint (Bottom Rim bounce) */}
         <div 
-          className="absolute bottom-[4%] right-[22%] w-[50%] h-[16%] rounded-full pointer-events-none opacity-60"
+          className="absolute bottom-[3%] right-[20%] w-[54%] h-[18%] rounded-full pointer-events-none opacity-60"
           style={{
-            background: 'radial-gradient(ellipse at center bottom, rgba(255, 255, 255, 0.4) 0%, transparent 75%)',
-            transform: 'rotate(12deg)',
+            background: 'radial-gradient(ellipse at center bottom, rgba(255, 255, 255, 0.45) 0%, transparent 75%)',
+            transform: 'rotate(10deg)',
           }}
         />
 

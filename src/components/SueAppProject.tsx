@@ -18,10 +18,12 @@ import {
   Shield,
   FileText,
   User,
-  X
+  X,
+  ArrowUpRight
 } from 'lucide-react';
 import { Language } from '../types';
-import { RetroProjectLayout, RetroProjectTab } from './retro/RetroProjectLayout';
+import { ModernProjectLayout, ProjectTabItem } from './ModernProjectLayout';
+import { OpticalGlassButton, OpticalGlassPill } from './OpticalGlass';
 
 // @ts-ignore
 import slide1 from '../assets/images/project-sue/1.png';
@@ -143,10 +145,10 @@ const SLIDES: SlideItem[] = [
     id: 8,
     image: slide8,
     fallback: '/project-sue/8.png',
-    titlePt: '08. Design System & Guia de Estilo Visual',
-    titleEn: '08. Design System & Visual Styleguide',
-    categoryPt: 'SISTEMA DE DESIGN & TOKENS',
-    categoryEn: 'DESIGN TOKENS & UI SYSTEM',
+    titlePt: '08. Design System & Guia de Estilo',
+    titleEn: '08. Design System & Style Guide',
+    categoryPt: 'SISTEMAS VISUAIS',
+    categoryEn: 'DESIGN TOKENS & COMPONENTS',
     descPt: 'Tipografia (Inter), paleta cromática com Azul Confiança (#0052CC) e Amarelo Calor, raio de curvatura 16px e ícones consistentes.',
     descEn: 'Typography (Inter), Trust Blue (#0052CC) & Warm Gold palette, 16px corner radius tokens, and accessible icon sets.',
   },
@@ -181,12 +183,12 @@ export const SueAppProject: React.FC<SueAppProjectProps> = ({
   const isPt = language === 'pt';
   const currentSlide = SLIDES[currentSlideIndex];
 
-  // Carousel autoplay logic (10s)
+  // Carousel autoplay logic (8s)
   useEffect(() => {
     if (!isPlaying) return;
     const interval = setInterval(() => {
       setCurrentSlideIndex((prev) => (prev + 1) % SLIDES.length);
-    }, 10000);
+    }, 8000);
     return () => clearInterval(interval);
   }, [isPlaying]);
 
@@ -196,19 +198,6 @@ export const SueAppProject: React.FC<SueAppProjectProps> = ({
 
   const goToPrevSlide = useCallback(() => {
     setCurrentSlideIndex((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
-  }, []);
-
-  // Video autoplay check on mount
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // Autoplay with muted is allowed by browsers
-        if (videoRef.current) {
-          videoRef.current.muted = true;
-          videoRef.current.play().catch(() => {});
-        }
-      });
-    }
   }, []);
 
   const toggleVideoPlay = () => {
@@ -236,30 +225,32 @@ export const SueAppProject: React.FC<SueAppProjectProps> = ({
   };
 
   // =========================================================================
-  // TAB 1: OVERVIEW.TXT
+  // TAB 1: VISÃO GERAL & SLIDESHOW
   // =========================================================================
   const OverviewTab = (
-    <div className="flex flex-col gap-8 text-[#1A1A1A]">
-      <div className="bg-[#FFFFEE] border border-[#d0c8a8] p-4 sm:p-6 shadow-sm rounded-[2px]">
-        <div className="flex items-center gap-2 border-b border-[#e0d8b8] pb-2 mb-4 font-mono text-xs text-neutral-600">
-          <span className="font-bold text-[#000080]">C:\DOCUMENTS\PROJECT_SUE\OVERVIEW.TXT</span>
-          <span className="text-neutral-400">|</span>
-          <span>9 SLIDES • APRESENTAÇÃO COMPLETA</span>
+    <div className="flex flex-col gap-8">
+      {/* Editorial Overview Card */}
+      <div className="optical-glass p-6 sm:p-10 rounded-2xl flex flex-col gap-6">
+        <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-400">
+            <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
+            <span>01 / {isPt ? 'VISÃO GERAL DO PROJETO' : 'PROJECT OVERVIEW'}</span>
+          </div>
+          <span className="font-mono text-[10px] text-neutral-500 uppercase tracking-widest">
+            9 SLIDES • APRESENTAÇÃO COMPLETA
+          </span>
         </div>
 
-        <div className="flex flex-col gap-3 font-sans">
-          <span className="font-mono text-xs font-bold text-[#000080] uppercase tracking-wider">
-            {isPt ? 'VISÃO GERAL DO PROJETO' : 'PROJECT OVERVIEW'}
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#073859]">
-            {isPt ? 'SUE — Serviços de União a Emigração' : 'SUE — Migration Facility Mobile App'}
+        <div className="flex flex-col gap-4">
+          <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-white leading-tight">
+            SUE — Serviços de União a Emigração
           </h2>
-          <p className="text-base sm:text-lg text-neutral-800 leading-relaxed">
+          <p className="text-base sm:text-lg text-neutral-200 font-light leading-relaxed">
             {isPt 
               ? 'Uma aplicação móvel concebida para simplificar a jornada de regularização de imigrantes e emigrantes, transformando processos burocráticos complexos numa experiência transparente, intuitiva e humana.'
               : 'A mobile application designed to simplify the migration and residence regularisation journey, transforming opaque bureaucratic hurdles into a transparent, empathetic digital experience.'}
           </p>
-          <p className="text-sm sm:text-base text-neutral-700 leading-relaxed">
+          <p className="text-sm sm:text-base text-neutral-400 font-light leading-relaxed">
             {isPt
               ? 'O projeto aborda as principais dificuldades sentidas pela comunidade migrante: terminologia jurídica impenetrável, falta de acompanhamento em tempo real do Título de Residência e ausência de apoio humanizado durante a transição.'
               : 'The project addresses the core friction points encountered by international migrants: impenetrable legal jargon, total absence of real-time permit status tracking, and lack of guided human support.'}
@@ -268,299 +259,279 @@ export const SueAppProject: React.FC<SueAppProjectProps> = ({
       </div>
 
       {/* Quick Specs Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
-        <div className="bg-white border-2 border-[#808080] p-4 flex flex-col gap-1">
-          <span className="text-neutral-500 uppercase text-[10px]">PLATAFORMAS</span>
-          <span className="text-base font-bold text-[#073859]">iOS & Android</span>
-          <span className="text-neutral-600 font-sans text-xs">App Store / Google Play</span>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="optical-glass p-6 rounded-2xl flex flex-col gap-2">
+          <span className="font-mono text-[9px] uppercase tracking-widest text-neutral-500">PLATAFORMAS</span>
+          <span className="text-lg font-bold text-white">iOS & Android</span>
+          <span className="text-neutral-400 text-xs font-light">App Store & Google Play</span>
         </div>
 
-        <div className="bg-white border-2 border-[#808080] p-4 flex flex-col gap-1">
-          <span className="text-neutral-500 uppercase text-[10px]">O MEU PAPEL</span>
-          <span className="text-base font-bold text-[#000080]">UX/UI Designer</span>
-          <span className="text-neutral-600 font-sans text-xs">Research, Wireframing & UI</span>
+        <div className="optical-glass p-6 rounded-2xl flex flex-col gap-2">
+          <span className="font-mono text-[9px] uppercase tracking-widest text-neutral-500">O MEU PAPEL</span>
+          <span className="text-lg font-bold text-white">UX/UI Designer</span>
+          <span className="text-neutral-400 text-xs font-light">Research, Wireframing & Design System</span>
         </div>
 
-        <div className="bg-white border-2 border-[#808080] p-4 flex flex-col gap-1">
-          <span className="text-neutral-500 uppercase text-[10px]">FERRAMENTAS</span>
-          <span className="text-base font-bold text-emerald-800">Figma, Miro, Forms</span>
-          <span className="text-neutral-600 font-sans text-xs">Design System & Usability Tests</span>
+        <div className="optical-glass p-6 rounded-2xl flex flex-col gap-2">
+          <span className="font-mono text-[9px] uppercase tracking-widest text-neutral-500">FERRAMENTAS</span>
+          <span className="text-lg font-bold text-sky-400">Figma, Miro, Forms</span>
+          <span className="text-neutral-400 text-xs font-light">Design Tokens & Usability Testing</span>
         </div>
       </div>
 
-      {/* Cover Slide Preview Card */}
-      <div className="flex flex-col gap-2">
+      {/* 9-Slide Interactive Carousel Viewer */}
+      <div className="optical-glass p-6 sm:p-8 rounded-2xl flex flex-col gap-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+          <div>
+            <span className="font-mono text-[9px] uppercase tracking-widest text-sky-400 font-bold block">
+              APRESENTAÇÃO COMPLETA • SLIDE {currentSlide.id} DE {SLIDES.length}
+            </span>
+            <h3 className="text-xl font-bold uppercase text-white mt-1">
+              {isPt ? currentSlide.titlePt : currentSlide.titleEn}
+            </h3>
+          </div>
+
+          {/* Carousel Controls */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsPlaying(!isPlaying)}
+              className="optical-glass px-3 py-1.5 rounded-full text-xs font-mono text-neutral-300 hover:text-white flex items-center gap-1.5 cursor-pointer"
+            >
+              {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+              <span>{isPlaying ? (isPt ? 'Pausar' : 'Pause') : (isPt ? 'Auto' : 'Play')}</span>
+            </button>
+
+            <button
+              onClick={goToPrevSlide}
+              className="optical-glass p-2 rounded-full text-white hover:bg-white/20 transition-all cursor-pointer"
+              title="Anterior"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={goToNextSlide}
+              className="optical-glass p-2 rounded-full text-white hover:bg-white/20 transition-all cursor-pointer"
+              title="Seguinte"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Current Active Slide in High Resolution */}
         <div 
-          onClick={() => setExpandedImage(slide1)}
-          className="group cursor-pointer bg-neutral-950 border-2 border-[#808080] overflow-hidden rounded-[2px] relative aspect-[16/9] shadow-md"
+          onClick={() => setExpandedImage(currentSlide.image)}
+          className="group cursor-pointer bg-neutral-950 border border-neutral-800 overflow-hidden rounded-2xl relative aspect-[16/9] shadow-2xl transition-all duration-300 hover:border-neutral-600"
         >
           <img 
-            src={slide1} 
-            alt="SUE Cover Slide" 
-            className="w-full h-full object-cover transition-transform group-hover:scale-[1.01]"
+            src={currentSlide.image} 
+            alt={currentSlide.titlePt} 
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.01]"
           />
-          <div className="absolute bottom-3 right-3 bg-black/80 text-white font-mono text-xs px-3 py-1.5 flex items-center gap-2">
-            <Maximize2 className="w-3.5 h-3.5 text-[#3B82F6]" />
-            <span>{isPt ? 'Ampliar Capa' : 'Expand Cover'}</span>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+            <p className="text-xs sm:text-sm text-neutral-300 font-light max-w-xl">
+              {isPt ? currentSlide.descPt : currentSlide.descEn}
+            </p>
+            <div className="optical-glass px-3 py-1.5 rounded-full text-white font-mono text-xs flex items-center gap-2 shrink-0">
+              <Maximize2 className="w-3.5 h-3.5 text-white" />
+              <span>{isPt ? 'Expandir Slide' : 'Expand'}</span>
+            </div>
           </div>
+        </div>
+
+        {/* Thumbnails Navigator */}
+        <div className="grid grid-cols-3 sm:grid-cols-9 gap-2 pt-2">
+          {SLIDES.map((s, idx) => {
+            const isSelected = idx === currentSlideIndex;
+            return (
+              <button
+                key={s.id}
+                onClick={() => {
+                  setCurrentSlideIndex(idx);
+                  setIsPlaying(false);
+                }}
+                className={`group relative aspect-[16/9] rounded-lg overflow-hidden border transition-all cursor-pointer ${
+                  isSelected 
+                    ? 'border-white ring-2 ring-white/50 scale-105 z-10' 
+                    : 'border-white/10 opacity-60 hover:opacity-100 hover:border-white/40'
+                }`}
+              >
+                <img src={s.image} alt={s.titlePt} className="w-full h-full object-cover" />
+                <span className="absolute bottom-1 right-1 font-mono text-[8px] bg-black/80 px-1 rounded text-white">
+                  0{s.id}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>
   );
 
   // =========================================================================
-  // TAB 2: RESEARCH.EXE
+  // TAB 2: PESQUISA COM UTILIZADORES
   // =========================================================================
   const ResearchTab = (
-    <div className="flex flex-col gap-8 text-[#1A1A1A]">
-      <div className="bg-[#F0F4F8] border border-[#B0C4DE] p-4 sm:p-6 shadow-sm">
-        <div className="flex items-center gap-2 font-mono text-xs text-[#000080] font-bold mb-2">
-          <span>[ 🔍 DESCOBERTA COM UTILIZADORES: 12 ENTREVISTAS ]</span>
+    <div className="flex flex-col gap-8">
+      <div className="optical-glass p-6 sm:p-10 rounded-2xl flex flex-col gap-6">
+        <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-400 border-b border-white/10 pb-4">
+          <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
+          <span>02 / {isPt ? 'PESQUISA COM UTILIZADORES & DESCOBERTA' : 'USER RESEARCH & DISCOVERY'}</span>
         </div>
-        <h3 className="text-xl sm:text-2xl font-bold text-[#073859] mb-3">
-          {isPt ? 'Pesquisa Empática com Comunidades Migrantes' : 'Empathetic Research with Migrant Communities'}
+        <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
+          {isPt ? '12 Entrevistas em Profundidade com Migrantes' : '12 In-Depth Interviews with Migrants'}
         </h3>
-        <p className="text-sm sm:text-base text-neutral-700 leading-relaxed font-sans">
+        <p className="text-base text-neutral-300 leading-relaxed font-light">
           {isPt 
-            ? 'Foram realizadas 12 entrevistas aprofundadas com cidadãos estrangeiros em processo de legalização em Portugal, complementadas por um inquérito quantitativo através do Google Forms.'
-            : 'We conducted 12 in-depth interviews with foreign nationals undergoing legalisation procedures in Portugal, backed by a quantitative Google Forms survey.'}
+            ? 'A fase de pesquisa combinou inquéritos quantitativos e 12 entrevistas semiestruturadas com cidadãos imigrantes em Portugal, identificando as maiores dores na interação com os serviços de regularização pública.'
+            : 'The discovery phase merged quantitative surveys with 12 semi-structured interviews with foreign residents in Portugal, mapping the exact friction points experienced with public immigration bodies.'}
         </p>
       </div>
 
-      {/* Research Slides Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div 
           onClick={() => setExpandedImage(slide3)}
-          className="group cursor-pointer bg-neutral-900 border-2 border-[#808080] overflow-hidden rounded-[2px] relative aspect-[4/3]"
+          className="group cursor-pointer bg-neutral-950 border border-neutral-800 overflow-hidden rounded-2xl relative aspect-[16/9] shadow-xl hover:border-neutral-600 transition-all"
         >
-          <img 
-            src={slide3} 
-            alt="Research Survey Slide" 
-            className="w-full h-full object-cover transition-transform group-hover:scale-105"
-          />
-          <div className="absolute bottom-2 right-2 bg-black/80 text-white font-mono text-[10px] px-2 py-1 flex items-center gap-1.5">
-            <Maximize2 className="w-3 h-3 text-[#3B82F6]" />
-            <span>{isPt ? 'Slide 03: Pesquisa Quantitativa' : 'Slide 03: Survey Insights'}</span>
+          <img src={slide3} alt="User Research Data" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+            <span className="text-xs font-mono uppercase tracking-wider text-white font-bold">
+              {isPt ? 'Dados da Pesquisa Quantitativa' : 'Quantitative Survey Results'}
+            </span>
+            <div className="optical-glass p-2 rounded-full text-white">
+              <Maximize2 className="w-3.5 h-3.5" />
+            </div>
           </div>
         </div>
 
         <div 
           onClick={() => setExpandedImage(slide4)}
-          className="group cursor-pointer bg-neutral-900 border-2 border-[#808080] overflow-hidden rounded-[2px] relative aspect-[4/3]"
+          className="group cursor-pointer bg-neutral-950 border border-neutral-800 overflow-hidden rounded-2xl relative aspect-[16/9] shadow-xl hover:border-neutral-600 transition-all"
         >
-          <img 
-            src={slide4} 
-            alt="Persona Slide" 
-            className="w-full h-full object-cover transition-transform group-hover:scale-105"
-          />
-          <div className="absolute bottom-2 right-2 bg-black/80 text-white font-mono text-[10px] px-2 py-1 flex items-center gap-1.5">
-            <Maximize2 className="w-3 h-3 text-[#3B82F6]" />
-            <span>{isPt ? 'Slide 04: Persona Laura Mendes' : 'Slide 04: Persona Profile'}</span>
+          <img src={slide4} alt="Persona Laura Mendes" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+            <span className="text-xs font-mono uppercase tracking-wider text-white font-bold">
+              {isPt ? 'Persona: Laura Mendes (29 Anos)' : 'Primary Persona Archetype'}
+            </span>
+            <div className="optical-glass p-2 rounded-full text-white">
+              <Maximize2 className="w-3.5 h-3.5" />
+            </div>
           </div>
-        </div>
-      </div>
-
-      {/* Key Pain Points Mapped */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="bg-white border-2 border-[#808080] p-4">
-          <div className="font-mono text-xs font-bold text-red-700 mb-1">DOR 01</div>
-          <h4 className="font-bold text-sm text-[#073859] mb-1">
-            {isPt ? 'Incerteza & Ansiedade' : 'Uncertainty & Anxiety'}
-          </h4>
-          <p className="text-xs text-neutral-600 font-sans">
-            {isPt ? 'Meses de espera sem saber em que etapa o processo se encontra ou se faltam documentos.' : 'Months in legal limbo with zero updates or document verification feedback.'}
-          </p>
-        </div>
-
-        <div className="bg-white border-2 border-[#808080] p-4">
-          <div className="font-mono text-xs font-bold text-amber-700 mb-1">DOR 02</div>
-          <h4 className="font-bold text-sm text-[#073859] mb-1">
-            {isPt ? 'Linguagem Complexa' : 'Impenetrable Jargon'}
-          </h4>
-          <p className="text-xs text-neutral-600 font-sans">
-            {isPt ? 'Terminologia jurídica governamental inacessível para quem não domina o português jurídico.' : 'Complex bureaucratic legal terms that overwhelm non-native speakers.'}
-          </p>
-        </div>
-
-        <div className="bg-white border-2 border-[#808080] p-4">
-          <div className="font-mono text-xs font-bold text-blue-700 mb-1">DOR 03</div>
-          <h4 className="font-bold text-sm text-[#073859] mb-1">
-            {isPt ? 'Agendamentos Falhados' : 'Missed Appointments'}
-          </h4>
-          <p className="text-xs text-neutral-600 font-sans">
-            {isPt ? 'Dificuldade em marcar vagas consulares e falta de lembretes automáticos sobre renovações.' : 'Difficulty securing consulate slots and zero proactive renewal notifications.'}
-          </p>
         </div>
       </div>
     </div>
   );
 
   // =========================================================================
-  // TAB 3: DESIGN_PROCESS.FOLDER
+  // TAB 3: PROCESSO & WIREFRAMES
   // =========================================================================
   const DesignProcessTab = (
-    <div className="flex flex-col gap-8 text-[#1A1A1A]">
-      <div className="bg-[#F0F4F8] border border-[#B0C4DE] p-4 sm:p-6 shadow-sm">
-        <div className="flex items-center gap-2 font-mono text-xs text-[#000080] font-bold mb-2">
-          <span>[ 📁 FLUXOS, TAXONOMIA E DESIGN TOKENS ]</span>
+    <div className="flex flex-col gap-8">
+      <div className="optical-glass p-6 sm:p-10 rounded-2xl flex flex-col gap-6">
+        <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-400 border-b border-white/10 pb-4">
+          <span className="w-1.5 h-1.5 rounded-full bg-white" />
+          <span>03 / {isPt ? 'MAPA DE EMPATIA & ARQUITETURA DE INFORMAÇÃO' : 'EMPATHY MAP & IA'}</span>
         </div>
-        <h3 className="text-xl sm:text-2xl font-bold text-[#073859] mb-3">
-          {isPt ? 'Arquitetura de Informação & Design System' : 'Information Architecture & Design System'}
+        <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
+          {isPt ? 'Da Jornada Emocional à Estruturação dos Fluxos' : 'From Emotional Journey to Functional Flow'}
         </h3>
-        <p className="text-sm sm:text-base text-neutral-700 leading-relaxed font-sans">
+        <p className="text-base text-neutral-300 leading-relaxed font-light">
           {isPt 
-            ? 'Estruturação da taxonomia da aplicação em 4 áreas principais: Dashboard, Processos, Agendamentos e Suporte, com base num Design System focado em acessibilidade e confiança.'
-            : 'Structuring the app into 4 core sections: Dashboard, Processes, Appointments, and Support, governed by an accessible, trust-inspiring Design System.'}
+            ? 'A arquitetura de informação foi desenhada para colocar o estado do Título de Residência no topo da hierarquia visual, eliminando cliques desnecessários e reduzindo a ansiedade do utilizador.'
+            : 'The information architecture prioritized the legal residence permit status at the very top of the hierarchy, removing unnecessary clicks and mitigating user stress.'}
         </p>
       </div>
 
-      {/* Process Slides: Empathy Map, Architecture, Wireframes & Styleguide */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div 
           onClick={() => setExpandedImage(slide5)}
-          className="group cursor-pointer bg-neutral-900 border-2 border-[#808080] overflow-hidden rounded-[2px] relative aspect-[4/3]"
+          className="group cursor-pointer bg-neutral-950 border border-neutral-800 overflow-hidden rounded-2xl relative aspect-[16/9] shadow-xl hover:border-neutral-600 transition-all"
         >
-          <img 
-            src={slide5} 
-            alt="Empathy Map Slide" 
-            className="w-full h-full object-cover transition-transform group-hover:scale-105"
-          />
-          <div className="absolute bottom-2 right-2 bg-black/80 text-white font-mono text-[10px] px-2 py-1 flex items-center gap-1.5">
-            <Maximize2 className="w-3 h-3 text-[#3B82F6]" />
-            <span>{isPt ? 'Slide 05: Mapa de Empatia' : 'Slide 05: Empathy Map'}</span>
+          <img src={slide5} alt="Empathy Map" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+            <span className="text-xs font-mono uppercase tracking-wider text-white font-bold">
+              {isPt ? 'Slide 05: Mapa de Empatia & Sentimentos' : 'Slide 05: Empathy Map'}
+            </span>
+            <div className="optical-glass p-2 rounded-full text-white">
+              <Maximize2 className="w-3.5 h-3.5" />
+            </div>
           </div>
         </div>
 
         <div 
           onClick={() => setExpandedImage(slide6)}
-          className="group cursor-pointer bg-neutral-900 border-2 border-[#808080] overflow-hidden rounded-[2px] relative aspect-[4/3]"
+          className="group cursor-pointer bg-neutral-950 border border-neutral-800 overflow-hidden rounded-2xl relative aspect-[16/9] shadow-xl hover:border-neutral-600 transition-all"
         >
-          <img 
-            src={slide6} 
-            alt="Information Architecture Slide" 
-            className="w-full h-full object-cover transition-transform group-hover:scale-105"
-          />
-          <div className="absolute bottom-2 right-2 bg-black/80 text-white font-mono text-[10px] px-2 py-1 flex items-center gap-1.5">
-            <Maximize2 className="w-3 h-3 text-[#3B82F6]" />
-            <span>{isPt ? 'Slide 06: Arquitetura' : 'Slide 06: Architecture'}</span>
+          <img src={slide6} alt="Information Architecture" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+            <span className="text-xs font-mono uppercase tracking-wider text-white font-bold">
+              {isPt ? 'Slide 06: Arquitetura de Informação' : 'Slide 06: Information Architecture'}
+            </span>
+            <div className="optical-glass p-2 rounded-full text-white">
+              <Maximize2 className="w-3.5 h-3.5" />
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+  );
 
+  // =========================================================================
+  // TAB 4: DESIGN SYSTEM & WIREFRAMES
+  // =========================================================================
+  const PrototypeTab = (
+    <div className="flex flex-col gap-8">
+      <div className="optical-glass p-6 sm:p-10 rounded-2xl flex flex-col gap-6">
+        <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-400 border-b border-white/10 pb-4">
+          <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
+          <span>04 / {isPt ? 'WIREFRAMES & DESIGN SYSTEM' : 'WIREFRAMES & DESIGN SYSTEM'}</span>
+        </div>
+        <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
+          {isPt ? 'Componentes Reutilizáveis & Paleta de Confiança' : 'Reusable Tokens & Trust-First Palette'}
+        </h3>
+        <p className="text-base text-neutral-300 leading-relaxed font-light">
+          {isPt 
+            ? 'Um sistema de design coeso que alia a sobriedade institucional da autoridade migratória com a proximidade calorosa e acolhedora necessária para quem está a recomeçar a vida num novo país.'
+            : 'A design system marrying the institutional rigor required for immigration with the warmth and human clarity demanded by newcomers.'}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div 
           onClick={() => setExpandedImage(slide7)}
-          className="group cursor-pointer bg-neutral-900 border-2 border-[#808080] overflow-hidden rounded-[2px] relative aspect-[4/3]"
+          className="group cursor-pointer bg-neutral-950 border border-neutral-800 overflow-hidden rounded-2xl relative aspect-[16/9] shadow-xl hover:border-neutral-600 transition-all"
         >
-          <img 
-            src={slide7} 
-            alt="Wireframes Slide" 
-            className="w-full h-full object-cover transition-transform group-hover:scale-105"
-          />
-          <div className="absolute bottom-2 right-2 bg-black/80 text-white font-mono text-[10px] px-2 py-1 flex items-center gap-1.5">
-            <Maximize2 className="w-3 h-3 text-[#3B82F6]" />
-            <span>{isPt ? 'Slide 07: Wireflow' : 'Slide 07: Wireflow'}</span>
+          <img src={slide7} alt="Wireframes" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+            <span className="text-xs font-mono uppercase tracking-wider text-white font-bold">
+              {isPt ? 'Slide 07: Wireframes de Baixa Fidelidade' : 'Slide 07: Lo-Fi Wireframes'}
+            </span>
+            <div className="optical-glass p-2 rounded-full text-white">
+              <Maximize2 className="w-3.5 h-3.5" />
+            </div>
           </div>
         </div>
 
         <div 
           onClick={() => setExpandedImage(slide8)}
-          className="group cursor-pointer bg-neutral-900 border-2 border-[#808080] overflow-hidden rounded-[2px] relative aspect-[4/3]"
+          className="group cursor-pointer bg-neutral-950 border border-neutral-800 overflow-hidden rounded-2xl relative aspect-[16/9] shadow-xl hover:border-neutral-600 transition-all"
         >
-          <img 
-            src={slide8} 
-            alt="Design System Slide" 
-            className="w-full h-full object-cover transition-transform group-hover:scale-105"
-          />
-          <div className="absolute bottom-2 right-2 bg-black/80 text-white font-mono text-[10px] px-2 py-1 flex items-center gap-1.5">
-            <Maximize2 className="w-3 h-3 text-[#3B82F6]" />
-            <span>{isPt ? 'Slide 08: Design System' : 'Slide 08: Design System'}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  // =========================================================================
-  // TAB 4: PROTOTYPE.FIG (CAROUSEL OF 9 SLIDES)
-  // =========================================================================
-  const PrototypeTab = (
-    <div className="flex flex-col gap-6 text-[#1A1A1A]">
-      <div className="bg-[#F0F4F8] border border-[#B0C4DE] p-4 sm:p-5 shadow-sm">
-        <div className="flex items-center justify-between font-mono text-xs text-[#000080] font-bold mb-2">
-          <span>[ 📊 CARROSSEL DA APRESENTAÇÃO • 9 SLIDES ]</span>
-          <span className="text-neutral-500">{currentSlideIndex + 1} de {SLIDES.length}</span>
-        </div>
-        <h3 className="text-lg sm:text-xl font-bold text-[#073859] mb-1">
-          {isPt ? currentSlide.titlePt : currentSlide.titleEn}
-        </h3>
-        <p className="text-xs sm:text-sm text-neutral-700 font-sans">
-          {isPt ? currentSlide.descPt : currentSlide.descEn}
-        </p>
-      </div>
-
-      {/* Main Slide Display Frame */}
-      <div className="relative bg-neutral-950 border-2 border-[#808080] rounded-[2px] overflow-hidden shadow-md">
-        <div 
-          onClick={() => setExpandedImage(currentSlide.image)}
-          className="relative aspect-[16/10] w-full flex items-center justify-center cursor-pointer group"
-        >
-          <img 
-            src={currentSlide.image} 
-            alt={currentSlide.titlePt}
-            className="w-full h-full object-contain"
-          />
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 text-white font-mono text-xs px-3 py-1.5 rounded flex items-center gap-2">
-              <Maximize2 className="w-3.5 h-3.5 text-[#3B82F6]" />
-              <span>{isPt ? 'Clique para ampliar slide' : 'Click to zoom slide'}</span>
+          <img src={slide8} alt="Design System" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+            <span className="text-xs font-mono uppercase tracking-wider text-white font-bold">
+              {isPt ? 'Slide 08: Design System & Cores' : 'Slide 08: Design System & Tokens'}
             </span>
-          </div>
-        </div>
-
-        {/* Carousel Retro Controls Toolbar */}
-        <div className="bg-[#c0c0c0] p-2 border-t-2 border-white flex flex-wrap items-center justify-between gap-2 font-mono text-xs select-none">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={goToPrevSlide}
-              className="px-3 py-1 bg-[#d4d0c8] text-black border-t border-l border-white border-r border-b border-[#404040] hover:bg-white active:border-t-[#404040] active:border-l-[#404040] flex items-center gap-1 cursor-pointer"
-            >
-              <ChevronLeft className="w-3.5 h-3.5" />
-              <span>{isPt ? 'Anterior' : 'Prev'}</span>
-            </button>
-
-            <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="px-3 py-1 bg-[#d4d0c8] text-black border-t border-l border-white border-r border-b border-[#404040] hover:bg-white active:border-t-[#404040] active:border-l-[#404040] flex items-center gap-1 cursor-pointer"
-            >
-              {isPlaying ? <Pause className="w-3.5 h-3.5 text-amber-700" /> : <Play className="w-3.5 h-3.5 text-emerald-700" />}
-              <span>{isPlaying ? 'Pausar (10s)' : 'Reproduzir'}</span>
-            </button>
-
-            <button
-              onClick={goToNextSlide}
-              className="px-3 py-1 bg-[#d4d0c8] text-black border-t border-l border-white border-r border-b border-[#404040] hover:bg-white active:border-t-[#404040] active:border-l-[#404040] flex items-center gap-1 cursor-pointer"
-            >
-              <span>{isPt ? 'Próximo' : 'Next'}</span>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
-          <div className="flex items-center gap-1.5 overflow-x-auto max-w-full">
-            {SLIDES.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => {
-                  setCurrentSlideIndex(i);
-                  setIsPlaying(false);
-                }}
-                className={`w-6 h-6 font-mono text-[10px] font-bold border flex items-center justify-center cursor-pointer ${
-                  currentSlideIndex === i
-                    ? 'bg-[#000080] text-white border-white'
-                    : 'bg-[#d4d0c8] text-neutral-800 border-[#808080] hover:bg-white'
-                }`}
-              >
-                {i + 1}
-              </button>
-            ))}
+            <div className="optical-glass p-2 rounded-full text-white">
+              <Maximize2 className="w-3.5 h-3.5" />
+            </div>
           </div>
         </div>
       </div>
@@ -568,34 +539,28 @@ export const SueAppProject: React.FC<SueAppProjectProps> = ({
   );
 
   // =========================================================================
-  // TAB 5: FINAL_RESULT.PNG (AUTOPLAY PROMO VIDEO & FINAL UI)
+  // TAB 5: VÍDEO & TELAS FINAIS
   // =========================================================================
   const FinalResultTab = (
-    <div className="flex flex-col gap-8 text-[#1A1A1A]">
-      <div className="bg-[#F0F4F8] border border-[#B0C4DE] p-4 sm:p-6 shadow-sm">
-        <div className="flex items-center gap-2 font-mono text-xs text-[#000080] font-bold mb-2">
-          <span>[ 🎬 APRESENTAÇÃO EM VÍDEO & TESTES DE USABILIDADE ]</span>
+    <div className="flex flex-col gap-8">
+      <div className="optical-glass p-6 sm:p-10 rounded-2xl flex flex-col gap-6">
+        <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-400 border-b border-white/10 pb-4">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+          <span>05 / {isPt ? 'PROTÓTIPO EM VÍDEO & TELAS FINAIS' : 'VIDEO PROTOTYPE & FINAL UI'}</span>
         </div>
-        <h3 className="text-xl sm:text-2xl font-bold text-[#073859] mb-2">
-          {isPt ? 'Vídeo da Aplicação e Testes de Usabilidade' : 'Video about the app and usability test presentation'}
+        <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
+          {isPt ? 'Demonstração Interativa da Aplicação Móvel' : 'Interactive Mobile Experience Walkthrough'}
         </h3>
-        <p className="text-sm sm:text-base text-neutral-700 leading-relaxed font-sans">
+        <p className="text-base text-neutral-300 leading-relaxed font-light">
           {isPt 
-            ? 'Demonstração audiovisual interativa da aplicação SUE, protótipo funcional e resultados dos testes de usabilidade com os utilizadores.'
-            : 'Interactive audiovisual walkthrough of the SUE application, functional prototype, and user usability testing presentation.'}
+            ? 'Apresentação em vídeo e composição final das interfaces de alta fidelidade desenhadas no Figma.'
+            : 'Video walkthrough and final high-fidelity UI screen compositions designed in Figma.'}
         </p>
       </div>
 
-      {/* AUTOPLAY PROMO VIDEO PLAYER */}
-      <div className="bg-[#c0c0c0] border-2 border-white border-r-[#404040] border-b-[#404040] p-1 sm:p-2 shadow-lg">
-        {/* Video Title Bar */}
-        <div className="bg-[#000080] text-white px-2 py-1 flex items-center justify-between font-mono text-xs mb-1">
-          <span className="font-bold truncate">▶ Windows Media Player — SUE_PROMO.MP4</span>
-          <span className="text-[10px] text-white/80">1080p • 60 FPS</span>
-        </div>
-
-        {/* Video Container */}
-        <div className="relative bg-black rounded-[2px] overflow-hidden aspect-video">
+      {/* Video Player in Optical Glass Frame */}
+      <div className="optical-glass p-4 sm:p-6 rounded-2xl flex flex-col gap-4">
+        <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-black border border-white/10">
           <video
             ref={videoRef}
             src="/project-sue/sue-promo.mp4"
@@ -606,55 +571,54 @@ export const SueAppProject: React.FC<SueAppProjectProps> = ({
             className="w-full h-full object-contain"
           />
 
-          {/* Video Control Overlay */}
-          <div className="absolute bottom-2 left-2 right-2 bg-black/80 backdrop-blur-sm p-2 flex items-center justify-between font-mono text-xs text-white">
-            <div className="flex items-center gap-3">
+          {/* Video Control Bar */}
+          <div className="absolute bottom-3 left-3 right-3 optical-glass px-4 py-2 rounded-xl flex items-center justify-between text-xs text-white">
+            <div className="flex items-center gap-4">
               <button
                 onClick={toggleVideoPlay}
-                className="hover:text-blue-400 cursor-pointer flex items-center gap-1"
+                className="hover:text-sky-400 cursor-pointer flex items-center gap-1.5 font-mono"
               >
                 {isVideoPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                <span>{isVideoPlaying ? 'Pausar' : 'Play'}</span>
+                <span>{isVideoPlaying ? (isPt ? 'Pausar' : 'Pause') : (isPt ? 'Reproduzir' : 'Play')}</span>
               </button>
 
               <button
                 onClick={toggleVideoMute}
-                className="hover:text-blue-400 cursor-pointer flex items-center gap-1"
+                className="hover:text-sky-400 cursor-pointer flex items-center gap-1.5 font-mono"
               >
                 {isVideoMuted ? <VolumeX className="w-4 h-4 text-amber-400" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
-                <span>{isVideoMuted ? 'Ativar Som' : 'Mudo'}</span>
+                <span>{isVideoMuted ? (isPt ? 'Ativar Som' : 'Unmute') : (isPt ? 'Mudo' : 'Mute')}</span>
               </button>
 
               <button
                 onClick={restartVideo}
-                className="hover:text-blue-400 cursor-pointer flex items-center gap-1 hidden sm:flex"
+                className="hover:text-sky-400 cursor-pointer flex items-center gap-1.5 font-mono hidden sm:flex"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span>Reiniciar</span>
+                <span>{isPt ? 'Reiniciar' : 'Restart'}</span>
               </button>
             </div>
 
-            <span className="text-[11px] text-neutral-400 hidden sm:inline">
-              {isPt ? 'Início automático ativo' : 'Autoplay active'}
+            <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest hidden sm:inline">
+              VÍDEO OFICIAL • SUE PROMO
             </span>
           </div>
         </div>
       </div>
 
       {/* Slide 9: Final UI Screen */}
-      <div className="flex flex-col gap-2">
-        <div 
-          onClick={() => setExpandedImage(slide9)}
-          className="group cursor-pointer bg-neutral-950 border-2 border-[#808080] overflow-hidden rounded-[2px] relative aspect-[16/9] shadow-md"
-        >
-          <img 
-            src={slide9} 
-            alt="Final UI Screens" 
-            className="w-full h-full object-cover transition-transform group-hover:scale-[1.01]"
-          />
-          <div className="absolute bottom-3 right-3 bg-black/80 text-white font-mono text-xs px-3 py-1.5 flex items-center gap-2">
-            <Maximize2 className="w-3.5 h-3.5 text-[#3B82F6]" />
-            <span>{isPt ? 'Slide 09: Telas Finais de Alta Fidelidade' : 'Slide 09: High-Fidelity UI Screens'}</span>
+      <div 
+        onClick={() => setExpandedImage(slide9)}
+        className="group cursor-pointer bg-neutral-950 border border-neutral-800 overflow-hidden rounded-2xl relative aspect-[16/9] shadow-2xl hover:border-neutral-600 transition-all"
+      >
+        <img src={slide9} alt="Final UI Screens" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+          <span className="text-sm font-mono uppercase tracking-wider text-white font-bold">
+            {isPt ? 'Slide 09: Telas Finais de Alta Fidelidade' : 'Slide 09: High-Fidelity UI Screens'}
+          </span>
+          <div className="optical-glass p-2 rounded-full text-white">
+            <Maximize2 className="w-4 h-4" />
           </div>
         </div>
       </div>
@@ -662,60 +626,57 @@ export const SueAppProject: React.FC<SueAppProjectProps> = ({
   );
 
   // =========================================================================
-  // TAB 6: LEARNINGS.TXT
+  // TAB 6: APRENDIZAGENS & IMPACTO
   // =========================================================================
   const LearningsTab = (
-    <div className="flex flex-col gap-8 text-[#1A1A1A]">
-      <div className="bg-[#FFFFEE] border border-[#d0c8a8] p-4 sm:p-6 shadow-sm rounded-[2px]">
-        <div className="flex items-center gap-2 border-b border-[#e0d8b8] pb-2 mb-4 font-mono text-xs text-neutral-600">
-          <span className="font-bold text-[#000080]">C:\DOCUMENTS\PROJECT_SUE\LEARNINGS.TXT</span>
-          <span className="text-neutral-400">|</span>
-          <span>AUTORA: RAÍSSA MORIÁ</span>
+    <div className="flex flex-col gap-8">
+      <div className="optical-glass p-6 sm:p-10 rounded-2xl flex flex-col gap-6">
+        <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-400 border-b border-white/10 pb-4">
+          <span className="w-1.5 h-1.5 rounded-full bg-white" />
+          <span>06 / {isPt ? 'APRENDIZAGENS DOS TESTES DE USABILIDADE' : 'USABILITY & DESIGN IMPACT'}</span>
         </div>
 
-        <div className="flex flex-col gap-4 font-sans">
-          <h3 className="text-xl sm:text-2xl font-bold text-[#073859]">
-            {isPt ? 'Aprendizagens dos Testes de Usabilidade' : 'Usability Testing & Empathy Learnings'}
-          </h3>
+        <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
+          {isPt ? 'Empatia Radical & Impacto Social do Design' : 'Radical Empathy & Social Impact of Design'}
+        </h3>
 
-          <p className="text-sm sm:text-base text-neutral-800 leading-relaxed">
-            {isPt 
-              ? 'Projetar para pessoas em situação de vulnerabilidade e transição geográfica exige mais do que boas regras de usabilidade: exige profunda empatia emocional. Os testes revelaram que o maior obstáculo não era a navegação em si, mas a ansiedade gerada pela falta de certeza quanto aos prazos legais.'
-              : 'Designing for individuals navigating international relocation requires more than standard UX conventions: it demands acute emotional empathy. Usability tests proved that the greatest hurdle was not interface navigation, but chronic anxiety born from zero legal status clarity.'}
-          </p>
+        <p className="text-base sm:text-lg text-neutral-200 font-light leading-relaxed">
+          {isPt 
+            ? 'Projetar para pessoas em situação de vulnerabilidade e transição geográfica exige mais do que boas regras de usabilidade: exige profunda empatia emocional. Os testes revelaram que o maior obstáculo não era a navegação em si, mas a ansiedade gerada pela falta de certeza quanto aos prazos legais.'
+            : 'Designing for individuals navigating international relocation requires more than standard UX conventions: it demands acute emotional empathy. Usability tests proved that the greatest hurdle was not interface navigation, but chronic anxiety born from zero legal status clarity.'}
+        </p>
 
-          <p className="text-sm sm:text-base text-neutral-800 leading-relaxed">
-            {isPt 
-              ? 'A introdução de micro-cópias calorosas em português claro, a substituição de termos técnicos por resumos práticos e a linha temporal passo a passo reduziram o tempo de execução de tarefas em 64% durante as sessões de teste.'
-              : 'Introducing warm microcopy in plain Portuguese, replacing legal jargon with actionable step cards, and anchoring the timeline reduced task completion duration by 64% during moderated testing sessions.'}
-          </p>
-        </div>
+        <p className="text-sm sm:text-base text-neutral-400 font-light leading-relaxed">
+          {isPt 
+            ? 'A introdução de micro-cópias calorosas em português claro, a substituição de termos técnicos por resumos práticos e a linha temporal passo a passo reduziram o tempo de execução de tarefas em 64% durante as sessões de teste.'
+            : 'Introducing warm microcopy in plain Portuguese, replacing legal jargon with actionable step cards, and anchoring the timeline reduced task completion duration by 64% during moderated testing sessions.'}
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <div className="bg-white border-2 border-[#808080] p-4 flex flex-col gap-2">
-          <span className="font-mono text-xs font-bold text-[#000080]">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="optical-glass p-6 rounded-2xl flex flex-col gap-2">
+          <span className="font-mono text-xs font-bold text-sky-400">
             {isPt ? '01. Clareza Linguística' : '01. Linguistic Clarity'}
           </span>
-          <p className="text-xs text-neutral-700 leading-relaxed font-sans">
+          <p className="text-xs text-neutral-400 leading-relaxed font-light">
             {isPt ? 'Simplificar termos jurídicos complexos sem perder o rigor legal foi o maior desafio de UX Writing.' : 'Translating complex administrative jargon into plain language without losing legal precision.'}
           </p>
         </div>
 
-        <div className="bg-white border-2 border-[#808080] p-4 flex flex-col gap-2">
-          <span className="font-mono text-xs font-bold text-emerald-800">
+        <div className="optical-glass p-6 rounded-2xl flex flex-col gap-2">
+          <span className="font-mono text-xs font-bold text-emerald-400">
             {isPt ? '02. Feedback Constante' : '02. Constant Status Feedback'}
           </span>
-          <p className="text-xs text-neutral-700 leading-relaxed font-sans">
+          <p className="text-xs text-neutral-400 leading-relaxed font-light">
             {isPt ? 'Uma simples barra de progresso visual acalma a ansiedade do utilizador mais do que qualquer outro elemento.' : 'A clear visual timeline relieves user anxiety more effectively than any other interface element.'}
           </p>
         </div>
 
-        <div className="bg-white border-2 border-[#808080] p-4 flex flex-col gap-2">
-          <span className="font-mono text-xs font-bold text-purple-800">
+        <div className="optical-glass p-6 rounded-2xl flex flex-col gap-2">
+          <span className="font-mono text-xs font-bold text-purple-400">
             {isPt ? '03. Impacto Social do Design' : '03. Social Impact'}
           </span>
-          <p className="text-xs text-neutral-700 leading-relaxed font-sans">
+          <p className="text-xs text-neutral-400 leading-relaxed font-light">
             {isPt ? 'O design tem o poder real de devolver dignidade e segurança a quem recomeça a sua vida num novo país.' : 'Design possesses the tangible power to restore dignity and confidence to those rebuilding lives abroad.'}
           </p>
         </div>
@@ -723,63 +684,56 @@ export const SueAppProject: React.FC<SueAppProjectProps> = ({
     </div>
   );
 
-  const retroTabs: RetroProjectTab[] = [
+  const modernTabs: ProjectTabItem[] = [
     {
       id: 'overview',
-      labelPt: '01 — Overview.txt',
-      labelEn: '01 — Overview.txt',
-      iconName: 'overview',
-      badge: 'TXT',
+      labelPt: 'Visão Geral',
+      labelEn: 'Overview',
+      badge: '9 SLIDES',
       content: OverviewTab,
     },
     {
       id: 'research',
-      labelPt: '02 — Research.exe',
-      labelEn: '02 — Research.exe',
-      iconName: 'research',
-      badge: 'EXE',
+      labelPt: 'Pesquisa com Utilizadores',
+      labelEn: 'User Research',
+      badge: '12 INT',
       content: ResearchTab,
     },
     {
       id: 'process',
-      labelPt: '03 — Design_Process.folder',
-      labelEn: '03 — Design_Process.folder',
-      iconName: 'process',
-      badge: 'DIR',
+      labelPt: 'Jornada & Arquitetura',
+      labelEn: 'Journey & IA',
+      badge: 'FLOW',
       content: DesignProcessTab,
     },
     {
       id: 'prototype',
-      labelPt: '04 — Prototype.fig',
-      labelEn: '04 — Prototype.fig',
-      iconName: 'prototype',
-      badge: 'FIG',
+      labelPt: 'Design System',
+      labelEn: 'Design System',
+      badge: 'UI',
       content: PrototypeTab,
     },
     {
       id: 'result',
-      labelPt: '05 — Final_Result.png',
-      labelEn: '05 — Final_Result.png',
-      iconName: 'result',
+      labelPt: 'Vídeo & Telas Finais',
+      labelEn: 'Video & Final UI',
       badge: 'MP4',
       content: FinalResultTab,
     },
     {
       id: 'learnings',
-      labelPt: '06 — Learnings.txt',
-      labelEn: '06 — Learnings.txt',
-      iconName: 'learnings',
-      badge: 'TXT',
+      labelPt: 'Aprendizagens',
+      labelEn: 'Takeaways',
+      badge: 'UX',
       content: LearningsTab,
     },
   ];
 
   return (
     <>
-      <RetroProjectLayout
+      <ModernProjectLayout
         projectId="sue-app"
         projectNumber="02"
-        projectExeName="Project_SUE_App.exe"
         title="SUE — Mobile App"
         subtitle={isPt 
           ? "Serviços de União a Emigração • Mobile App para iOS e Android" 
@@ -793,10 +747,10 @@ export const SueAppProject: React.FC<SueAppProjectProps> = ({
         onPrevProject={onPrevProject}
         prevProjectName="Nipon Spa"
         nextProjectName={isPt ? "Plataforma de Helpdesk" : "Helpdesk Platform"}
-        tabs={retroTabs}
+        tabs={modernTabs}
       />
 
-      {/* Expanded Modal */}
+      {/* Expanded Lightbox Modal matching Homepage */}
       <AnimatePresence>
         {expandedImage && (
           <motion.div
@@ -804,22 +758,24 @@ export const SueAppProject: React.FC<SueAppProjectProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setExpandedImage(null)}
-            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 cursor-pointer"
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 cursor-pointer"
           >
-            <div className="relative max-w-5xl w-full bg-[#c0c0c0] border-2 border-white p-1 shadow-2xl">
-              <div className="bg-[#000080] text-white p-1 px-2 flex justify-between items-center font-mono text-xs mb-1">
-                <span>[ VISUALIZADOR DE IMAGEM 98 ]</span>
+            <div className="relative max-w-5xl w-full optical-glass p-3 rounded-2xl border border-white/20 shadow-2xl">
+              <div className="flex justify-between items-center px-3 py-2 border-b border-white/10 mb-3">
+                <span className="font-mono text-xs uppercase text-neutral-400">
+                  SLIDE COMPLETO • SUE MOBILE APP
+                </span>
                 <button 
                   onClick={() => setExpandedImage(null)}
-                  className="w-4 h-4 bg-[#c0c0c0] text-black border border-white flex items-center justify-center text-[10px] font-bold"
+                  className="optical-glass p-1.5 rounded-full text-white hover:bg-white/20 transition-colors"
                 >
-                  <X className="w-3 h-3" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
               <img 
                 src={expandedImage} 
                 alt="Expanded View" 
-                className="w-full max-h-[80vh] object-contain bg-black"
+                className="w-full max-h-[80vh] object-contain rounded-xl bg-black"
               />
             </div>
           </motion.div>
