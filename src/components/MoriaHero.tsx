@@ -3,8 +3,8 @@ import { BackgroundTitle } from './BackgroundTitle';
 import { GlassOrb } from './GlassOrb';
 import { GlassOrbPhysicsEngine, DEFAULT_PHYSICS_CONFIG } from './GlassOrbPhysics';
 import { GlassOrbData } from '../types';
-import { OpticalGlassButton, OpticalGlassPill } from './OpticalGlass';
-import { ArrowUpRight, Layers, Compass } from 'lucide-react';
+import { OpticalGlassButton } from './OpticalGlass';
+import { ArrowUpRight } from 'lucide-react';
 
 interface MoriaHeroProps {
   language?: 'pt' | 'en';
@@ -113,9 +113,13 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Deep black base
+    const computed = typeof window !== 'undefined' ? getComputedStyle(document.documentElement) : null;
+    const currentBg = computed?.getPropertyValue('--bg-primary').trim() || '#050505';
+    const currentText = computed?.getPropertyValue('--text-primary').trim() || '#FFFFFF';
+
+    // Theme responsive base
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#050505';
+    ctx.fillStyle = currentBg;
     ctx.fillRect(0, 0, w, h);
 
     // Subtle technical grid lines
@@ -136,11 +140,13 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
     }
 
     // Secondary sub-header text above MORIA
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+    ctx.fillStyle = currentText;
+    ctx.globalAlpha = 0.55;
     ctx.font = '700 13px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('RAÍSSA MORIÁ // UX/UI & PRODUCT DESIGN', w / 2, h / 2 - Math.min(w * 0.12, 140));
+    ctx.globalAlpha = 1.0;
 
     // High-resolution approved 3D black glossy lettering onto refraction buffer with 3D rotation projection
     const img = letteringImgRef.current;
@@ -247,6 +253,22 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
     return () => observer.disconnect();
   }, [renderTextBuffer, initializeOrbs]);
 
+  // Sync refraction buffer whenever active theme or mode changes
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      if (dimensions.width > 0 && dimensions.height > 0) {
+        renderTextBuffer(dimensions.width, dimensions.height);
+      }
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme', 'data-mode'],
+    });
+
+    return () => observer.disconnect();
+  }, [dimensions.width, dimensions.height, renderTextBuffer]);
+
   // Main Physics Simulation Loop
   useEffect(() => {
     let animId: number;
@@ -312,14 +334,14 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
       onPointerLeave={handlePointerUp}
-      className="relative w-full min-h-screen h-[100dvh] bg-[#050505] overflow-hidden select-none flex flex-col justify-between border-b border-neutral-900 px-6 md:px-12 py-8"
-      style={{ touchAction: 'pan-y' }}
+      className="relative w-full min-h-screen h-[100dvh] overflow-hidden select-none flex flex-col justify-between border-b border-neutral-900 px-6 md:px-12 py-8"
+      style={{ touchAction: 'pan-y', backgroundColor: 'var(--bg-primary, #050505)' }}
     >
-      {/* 1. Deep charcoal/black ambient background with subtle vignette */}
+      {/* 1. Subtle ambient background with soft vignette */}
       <div 
         className="absolute inset-0 pointer-events-none z-0"
         style={{
-          background: 'radial-gradient(circle at 50% 50%, rgba(20, 20, 24, 0.6) 0%, rgba(5, 5, 5, 0.98) 75%, #050505 100%)',
+          background: 'radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.04) 0%, transparent 75%)',
         }}
       />
 
@@ -362,28 +384,6 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
         ))}
       </div>
 
-      {/* 6. TOP METADATA & STATUS BAR */}
-      <div className="relative z-20 w-full max-w-[1720px] mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-2 pointer-events-none">
-        {/* Availability Status Badge */}
-        <div className="pointer-events-auto">
-          <OpticalGlassPill>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-white font-bold tracking-wider">
-              {language === 'pt' ? 'DISPONÍVEL PARA PROJETOS Q3/Q4' : 'AVAILABLE FOR Q3/Q4 PROJECTS'}
-            </span>
-            <span className="text-white/20">•</span>
-            <span className="text-neutral-400 tracking-wider">
-              {language === 'pt' ? 'LISBOA & PORTO' : 'LISBON & PORTO'}
-            </span>
-          </OpticalGlassPill>
-        </div>
-
-        <div className="hidden sm:flex items-center gap-2 font-mono text-[10px] text-neutral-400 uppercase tracking-widest pointer-events-auto">
-          <span>PORTFOLIO // SELECTED WORKS</span>
-          <span className="text-white/20">•</span>
-          <span className="text-neutral-400">2026</span>
-        </div>
-      </div>
 
       {/* 7. HERO BOTTOM DOCK & ACTION BUTTONS */}
       <div className="relative z-20 w-full max-w-[1720px] mx-auto flex flex-col md:flex-row justify-between items-end md:items-center gap-6 pb-2 pointer-events-none">

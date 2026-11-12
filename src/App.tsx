@@ -14,6 +14,7 @@ import { MakingSupportVisibleProject } from "./components/MakingSupportVisiblePr
 import Marquee from "./components/Marquee";
 import CustomCursor from "./components/CustomCursor";
 import { OpticalGlassButton, OpticalGlassPill } from "./components/OpticalGlass";
+import { ThemeSwitcher } from "./components/ThemeSwitcher";
 // @ts-ignore
 import profilePic from "./assets/images/WhatsApp Image 2026-06-03 at 13.15.20.jpeg";
 
@@ -99,6 +100,7 @@ export default function App() {
     return (
       <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans antialiased">
         <CustomCursor />
+        <ThemeSwitcher language={language} />
         <NiponSpaProject 
           language={language} 
           onBack={handleBackToPortfolio} 
@@ -113,6 +115,7 @@ export default function App() {
     return (
       <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans antialiased">
         <CustomCursor />
+        <ThemeSwitcher language={language} />
         <SueAppProject 
           language={language} 
           onBack={handleBackToPortfolio} 
@@ -127,6 +130,7 @@ export default function App() {
     return (
       <div className="min-h-screen bg-[#FBFBFC] text-[#111118] selection:bg-neutral-900 selection:text-white font-sans antialiased">
         <CustomCursor />
+        <ThemeSwitcher language={language} />
         <MakingSupportVisibleProject 
           language={language} 
           onBack={handleBackToPortfolio} 
@@ -140,6 +144,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans antialiased">
       <CustomCursor />
+      <ThemeSwitcher language={language} />
       
       {/* 1. Header/Navigation: Ultra-minimal dark navigation bar */}
       <header className="sticky top-0 z-30 w-full bg-black/85 backdrop-blur-xl border-b border-neutral-900 px-6 md:px-12 py-4 text-white">

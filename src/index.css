@@ -151,3 +151,452 @@
   border-right: 2px dashed rgba(0, 0, 0, 0.15);
 }
 
+/* =========================================================================
+   DYNAMIC THEME & COLOR PALETTES (Inspired by billysweeney.com)
+   7 Required Palettes: Original, Lavender, Electric, Matcha, Cherry, Chocolate, Mono
+   ========================================================================= */
+
+/* 1. ORIGINAL (Dark / Default) */
+:root,
+html[data-theme="original"],
+html[data-theme="original"][data-mode="dark"],
+html[data-mode="dark"] {
+  --bg-primary: #050505;
+  --bg-nav: rgba(5, 5, 5, 0.88);
+  --bg-secondary: #0C0C0E;
+  --bg-surface: #141416;
+  --bg-card: #141416;
+  --text-primary: #FFFFFF;
+  --text-secondary: #D4D4D8;
+  --text-muted: #71717A;
+  --border-color: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --accent-color: #FFFFFF;
+  --accent-secondary: #E5E5E5;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.15);
+}
+
+/* 1. ORIGINAL (Light Mode) */
+html[data-theme="original"][data-mode="light"],
+html[data-mode="light"] {
+  --bg-primary: #FBFBFC;
+  --bg-nav: rgba(251, 251, 252, 0.92);
+  --bg-secondary: #F4F4F6;
+  --bg-surface: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --text-primary: #0F1115;
+  --text-secondary: #3F3F46;
+  --text-muted: #71717A;
+  --border-color: rgba(0, 0, 0, 0.1);
+  --border-subtle: rgba(0, 0, 0, 0.05);
+  --accent-color: #0F1115;
+  --accent-secondary: #27272A;
+  --glass-bg: rgba(0, 0, 0, 0.03);
+  --glass-border: rgba(0, 0, 0, 0.08);
+}
+
+/* 2. LAVENDER (Fundo #40334B, Texto #F1A1D1) - Dark / Default */
+html[data-theme="lavender"],
+html[data-theme="lavender"][data-mode="dark"] {
+  --bg-primary: #40334B;
+  --bg-nav: rgba(64, 51, 75, 0.94);
+  --bg-secondary: #33283E;
+  --bg-surface: #4D3D5A;
+  --bg-card: #4D3D5A;
+  --text-primary: #F1A1D1;
+  --text-secondary: #F8C6E3;
+  --text-muted: #D19EBF;
+  --border-color: rgba(241, 161, 209, 0.25);
+  --border-subtle: rgba(241, 161, 209, 0.12);
+  --accent-color: #F1A1D1;
+  --accent-secondary: #FFBEE5;
+  --glass-bg: rgba(241, 161, 209, 0.08);
+  --glass-border: rgba(241, 161, 209, 0.28);
+}
+
+/* 2. LAVENDER - Light Mode */
+html[data-theme="lavender"][data-mode="light"] {
+  --bg-primary: #FAF0F7;
+  --bg-nav: rgba(250, 240, 247, 0.94);
+  --bg-secondary: #F2DCEE;
+  --bg-surface: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --text-primary: #40334B;
+  --text-secondary: #5F456E;
+  --text-muted: #8B689C;
+  --border-color: rgba(64, 51, 75, 0.18);
+  --border-subtle: rgba(64, 51, 75, 0.08);
+  --accent-color: #8C2E6B;
+  --accent-secondary: #5F456E;
+  --glass-bg: rgba(64, 51, 75, 0.05);
+  --glass-border: rgba(64, 51, 75, 0.2);
+}
+
+/* 3. ELECTRIC (Fundo #1935D0, Texto #E7FF65) - Dark / Default */
+html[data-theme="electric"],
+html[data-theme="electric"][data-mode="dark"] {
+  --bg-primary: #1935D0;
+  --bg-nav: rgba(25, 53, 208, 0.94);
+  --bg-secondary: #132BAA;
+  --bg-surface: #2442EB;
+  --bg-card: #2442EB;
+  --text-primary: #E7FF65;
+  --text-secondary: #F3FFB2;
+  --text-muted: #C5DF52;
+  --border-color: rgba(231, 255, 101, 0.3);
+  --border-subtle: rgba(231, 255, 101, 0.15);
+  --accent-color: #E7FF65;
+  --accent-secondary: #FFFFFF;
+  --glass-bg: rgba(231, 255, 101, 0.1);
+  --glass-border: rgba(231, 255, 101, 0.32);
+}
+
+/* 3. ELECTRIC - Light Mode */
+html[data-theme="electric"][data-mode="light"] {
+  --bg-primary: #F5F8FF;
+  --bg-nav: rgba(245, 248, 255, 0.94);
+  --bg-secondary: #E1EBFF;
+  --bg-surface: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --text-primary: #1935D0;
+  --text-secondary: #0F228C;
+  --text-muted: #4F68E6;
+  --border-color: rgba(25, 53, 208, 0.2);
+  --border-subtle: rgba(25, 53, 208, 0.08);
+  --accent-color: #1935D0;
+  --accent-secondary: #0F228C;
+  --glass-bg: rgba(25, 53, 208, 0.06);
+  --glass-border: rgba(25, 53, 208, 0.22);
+}
+
+/* 4. MATCHA (Fundo #DCE6CF, Texto #284936) - Light / Default */
+html[data-theme="matcha"],
+html[data-theme="matcha"][data-mode="light"] {
+  --bg-primary: #DCE6CF;
+  --bg-nav: rgba(220, 230, 207, 0.94);
+  --bg-secondary: #CCDAB9;
+  --bg-surface: #E8F0E2;
+  --bg-card: #E8F0E2;
+  --text-primary: #284936;
+  --text-secondary: #3D684E;
+  --text-muted: #567D66;
+  --border-color: rgba(40, 73, 54, 0.22);
+  --border-subtle: rgba(40, 73, 54, 0.1);
+  --accent-color: #284936;
+  --accent-secondary: #1E3628;
+  --glass-bg: rgba(40, 73, 54, 0.08);
+  --glass-border: rgba(40, 73, 54, 0.25);
+}
+
+/* 4. MATCHA - Dark Mode */
+html[data-theme="matcha"][data-mode="dark"] {
+  --bg-primary: #1B2B21;
+  --bg-nav: rgba(27, 43, 33, 0.94);
+  --bg-secondary: #14221A;
+  --bg-surface: #24392D;
+  --bg-card: #24392D;
+  --text-primary: #DCE6CF;
+  --text-secondary: #BDD1A8;
+  --text-muted: #8BA875;
+  --border-color: rgba(220, 230, 207, 0.25);
+  --border-subtle: rgba(220, 230, 207, 0.12);
+  --accent-color: #A5CA89;
+  --accent-secondary: #DCE6CF;
+  --glass-bg: rgba(220, 230, 207, 0.1);
+  --glass-border: rgba(220, 230, 207, 0.3);
+}
+
+/* 5. CHERRY (Fundo #F6B4C7, Texto #8C1738) - Light / Default */
+html[data-theme="cherry"],
+html[data-theme="cherry"][data-mode="light"] {
+  --bg-primary: #F6B4C7;
+  --bg-nav: rgba(246, 180, 199, 0.94);
+  --bg-secondary: #F09FB6;
+  --bg-surface: #FBC8D5;
+  --bg-card: #FBC8D5;
+  --text-primary: #8C1738;
+  --text-secondary: #A92047;
+  --text-muted: #6D102A;
+  --border-color: rgba(140, 23, 56, 0.25);
+  --border-subtle: rgba(140, 23, 56, 0.12);
+  --accent-color: #8C1738;
+  --accent-secondary: #590B21;
+  --glass-bg: rgba(140, 23, 56, 0.08);
+  --glass-border: rgba(140, 23, 56, 0.28);
+}
+
+/* 5. CHERRY - Dark Mode */
+html[data-theme="cherry"][data-mode="dark"] {
+  --bg-primary: #380B17;
+  --bg-nav: rgba(56, 11, 23, 0.94);
+  --bg-secondary: #2A0711;
+  --bg-surface: #4B1020;
+  --bg-card: #4B1020;
+  --text-primary: #F6B4C7;
+  --text-secondary: #FCD5DF;
+  --text-muted: #E886A2;
+  --border-color: rgba(246, 180, 199, 0.28);
+  --border-subtle: rgba(246, 180, 199, 0.14);
+  --accent-color: #F6B4C7;
+  --accent-secondary: #FFC4D4;
+  --glass-bg: rgba(246, 180, 199, 0.1);
+  --glass-border: rgba(246, 180, 199, 0.3);
+}
+
+/* 6. CHOCOLATE (Fundo #43281E, Texto #F5D7AB) - Dark / Default */
+html[data-theme="chocolate"],
+html[data-theme="chocolate"][data-mode="dark"] {
+  --bg-primary: #43281E;
+  --bg-nav: rgba(67, 40, 30, 0.94);
+  --bg-secondary: #331E16;
+  --bg-surface: #543326;
+  --bg-card: #543326;
+  --text-primary: #F5D7AB;
+  --text-secondary: #FCE7C8;
+  --text-muted: #D1AC79;
+  --border-color: rgba(245, 215, 171, 0.25);
+  --border-subtle: rgba(245, 215, 171, 0.12);
+  --accent-color: #F5D7AB;
+  --accent-secondary: #FFE8C7;
+  --glass-bg: rgba(245, 215, 171, 0.1);
+  --glass-border: rgba(245, 215, 171, 0.3);
+}
+
+/* 6. CHOCOLATE - Light Mode */
+html[data-theme="chocolate"][data-mode="light"] {
+  --bg-primary: #FAF4ED;
+  --bg-nav: rgba(250, 244, 237, 0.94);
+  --bg-secondary: #EDE1D3;
+  --bg-surface: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --text-primary: #43281E;
+  --text-secondary: #5F392B;
+  --text-muted: #8B5B47;
+  --border-color: rgba(67, 40, 30, 0.2);
+  --border-subtle: rgba(67, 40, 30, 0.08);
+  --accent-color: #6B3F2E;
+  --accent-secondary: #43281E;
+  --glass-bg: rgba(67, 40, 30, 0.06);
+  --glass-border: rgba(67, 40, 30, 0.22);
+}
+
+/* 7. MONO (Fundo #111111, Texto #F5F5F5) - Dark / Default */
+html[data-theme="mono"],
+html[data-theme="mono"][data-mode="dark"] {
+  --bg-primary: #111111;
+  --bg-nav: rgba(17, 17, 17, 0.94);
+  --bg-secondary: #1A1A1A;
+  --bg-surface: #222222;
+  --bg-card: #222222;
+  --text-primary: #F5F5F5;
+  --text-secondary: #D4D4D4;
+  --text-muted: #888888;
+  --border-color: rgba(255, 255, 255, 0.16);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --accent-color: #FFFFFF;
+  --accent-secondary: #E5E5E5;
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.2);
+}
+
+/* 7. MONO - Light Mode */
+html[data-theme="mono"][data-mode="light"] {
+  --bg-primary: #F5F5F5;
+  --bg-nav: rgba(245, 245, 245, 0.94);
+  --bg-secondary: #EAEAEA;
+  --bg-surface: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --text-primary: #111111;
+  --text-secondary: #333333;
+  --text-muted: #666666;
+  --border-color: rgba(0, 0, 0, 0.16);
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --accent-color: #111111;
+  --accent-secondary: #333333;
+  --glass-bg: rgba(0, 0, 0, 0.04);
+  --glass-border: rgba(0, 0, 0, 0.16);
+}
+
+/* =========================================================================
+   GLOBAL SMOOTH THEME TRANSITION (600ms cubic-bezier)
+   ========================================================================= */
+html[data-theme] body,
+html[data-theme] div:not(.custom-cursor),
+html[data-theme] header,
+html[data-theme] footer,
+html[data-theme] section,
+html[data-theme] article,
+html[data-theme] main,
+html[data-theme] nav,
+html[data-theme] aside,
+html[data-theme] button,
+html[data-theme] p,
+html[data-theme] h1,
+html[data-theme] h2,
+html[data-theme] h3,
+html[data-theme] h4,
+html[data-theme] h5,
+html[data-theme] h6,
+html[data-theme] span,
+html[data-theme] a {
+  transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+  transition-duration: 600ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme] body,
+  html[data-theme] * {
+    transition: none !important;
+  }
+}
+
+/* =========================================================================
+   PROTECT ASSETS: Never filter or alter project images, videos, avatars, or 3D canvases
+   ========================================================================= */
+html[data-theme] img,
+html[data-theme] video,
+html[data-theme] canvas {
+  transition: none !important;
+  filter: none !important;
+}
+
+/* =========================================================================
+   UNIVERSAL THEME CLASS MAPPINGS
+   ========================================================================= */
+
+/* Body & Viewport Root */
+html[data-theme] body {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme] .min-h-screen {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme] section {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme] footer {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Backgrounds */
+html[data-theme] .bg-black,
+html[data-theme] .bg-\[\#050505\],
+html[data-theme] .bg-\[\#FBFBFC\],
+html[data-theme] .bg-\[\#111111\],
+html[data-theme] .bg-neutral-950 {
+  background-color: var(--bg-primary) !important;
+}
+
+html[data-theme] .bg-black\/80,
+html[data-theme] .bg-black\/85,
+html[data-theme] .bg-black\/90,
+html[data-theme] .bg-\[\#050505\]\/90,
+html[data-theme] .bg-\[\#FBFBFC\]\/90,
+html[data-theme] header {
+  background-color: var(--bg-nav) !important;
+}
+
+html[data-theme] .bg-neutral-900,
+html[data-theme] .bg-white,
+html[data-theme] .bg-\[\#141416\] {
+  background-color: var(--bg-surface) !important;
+}
+
+html[data-theme] .bg-neutral-800,
+html[data-theme] .bg-neutral-100,
+html[data-theme] .bg-\[\#F0F2F6\],
+html[data-theme] .bg-\[\#F7F8FA\],
+html[data-theme] .bg-\[\#F8F9FA\],
+html[data-theme] .bg-\[\#F4F6F8\],
+html[data-theme] .bg-\[\#F8F9FB\] {
+  background-color: var(--bg-secondary) !important;
+}
+
+/* Headings and Primary Typography */
+html[data-theme] h1,
+html[data-theme] h2,
+html[data-theme] h3,
+html[data-theme] h4,
+html[data-theme] h5,
+html[data-theme] h6 {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme] .text-white,
+html[data-theme] .text-black,
+html[data-theme] .text-\[\#0F1115\],
+html[data-theme] .text-\[\#111118\],
+html[data-theme] .text-neutral-950,
+html[data-theme] .text-neutral-900 {
+  color: var(--text-primary) !important;
+}
+
+/* Subtitles & Secondary Typography */
+html[data-theme] .text-neutral-200,
+html[data-theme] .text-neutral-300,
+html[data-theme] .text-neutral-600,
+html[data-theme] .text-neutral-700,
+html[data-theme] .text-neutral-800 {
+  color: var(--text-secondary) !important;
+}
+
+/* Muted & Meta Typography */
+html[data-theme] .text-neutral-400,
+html[data-theme] .text-neutral-500 {
+  color: var(--text-muted) !important;
+}
+
+/* Navigation Links */
+html[data-theme] nav a {
+  color: var(--text-muted);
+}
+
+html[data-theme] nav a:hover {
+  color: var(--text-primary) !important;
+}
+
+/* Borders */
+html[data-theme] .border-neutral-950,
+html[data-theme] .border-neutral-900,
+html[data-theme] .border-neutral-800,
+html[data-theme] .border-neutral-700,
+html[data-theme] .border-neutral-300,
+html[data-theme] .border-neutral-200,
+html[data-theme] .border-neutral-200\/80,
+html[data-theme] .border-neutral-200\/90,
+html[data-theme] .border-white\/10,
+html[data-theme] .border-white\/15,
+html[data-theme] .border-white\/20,
+html[data-theme] .border-black\/10,
+html[data-theme] .border-black\/15 {
+  border-color: var(--border-color) !important;
+}
+
+/* Optical glass components */
+html[data-theme] .optical-glass {
+  background: var(--glass-bg) !important;
+  border-color: var(--glass-border) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme] .optical-glass-active {
+  background: var(--accent-color) !important;
+  color: var(--bg-primary) !important;
+  border-color: var(--accent-color) !important;
+}
+
+/* Lightboxes maintain dark backdrop */
+html[data-theme] .fixed.z-50.bg-black\/90,
+html[data-theme] .fixed.z-50.bg-black\/95 {
+  background-color: rgba(0, 0, 0, 0.94) !important;
+}
+

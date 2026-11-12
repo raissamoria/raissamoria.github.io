@@ -29,8 +29,6 @@ import { EditorialProjectLayout } from './editorial/EditorialProjectLayout';
 
 // Authentic Assets
 // @ts-ignore
-import coverPresentationImg from '../assets/images/making_support_visible_cover.jpg';
-// @ts-ignore
 import coverHelpImg from '../assets/images/help.png';
 
 interface MakingSupportVisibleProjectProps {
@@ -271,11 +269,11 @@ export const MakingSupportVisibleProject: React.FC<MakingSupportVisibleProjectPr
         subtitle={isPt 
           ? "De pedidos de suporte informais a uma experiência digital estruturada." 
           : "From informal support requests to a structured digital experience."}
-        heroImage={coverPresentationImg}
-        heroImageAlt="Plataforma de Helpdesk - Apresentação Editorial"
+        heroImage={coverHelpImg}
+        heroImageAlt="Plataforma de Helpdesk - Interface"
         heroImageCaption={isPt 
-          ? "Figura 1.0 — Visão global da arquitetura da plataforma e touchpoints de suporte." 
-          : "Figure 1.0 — Overview of platform architecture and support touchpoints."}
+          ? "Figura 1.0 — Interface central da Plataforma de Helpdesk." 
+          : "Figure 1.0 — Central interface of Helpdesk Platform."}
         overview={{
           projectLabel: isPt ? "O projeto" : "The project",
           description: isPt 

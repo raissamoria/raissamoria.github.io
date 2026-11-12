@@ -1,21 +1,32 @@
 <!doctype html>
-<html lang="pt-PT" class="scroll-smooth bg-black">
+<html lang="pt-PT" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Raíssa Moriá • Portfolio OS 98</title>
-    <meta name="description" content="Raíssa Moriá — UX/UI Designer, traveler, nature and surf lover. Retro Windows 95/98 interactive portfolio experience." />
-    <meta property="og:title" content="Raíssa Moriá • Portfolio OS 98" />
-    <meta property="og:description" content="Raíssa Moriá — UX/UI Designer, traveler, nature and surf lover. Retro Windows 95/98 interactive portfolio experience." />
-    <!-- Google Web Fonts for Retro OS & Editorial Scrapbook -->
+    <title>Raíssa Moriá • Portfolio</title>
+    <meta name="description" content="Raíssa Moriá — Minimalist, editorial UX/UI & Product Design portfolio." />
+    <meta property="og:title" content="Raíssa Moriá • Portfolio" />
+    <meta property="og:description" content="Raíssa Moriá — Minimalist, editorial UX/UI & Product Design portfolio." />
+    <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link 
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Special+Elite&family=VT323&display=swap" 
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" 
       rel="stylesheet" 
     />
+    <script>
+      (function() {
+        try {
+          var p = localStorage.getItem('portfolio_color_palette_v2') || localStorage.getItem('portfolio_color_palette_v1') || 'original';
+          if (p === 'default') p = 'original';
+          var m = localStorage.getItem('portfolio_theme_mode_v2') || localStorage.getItem('portfolio_theme_mode_v1') || 'dark';
+          document.documentElement.setAttribute('data-theme', p);
+          document.documentElement.setAttribute('data-mode', m);
+        } catch(e) {}
+      })();
+    </script>
   </head>
-  <body class="min-h-screen bg-[#008080] text-[#1A1A1A] font-sans antialiased overflow-x-hidden select-none">
+  <body class="min-h-screen font-sans antialiased overflow-x-hidden">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

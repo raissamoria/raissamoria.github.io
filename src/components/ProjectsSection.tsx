@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence, useSpring } from 'motion/react';
-import { ArrowUpRight, ExternalLink, Sparkles, Layers, Eye } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { ProjectItem } from '../types';
 import { PORTFOLIO_PROJECTS } from './GalleryTunnel';
-import { OpticalGlassButton, OpticalGlassPill } from './OpticalGlass';
+import { OpticalGlassPill } from './OpticalGlass';
 
 interface ProjectsSectionProps {
   language: 'pt' | 'en';
@@ -152,146 +152,45 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
           </div>
         </div>
 
-        {/* Projects Grid: Editorial High-Contrast Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+        {/* Projects Grid: Pure Minimalist Visuals (Only Image + Title Underneath) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, idx) => {
-              const isNipon = project.slug === 'nipon-spa';
-
               return (
                 <motion.article
                   key={project.id}
                   layout
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.45, delay: idx * 0.08 }}
+                  transition={{ duration: 0.45, delay: idx * 0.06 }}
                   onMouseEnter={() => setHoveredProject(project)}
                   onMouseLeave={() => setHoveredProject(null)}
                   onClick={() => handleProjectClick(project)}
-                  className={`group flex flex-col bg-neutral-950 border ${
-                    isNipon 
-                      ? 'border-neutral-700 hover:border-white shadow-[0_0_30px_rgba(255,255,255,0.05)]' 
-                      : 'border-neutral-800 hover:border-neutral-500'
-                  } rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:shadow-[0_15px_50px_rgba(0,0,0,0.85)] relative cursor-pointer`}
+                  className="group flex flex-col gap-4 cursor-pointer"
                 >
-                  {/* Top Index Number & Featured Pill */}
-                  <div className="flex justify-between items-center mb-6">
-                    <span className="font-mono text-xs font-black text-neutral-400 group-hover:text-white transition-colors">
-                      {project.number}
-                    </span>
-                    {project.hasCaseStudy && (
-                      <span className="font-mono text-[9px] uppercase tracking-widest text-emerald-400 bg-emerald-950/40 border border-emerald-800/60 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                        {language === 'pt' ? 'Estudo de Caso' : 'Case Study'}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Visual Project Cover Canvas: Original Colors for real projects vs monochromatic canvas for code */}
-                  <div className="w-full h-64 sm:h-72 rounded-xl bg-neutral-900 border border-neutral-800 relative overflow-hidden flex flex-col justify-between p-6 mb-6 transition-all group-hover:border-neutral-600">
-                    
+                  {/* 1. Only Project Image */}
+                  <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-neutral-900 border border-neutral-800/80 group-hover:border-neutral-500 transition-all duration-500 shadow-lg group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.85)]">
                     {project.image ? (
-                      /* Real Project Image with Authentic Colors */
-                      <div className="absolute inset-0 overflow-hidden">
-                        <img 
-                          src={project.image} 
-                          alt={project.title} 
-                          className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                          referrerPolicy="no-referrer"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                      </div>
-                    ) : (
-                      /* Monochromatic Abstract Grid Background */
-                      <div 
-                        className="absolute inset-0 opacity-10 pointer-events-none"
-                        style={{
-                          backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.2) 1px, transparent 1px)',
-                          backgroundSize: '24px 24px',
-                        }}
+                      <img 
+                        src={project.image} 
+                        alt={project.title} 
+                        className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                        referrerPolicy="no-referrer"
                       />
-                    )}
-
-                    {/* Corner Coordinates & Year */}
-                    <div className="relative z-10 flex justify-between items-center">
-                      <span className="font-mono text-[9px] font-bold text-neutral-300 bg-black/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-neutral-800">
-                        {project.category}
-                      </span>
-                      <span className="font-mono text-[10px] text-neutral-300 bg-black/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-neutral-800">
-                        {project.year}
-                      </span>
-                    </div>
-
-                    {/* Center Display Typography */}
-                    <div className="relative z-10 flex flex-col items-center text-center my-auto py-4">
-                      <h3 className="font-sans font-black text-2xl sm:text-4xl uppercase tracking-tight text-white group-hover:scale-105 transition-transform duration-300 drop-shadow-md">
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-neutral-900 text-neutral-600 font-mono text-sm">
                         {project.title}
-                      </h3>
-                      <p className="font-mono text-[10px] uppercase tracking-widest text-neutral-300 mt-1 drop-shadow-sm">
-                        {project.subtitle}
-                      </p>
-                    </div>
-
-                    {/* Bottom Metrics / Quick Info */}
-                    <div className="relative z-10 flex items-center justify-between font-mono text-[9px] text-neutral-300 border-t border-white/10 pt-3">
-                      <span>{project.metrics}</span>
-                      <span className="text-white/60 font-bold uppercase">{project.year}</span>
-                    </div>
+                      </div>
+                    )}
                   </div>
 
-                  {/* Clean Editorial Roles / Disciplines Listing (Exactly matching request) */}
-                  <div className="flex flex-col gap-4 flex-grow">
-                    
-                    {project.roles && project.roles.length > 0 && (
-                      <div className="flex flex-col gap-1 font-mono text-[11px] uppercase tracking-wider text-neutral-400 font-bold">
-                        {project.roles.map((role) => (
-                          <span key={role} className="text-neutral-300">
-                            {role}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Subtle tags */}
-                    <div className="flex flex-wrap gap-1.5 pt-2">
-                      {project.tags.map((tag) => (
-                        <span 
-                          key={tag} 
-                          className="optical-glass text-neutral-400 text-[9px] font-mono uppercase px-2.5 py-0.5 rounded-md"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Bottom Action Section */}
-                    <div className="border-t border-neutral-800/80 pt-5 mt-auto flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <span className="font-mono text-xs font-bold text-white uppercase tracking-wider">
-                          {project.year}
-                        </span>
-                        {project.hasCaseStudy && (
-                          <span className="text-neutral-500 font-mono text-[10px]">
-                            {language === 'pt' ? '• Abrir Apresentação' : '• Open Presentation'}
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        <OpticalGlassButton
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleProjectClick(project);
-                          }}
-                          className="!px-4 !py-1.5 !text-xs !rounded-full"
-                        >
-                          <span>{project.hasCaseStudy ? (language === 'pt' ? 'Explorar' : 'Explore') : (language === 'pt' ? 'Ver' : 'View')}</span>
-                          <ArrowUpRight className="w-3.5 h-3.5" />
-                        </OpticalGlassButton>
-                      </div>
-                    </div>
-
+                  {/* 2. Underneath: Project Name */}
+                  <div className="flex items-center justify-between px-1">
+                    <h3 className="font-sans font-bold text-xl sm:text-2xl uppercase tracking-tight text-white group-hover:text-neutral-300 transition-colors">
+                      {project.title}
+                    </h3>
+                    <ArrowUpRight className="w-5 h-5 text-neutral-500 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                   </div>
                 </motion.article>
               );
