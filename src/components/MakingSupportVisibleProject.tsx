@@ -269,11 +269,6 @@ export const MakingSupportVisibleProject: React.FC<MakingSupportVisibleProjectPr
         subtitle={isPt 
           ? "De pedidos de suporte informais a uma experiência digital estruturada." 
           : "From informal support requests to a structured digital experience."}
-        heroImage={coverHelpImg}
-        heroImageAlt="Plataforma de Helpdesk - Interface"
-        heroImageCaption={isPt 
-          ? "Figura 1.0 — Interface central da Plataforma de Helpdesk." 
-          : "Figure 1.0 — Central interface of Helpdesk Platform."}
         overview={{
           projectLabel: isPt ? "O projeto" : "The project",
           description: isPt 

@@ -10,19 +10,27 @@ import { Language } from '../../types';
 
 export interface EditorialOverviewMeta {
   projectLabel?: string;
+  headline?: string;
   description: string;
+  secondaryDescription?: string;
+  rolesLabel?: string;
   roles: string[];
+  rolesAsList?: boolean;
   technologies: string[];
   methodology: string[];
+  usersLabel?: string;
   users: string[];
 }
 
 export interface EditorialProjectLayoutProps {
   title: string;
   subtitle: string;
-  heroImage: string;
-  heroImageAlt: string;
+  categories?: string[];
+  heroImage?: string;
+  heroImageAlt?: string;
   heroImageCaption?: string;
+  heroPlacement?: 'top' | 'below-header';
+  heroIntro?: string;
   overview: EditorialOverviewMeta;
   language: Language;
   onBack: () => void;
@@ -31,15 +39,19 @@ export interface EditorialProjectLayoutProps {
   nextProjectName?: string;
   prevProjectName?: string;
   onToggleLanguage?: (lang: Language) => void;
+  overviewPosition?: 'before' | 'after';
   children: React.ReactNode;
 }
 
 export const EditorialProjectLayout: React.FC<EditorialProjectLayoutProps> = ({
   title,
   subtitle,
+  categories,
   heroImage,
   heroImageAlt,
   heroImageCaption,
+  heroPlacement = 'top',
+  heroIntro,
   overview,
   language,
   onBack,
@@ -47,6 +59,8 @@ export const EditorialProjectLayout: React.FC<EditorialProjectLayoutProps> = ({
   onPrevProject,
   nextProjectName,
   prevProjectName,
+  onToggleLanguage,
+  overviewPosition = 'before',
   children,
 }) => {
   const [expandedImage, setExpandedImage] = useState<{ src: string; caption?: string } | null>(null);
@@ -121,7 +135,10 @@ export const EditorialProjectLayout: React.FC<EditorialProjectLayoutProps> = ({
 
             <div className="flex items-center border border-neutral-200 rounded-full p-0.5 bg-neutral-100/80 text-[10px] font-mono font-bold">
               <button
-                onClick={() => setCurrentLang('pt')}
+                onClick={() => {
+                  setCurrentLang('pt');
+                  onToggleLanguage?.('pt');
+                }}
                 className={`px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
                   isPt ? 'bg-white text-neutral-900 shadow-xs' : 'text-neutral-500 hover:text-neutral-900'
                 }`}
@@ -129,7 +146,10 @@ export const EditorialProjectLayout: React.FC<EditorialProjectLayoutProps> = ({
                 PT
               </button>
               <button
-                onClick={() => setCurrentLang('en')}
+                onClick={() => {
+                  setCurrentLang('en');
+                  onToggleLanguage?.('en');
+                }}
                 className={`px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
                   !isPt ? 'bg-white text-neutral-900 shadow-xs' : 'text-neutral-500 hover:text-neutral-900'
                 }`}
@@ -150,104 +170,168 @@ export const EditorialProjectLayout: React.FC<EditorialProjectLayoutProps> = ({
         </div>
       </header>
 
-      {/* 2. Opening Hero Image (Full-bleed aesthetic container) */}
-      <section className="pt-8 sm:pt-14 pb-12 px-4 sm:px-8 md:px-12">
-        <div className="max-w-[1400px] mx-auto flex flex-col gap-3">
-          <div 
-            onClick={() => setExpandedImage({ src: heroImage, caption: heroImageCaption })}
-            className="group relative w-full overflow-hidden rounded-2xl sm:rounded-3xl bg-[#EBECEF] border border-neutral-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)] cursor-pointer"
-          >
-            <img 
-              src={heroImage} 
-              alt={heroImageAlt}
-              className="w-full h-auto max-h-[820px] object-cover sm:object-contain transition-transform duration-700 ease-out group-hover:scale-[1.01]" 
-            />
-            <div className="absolute bottom-4 right-4 bg-black/75 backdrop-blur-md text-white text-[11px] font-mono px-3 py-1.5 rounded-full flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
-              <Maximize2 className="w-3 h-3" />
-              <span>{isPt ? 'Expandir Imagem' : 'Expand View'}</span>
+      {/* 2. Opening Hero Image (Top placement - default) */}
+      {heroImage && heroPlacement === 'top' && (
+        <section className="pt-8 sm:pt-14 pb-12 px-4 sm:px-8 md:px-12">
+          <div className="max-w-[1400px] mx-auto flex flex-col gap-3">
+            <div 
+              onClick={() => setExpandedImage({ src: heroImage, caption: heroImageCaption })}
+              className="group relative w-full overflow-hidden rounded-2xl sm:rounded-3xl bg-[#EBECEF] border border-neutral-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)] cursor-pointer"
+            >
+              <img 
+                src={heroImage} 
+                alt={heroImageAlt || title}
+                className="w-full h-auto max-h-[820px] object-cover sm:object-contain transition-transform duration-700 ease-out group-hover:scale-[1.01]" 
+              />
+              <div className="absolute bottom-4 right-4 bg-black/75 backdrop-blur-md text-white text-[11px] font-mono px-3 py-1.5 rounded-full flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
+                <Maximize2 className="w-3 h-3" />
+                <span>{isPt ? 'Expandir Imagem' : 'Expand View'}</span>
+              </div>
             </div>
+            {heroImageCaption && (
+              <p className="text-xs font-mono text-neutral-500 text-right px-2">
+                {heroImageCaption}
+              </p>
+            )}
           </div>
-          {heroImageCaption && (
-            <p className="text-xs font-mono text-neutral-500 text-right px-2">
-              {heroImageCaption}
+        </section>
+      )}
+
+      {/* 3. Massive Title & Subtitle (+ optional Categories, Hero Visual & Intro) */}
+      <section className={`${heroImage && heroPlacement === 'top' ? 'pt-8' : 'pt-14 sm:pt-20'} pb-16 sm:pb-24 px-6 sm:px-12 md:px-16 border-b border-neutral-200/80`}>
+        <div className="max-w-[1400px] mx-auto flex flex-col gap-8">
+          <div className="flex flex-col gap-6">
+            {categories && categories.length > 0 && (
+              <div className="text-xs font-mono uppercase tracking-[0.2em] text-neutral-500">
+                {categories.join(' · ')}
+              </div>
+            )}
+            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[100px] font-black tracking-[-0.035em] text-[#0F1115] leading-[0.94] uppercase">
+              {title}
+            </h1>
+            <p className="text-xl sm:text-2xl md:text-3xl text-neutral-600 font-light max-w-4xl leading-relaxed">
+              {subtitle}
+            </p>
+          </div>
+
+          {heroImage && heroPlacement === 'below-header' && (
+            <div className="flex flex-col gap-3 pt-4">
+              <div 
+                onClick={() => setExpandedImage({ src: heroImage, caption: heroImageCaption })}
+                className="group relative w-full bg-transparent cursor-pointer"
+              >
+                <img 
+                  src={heroImage} 
+                  alt={heroImageAlt || title}
+                  className="w-full h-auto object-contain transition-transform duration-700 ease-out group-hover:scale-[1.01]" 
+                />
+                <div className="absolute bottom-6 right-6 bg-black/75 backdrop-blur-md text-white text-[11px] font-mono px-3 py-1.5 rounded-full flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
+                  <Maximize2 className="w-3 h-3" />
+                  <span>{isPt ? 'Expandir Imagem' : 'Expand View'}</span>
+                </div>
+              </div>
+              {heroImageCaption && (
+                <p className="text-xs font-mono text-neutral-500 px-1">
+                  {heroImageCaption}
+                </p>
+              )}
+            </div>
+          )}
+
+          {heroIntro && (
+            <p className="text-lg sm:text-2xl text-[#0F1115] font-light max-w-4xl leading-relaxed pt-2">
+              {heroIntro}
             </p>
           )}
         </div>
       </section>
 
-      {/* 3. Massive Title & Subtitle */}
-      <section className="pt-8 pb-16 sm:pb-24 px-6 sm:px-12 md:px-16 border-b border-neutral-200/80">
-        <div className="max-w-[1400px] mx-auto flex flex-col gap-6">
-          <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[100px] font-black tracking-[-0.035em] text-[#0F1115] leading-[0.94] uppercase">
-            {title}
-          </h1>
-          <p className="text-xl sm:text-2xl md:text-3xl text-neutral-600 font-light max-w-4xl leading-relaxed">
-            {subtitle}
-          </p>
-        </div>
-      </section>
-
-      {/* 4. Project Overview Section (Editorial Columns) */}
-      <section className="py-16 sm:py-24 px-6 sm:px-12 md:px-16 border-b border-neutral-200/80 bg-white">
-        <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          
-          {/* Left Column: Project Goal */}
-          <div className="lg:col-span-5 flex flex-col gap-4">
-            <h2 className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-neutral-500">
-              {overview.projectLabel || (isPt ? 'O projeto' : 'The project')}
-            </h2>
-            <p className="text-lg sm:text-xl text-[#0F1115] font-normal leading-relaxed">
-              {overview.description}
-            </p>
-          </div>
-
-          {/* Right Column: 4-Column Metadata Grid */}
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-10 pt-2 lg:pt-0">
+      {/* 4. Project Overview Section (Editorial Columns) - Before content by default */}
+      {overviewPosition === 'before' && (
+        <section className="py-16 sm:py-24 px-6 sm:px-12 md:px-16 border-b border-neutral-200/80 bg-white">
+          <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             
-            {/* O meu papel */}
-            <div className="flex flex-col gap-2">
-              <span className="text-xs font-mono uppercase tracking-[0.2em] text-neutral-500">
-                {isPt ? 'O meu papel' : 'My role'}
-              </span>
-              <p className="text-sm sm:text-base font-semibold text-[#0F1115] leading-snug">
-                {overview.roles.join(' · ')}
+            {/* Left Column: Project Goal */}
+            <div className="lg:col-span-6 flex flex-col gap-5">
+              <h2 className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-neutral-500">
+                {overview.projectLabel || (isPt ? 'O projeto' : 'The project')}
+              </h2>
+              {overview.headline && (
+                <h3 className="text-2xl sm:text-4xl font-bold tracking-tight text-[#0F1115] leading-tight">
+                  {overview.headline}
+                </h3>
+              )}
+              <p className="text-lg sm:text-xl text-[#0F1115] font-normal leading-relaxed">
+                {overview.description}
               </p>
+              {overview.secondaryDescription && (
+                <p className="text-base sm:text-lg text-neutral-600 font-light leading-relaxed">
+                  {overview.secondaryDescription}
+                </p>
+              )}
             </div>
 
-            {/* Tecnologias */}
-            <div className="flex flex-col gap-2">
-              <span className="text-xs font-mono uppercase tracking-[0.2em] text-neutral-500">
-                {isPt ? 'Tecnologias' : 'Technologies'}
-              </span>
-              <p className="text-sm sm:text-base font-semibold text-[#0F1115] leading-snug">
-                {overview.technologies.join(' · ')}
-              </p>
-            </div>
+            {/* Right Column: Metadata Grid */}
+            <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-10 pt-2 lg:pt-0">
+              
+              {/* O meu papel */}
+              <div className={`flex flex-col gap-2 ${overview.rolesAsList ? 'sm:col-span-2' : ''}`}>
+                <span className="text-xs font-mono uppercase tracking-[0.2em] text-neutral-500">
+                  {overview.rolesLabel || (isPt ? 'O meu papel' : 'My role')}
+                </span>
+                {overview.rolesAsList ? (
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 pt-1">
+                    {overview.roles.map((role, idx) => (
+                      <li key={idx} className="text-sm sm:text-base font-medium text-[#0F1115] leading-snug flex items-start gap-2.5">
+                        <span className="font-mono text-xs text-neutral-400 mt-0.5 shrink-0">0{idx + 1}</span>
+                        <span>{role}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-sm sm:text-base font-semibold text-[#0F1115] leading-snug">
+                    {overview.roles.join(' · ')}
+                  </p>
+                )}
+              </div>
 
-            {/* Metodologia */}
-            <div className="flex flex-col gap-2">
-              <span className="text-xs font-mono uppercase tracking-[0.2em] text-neutral-500">
-                {isPt ? 'Metodologia' : 'Methodology'}
-              </span>
-              <p className="text-sm sm:text-base font-semibold text-[#0F1115] leading-snug">
-                {overview.methodology.join(' · ')}
-              </p>
-            </div>
+              {/* Tecnologias */}
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-mono uppercase tracking-[0.2em] text-neutral-500">
+                  {isPt ? 'Tecnologias' : 'Technologies'}
+                </span>
+                <p className="text-sm sm:text-base font-semibold text-[#0F1115] leading-snug">
+                  {overview.technologies.join(' · ')}
+                </p>
+              </div>
 
-            {/* Utilizadores */}
-            <div className="flex flex-col gap-2">
-              <span className="text-xs font-mono uppercase tracking-[0.2em] text-neutral-500">
-                {isPt ? 'Utilizadores' : 'Users'}
-              </span>
-              <p className="text-sm sm:text-base font-semibold text-[#0F1115] leading-snug">
-                {overview.users.join(' · ')}
-              </p>
+              {/* Metodologia */}
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-mono uppercase tracking-[0.2em] text-neutral-500">
+                  {isPt ? 'Metodologia' : 'Methodology'}
+                </span>
+                <p className="text-sm sm:text-base font-semibold text-[#0F1115] leading-snug">
+                  {overview.methodology.join(' · ')}
+                </p>
+              </div>
+
+              {/* Utilizadores / Contexto */}
+              {!overview.rolesAsList && (
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs font-mono uppercase tracking-[0.2em] text-neutral-500">
+                    {overview.usersLabel || (isPt ? 'Utilizadores' : 'Users')}
+                  </span>
+                  <p className="text-sm sm:text-base font-semibold text-[#0F1115] leading-snug">
+                    {overview.users.join(' · ')}
+                  </p>
+                </div>
+              )}
+
             </div>
 
           </div>
-
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 5. Continuous Narrative Content (Scroll Stream) */}
       <main className="py-12 sm:py-20 px-6 sm:px-12 md:px-16">
@@ -255,6 +339,70 @@ export const EditorialProjectLayout: React.FC<EditorialProjectLayoutProps> = ({
           {children}
         </div>
       </main>
+
+      {/* Optional Overview Section after Narrative Content */}
+      {overviewPosition === 'after' && (
+        <section className="py-16 sm:py-24 px-6 sm:px-12 md:px-16 border-t border-neutral-200/80 bg-white">
+          <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+            
+            {/* Left Column: Project Goal */}
+            <div className="lg:col-span-5 flex flex-col gap-4">
+              <h2 className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-neutral-500">
+                {overview.projectLabel || (isPt ? 'O projeto' : 'The project')}
+              </h2>
+              <p className="text-lg sm:text-xl text-[#0F1115] font-normal leading-relaxed">
+                {overview.description}
+              </p>
+            </div>
+
+            {/* Right Column: 4-Column Metadata Grid */}
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-10 pt-2 lg:pt-0">
+              
+              {/* O meu papel */}
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-mono uppercase tracking-[0.2em] text-neutral-500">
+                  {isPt ? 'O meu papel' : 'My role'}
+                </span>
+                <p className="text-sm sm:text-base font-semibold text-[#0F1115] leading-snug">
+                  {overview.roles.join(' · ')}
+                </p>
+              </div>
+
+              {/* Tecnologias */}
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-mono uppercase tracking-[0.2em] text-neutral-500">
+                  {isPt ? 'Tecnologias' : 'Technologies'}
+                </span>
+                <p className="text-sm sm:text-base font-semibold text-[#0F1115] leading-snug">
+                  {overview.technologies.join(' · ')}
+                </p>
+              </div>
+
+              {/* Metodologia */}
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-mono uppercase tracking-[0.2em] text-neutral-500">
+                  {isPt ? 'Metodologia' : 'Methodology'}
+                </span>
+                <p className="text-sm sm:text-base font-semibold text-[#0F1115] leading-snug">
+                  {overview.methodology.join(' · ')}
+                </p>
+              </div>
+
+              {/* Utilizadores */}
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-mono uppercase tracking-[0.2em] text-neutral-500">
+                  {isPt ? 'Utilizadores' : 'Users'}
+                </span>
+                <p className="text-sm sm:text-base font-semibold text-[#0F1115] leading-snug">
+                  {overview.users.join(' · ')}
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+      )}
 
       {/* 6. Footer Navigation: Next Project & Back to Portfolio */}
       <footer className="border-t border-neutral-200/80 bg-white py-20 px-6 sm:px-12 md:px-16">
@@ -335,7 +483,7 @@ export const EditorialProjectLayout: React.FC<EditorialProjectLayoutProps> = ({
               <img 
                 src={expandedImage.src} 
                 alt="Expanded View" 
-                className="max-h-[80vh] w-auto max-w-full object-contain rounded-xl shadow-2xl bg-black"
+                className="max-h-[80vh] w-auto max-w-full object-contain rounded-xl bg-transparent"
               />
 
               {expandedImage.caption && (

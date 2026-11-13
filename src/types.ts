@@ -13,6 +13,8 @@ export interface ProjectItem {
   metrics?: string;
   tags: string[];
   image?: string;
+  video?: string;
+  videoPlaybackRate?: number;
   slug?: string;
   hasCaseStudy?: boolean;
 }

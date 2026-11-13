@@ -48,7 +48,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
     >
       {/* Dynamic Floating Cursor Image Preview (Contrasting full color against dark portfolio) */}
       <AnimatePresence>
-        {hoveredProject && hoveredProject.image && (
+        {hoveredProject && (hoveredProject.video || hoveredProject.image) && (
           <motion.div
             initial={{ opacity: 0, scale: 0.88, rotate: -2 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
@@ -66,12 +66,34 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
               <span className="text-neutral-500">{hoveredProject.year}</span>
             </div>
             <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-900">
-              <img 
-                src={hoveredProject.image} 
-                alt={hoveredProject.title}
-                className="w-full h-full object-cover object-top"
-                referrerPolicy="no-referrer"
-              />
+              {hoveredProject.video ? (
+                <video
+                  ref={(el) => {
+                    if (el) el.playbackRate = hoveredProject.videoPlaybackRate ?? 1;
+                  }}
+                  src={hoveredProject.video}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                  onLoadedMetadata={(e) => {
+                    e.currentTarget.playbackRate = hoveredProject.videoPlaybackRate ?? 1;
+                  }}
+                  onPlay={(e) => {
+                    e.currentTarget.playbackRate = hoveredProject.videoPlaybackRate ?? 1;
+                  }}
+                  aria-label={hoveredProject.title}
+                  className="w-full h-full object-cover object-center"
+                />
+              ) : (
+                <img 
+                  src={hoveredProject.image} 
+                  alt={hoveredProject.title}
+                  className="w-full h-full object-cover object-top"
+                  referrerPolicy="no-referrer"
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
               <div className="absolute bottom-3 left-4 right-4 flex justify-between items-end text-white">
                 <span className="text-xs font-mono font-bold tracking-wider uppercase">
@@ -134,9 +156,29 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                   onClick={() => handleProjectClick(project)}
                   className="group flex flex-col gap-4 cursor-pointer"
                 >
-                  {/* 1. Only Project Image */}
+                  {/* 1. Project Cover (Video or Image) */}
                   <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-neutral-900 border border-neutral-800/80 group-hover:border-neutral-500 transition-all duration-500 shadow-lg group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.85)]">
-                    {project.image ? (
+                    {project.video ? (
+                      <video
+                        ref={(el) => {
+                          if (el) el.playbackRate = project.videoPlaybackRate ?? 1;
+                        }}
+                        src={project.video}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        preload="auto"
+                        onLoadedMetadata={(e) => {
+                          e.currentTarget.playbackRate = project.videoPlaybackRate ?? 1;
+                        }}
+                        onPlay={(e) => {
+                          e.currentTarget.playbackRate = project.videoPlaybackRate ?? 1;
+                        }}
+                        aria-label={project.title}
+                        className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      />
+                    ) : project.image ? (
                       <img 
                         src={project.image} 
                         alt={project.title} 

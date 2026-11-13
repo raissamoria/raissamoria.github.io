@@ -146,9 +146,29 @@ export const ScrapbookProjects: React.FC<ScrapbookProjectsProps> = ({
                     height="h-5"
                   />
 
-                  {/* Project Image Frame (Torn paper / polaroid style) */}
+                  {/* Project Cover Frame (Torn paper / polaroid style) */}
                   <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[2px] bg-neutral-900 mb-4 border border-black/10">
-                    {project.image ? (
+                    {project.video ? (
+                      <video
+                        ref={(el) => {
+                          if (el) el.playbackRate = project.videoPlaybackRate ?? 1;
+                        }}
+                        src={project.video}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        preload="auto"
+                        onLoadedMetadata={(e) => {
+                          e.currentTarget.playbackRate = project.videoPlaybackRate ?? 1;
+                        }}
+                        onPlay={(e) => {
+                          e.currentTarget.playbackRate = project.videoPlaybackRate ?? 1;
+                        }}
+                        aria-label={project.title}
+                        className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                      />
+                    ) : project.image ? (
                       <img 
                         src={project.image} 
                         alt={project.title} 

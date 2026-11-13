@@ -99,11 +99,12 @@ export default function App() {
   // If viewing a detailed project case study
   if (currentProject === 'nipon-spa') {
     return (
-      <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans antialiased">
+      <div className="min-h-screen bg-[#FBFBFC] text-[#111118] selection:bg-neutral-900 selection:text-white font-sans antialiased">
         <CustomCursor />
         <ThemeSwitcher language={language} />
         <NiponSpaProject 
           language={language} 
+          onToggleLanguage={setLanguage}
           onBack={handleBackToPortfolio} 
           onNextProject={() => handleOpenProject('sue-app')}
           onPrevProject={() => handleOpenProject('plataforma-helpdesk')}
@@ -114,7 +115,7 @@ export default function App() {
 
   if (currentProject === 'sue-app') {
     return (
-      <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black font-sans antialiased">
+      <div className="min-h-screen bg-[#FBFBFC] text-[#111118] selection:bg-neutral-900 selection:text-white font-sans antialiased">
         <CustomCursor />
         <ThemeSwitcher language={language} />
         <SueAppProject 

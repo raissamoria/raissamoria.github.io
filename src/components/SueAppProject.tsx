@@ -1,30 +1,24 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Play, 
-  Pause, 
-  Maximize2, 
-  CheckCircle2, 
-  Smartphone, 
-  Layers, 
-  Clock, 
-  Sparkles,
-  ExternalLink,
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Play,
+  Pause,
   Volume2,
   VolumeX,
-  RotateCcw,
-  Shield,
-  FileText,
-  User,
+  Maximize2,
   X,
-  ArrowUpRight
 } from 'lucide-react';
 import { Language } from '../types';
-import { ModernProjectLayout, ProjectTabItem } from './ModernProjectLayout';
-import { OpticalGlassButton, OpticalGlassPill } from './OpticalGlass';
+import { EditorialProjectLayout } from './editorial/EditorialProjectLayout';
 
+// Authentic SUE App Design Process Slides (Chronological Order)
 // @ts-ignore
 import slide1 from '../assets/images/project-sue/1.png';
 // @ts-ignore
@@ -51,706 +45,446 @@ interface SueAppProjectProps {
   onPrevProject?: () => void;
 }
 
-interface SlideItem {
+interface ProcessSlide {
   id: number;
   image: string;
   fallback: string;
-  titlePt: string;
-  titleEn: string;
-  categoryPt: string;
-  categoryEn: string;
+  stagePt: string;
+  stageEn: string;
   descPt: string;
   descEn: string;
 }
 
-const SLIDES: SlideItem[] = [
+const PROCESS_SLIDES: ProcessSlide[] = [
   {
     id: 1,
     image: slide1,
     fallback: '/project-sue/1.png',
-    titlePt: '01. Capa & Visão Geral • SUE Mobile App',
-    titleEn: '01. Cover & Overview • SUE Mobile App',
-    categoryPt: 'IDENTIDADE & APRESENTAÇÃO',
-    categoryEn: 'IDENTITY & PRESENTATION',
-    descPt: 'Serviços de União a Emigração — Migration Facility. Disponível para iOS (App Store) e Android (Google Play).',
-    descEn: 'Union Services for Emigration — Migration Facility. Available for iOS (App Store) & Android (Google Play).',
+    stagePt: '01. Visão Geral & Apresentação do Produto',
+    stageEn: '01. Product Overview & Presentation',
+    descPt: 'Serviços de União a Emigração — apresentação da plataforma móvel para iOS e Android.',
+    descEn: 'Union Services for Emigration — mobile application overview for iOS and Android.',
   },
   {
     id: 2,
     image: slide2,
     fallback: '/project-sue/2.png',
-    titlePt: '02. Problema & Solução',
-    titleEn: '02. Problem & Solution',
-    categoryPt: 'ENQUADRAMENTO ESTRATÉGICO',
-    categoryEn: 'STRATEGIC FRAMING',
+    stagePt: '02. Problema & Enquadramento Estratégico',
+    stageEn: '02. Problem & Strategic Framing',
     descPt: 'Superação da burocracia, desinformação e atrasos através de inclusão, transparência e acompanhamento do Título de Residência.',
-    descEn: 'Tackling bureaucratic friction, misinformation and backlog through inclusion, transparency, and residence permit tracking.',
+    descEn: 'Addressing bureaucratic friction, misinformation, and delays through transparency and residence permit tracking.',
   },
   {
     id: 3,
     image: slide3,
     fallback: '/project-sue/3.png',
-    titlePt: '03. Pesquisa com Utilizadores (12 Entrevistas)',
-    titleEn: '03. User Research (12 Interviews)',
-    categoryPt: 'UX RESEARCH & DADOS',
-    categoryEn: 'UX RESEARCH & INSIGHTS',
-    descPt: 'Resultados de inquéritos via Google Forms sobre facilidade de compreensão dos sistemas governamentais atuais e barreiras encontradas.',
-    descEn: 'Google Forms quantitative survey findings regarding comprehension and user friction across current government portals.',
+    stagePt: '03. Pesquisa com Utilizadores (12 Entrevistas)',
+    stageEn: '03. User Research (12 Interviews)',
+    descPt: 'Resultados de inquéritos sobre a clareza dos sistemas governamentais atuais e as principais barreiras encontradas.',
+    descEn: 'Survey and interview insights highlighting comprehension hurdles across current immigration portals.',
   },
   {
     id: 4,
     image: slide4,
     fallback: '/project-sue/4.png',
-    titlePt: '04. Persona: Laura Mendes (Migrante Brasileira)',
-    titleEn: '04. Persona: Laura Mendes (Brazilian Migrant)',
-    categoryPt: 'ARQUÉTIPO DE UTILIZADOR',
-    categoryEn: 'USER ARCHETYPE',
-    descPt: 'Idade: 29 anos • Estado: Solteira • Ocupação: Designer Gráfica • Dores: Dificuldade em agendamentos, ansiedade com prazos e falta de apoio.',
-    descEn: 'Age: 29 • Status: Single • Occupation: Graphic Designer • Pain points: Booking hurdles, permit deadline anxiety, lack of human guidance.',
+    stagePt: '04. Definição de Persona: Laura Mendes',
+    stageEn: '04. Primary Persona: Laura Mendes',
+    descPt: 'Mapeamento de necessidades reais: dificuldade em agendamentos, ansiedade com prazos e necessidade de apoio próximo.',
+    descEn: 'Mapping core user needs: scheduling difficulties, permit deadline anxiety, and lack of human guidance.',
   },
   {
     id: 5,
     image: slide5,
     fallback: '/project-sue/5.png',
-    titlePt: '05. Mapa de Empatia & Jornada do Utilizador',
-    titleEn: '05. Empathy Map & User Journey',
-    categoryPt: 'MAPEAMENTO DE EXPERIÊNCIA',
-    categoryEn: 'EXPERIENCE MAPPING',
-    descPt: 'O que o utilizador pensa, sente, ouve, vê, fala e faz ao longo da jornada burocrática de regularização documental.',
-    descEn: 'Mapping thoughts, feelings, auditory influences, verbal actions, and pain-gain thresholds during legal documentation journeys.',
+    stagePt: '05. Mapa de Empatia & Jornada do Utilizador',
+    stageEn: '05. Empathy Map & User Journey',
+    descPt: 'Análise emocional e comportamental ao longo de toda a jornada de regularização documental.',
+    descEn: 'Emotional and behavioral mapping across every stage of the legal documentation process.',
   },
   {
     id: 6,
     image: slide6,
     fallback: '/project-sue/6.png',
-    titlePt: '06. Arquitetura de Informação & Fluxo Principal',
-    titleEn: '06. Information Architecture & Primary Flow',
-    categoryPt: 'ESTRUTURAÇÃO & TAXONOMIA',
-    categoryEn: 'STRUCTURE & TAXONOMY',
-    descPt: 'Hierarquia das 4 abas mestras da app: Início (Dashboard), Processos (Acompanhamento), Agendamentos e Perfil/Suporte.',
-    descEn: 'Hierarchical breakdown of the 4 primary app tabs: Home (Dashboard), Processes (Tracking), Appointments, and Profile/Support.',
+    stagePt: '06. Arquitetura de Informação & Fluxo Principal',
+    stageEn: '06. Information Architecture & Primary Flow',
+    descPt: 'Estruturação das quatro áreas principais: Início, Processos, Agendamentos e Perfil/Suporte.',
+    descEn: 'Structural hierarchy across the four core tabs: Home, Processes, Appointments, and Profile/Support.',
   },
   {
     id: 7,
     image: slide7,
     fallback: '/project-sue/7.png',
-    titlePt: '07. Wireframes & Wireflow de Baixa Fidelidade',
-    titleEn: '07. Low-Fidelity Wireframes & Wireflow',
-    categoryPt: 'PROTOTIPAGEM EXPLORATÓRIA',
-    categoryEn: 'EXPLORATORY PROTOTYPING',
-    descPt: 'Esboços funcionais da navegação de integração (onboarding), autenticação com chave móvel e submissão de documentos.',
-    descEn: 'Functional sketches illustrating onboarding, mobile digital key verification, and secure document upload workflows.',
+    stagePt: '07. Wireframes & Wireflow de Baixa Fidelidade',
+    stageEn: '07. Low-Fidelity Wireframes & Wireflow',
+    descPt: 'Exploração funcional do onboarding, autenticação segura e fluxo de submissão de documentos.',
+    descEn: 'Functional exploration of onboarding, secure digital authentication, and document upload flows.',
   },
   {
     id: 8,
     image: slide8,
     fallback: '/project-sue/8.png',
-    titlePt: '08. Design System & Guia de Estilo',
-    titleEn: '08. Design System & Style Guide',
-    categoryPt: 'SISTEMAS VISUAIS',
-    categoryEn: 'DESIGN TOKENS & COMPONENTS',
-    descPt: 'Tipografia (Inter), paleta cromática com Azul Confiança (#0052CC) e Amarelo Calor, raio de curvatura 16px e ícones consistentes.',
-    descEn: 'Typography (Inter), Trust Blue (#0052CC) & Warm Gold palette, 16px corner radius tokens, and accessible icon sets.',
+    stagePt: '08. Design System & Guia de Estilo',
+    stageEn: '08. Design System & Style Guide',
+    descPt: 'Padronização tipográfica, paleta cromática de confiança, raios de curvatura e iconografia consistente.',
+    descEn: 'Typographic hierarchy, trust-first color palette, corner radius tokens, and consistent iconography.',
   },
   {
     id: 9,
     image: slide9,
     fallback: '/project-sue/9.png',
-    titlePt: '09. Interfaces de Alta Fidelidade (Mockups Finais)',
-    titleEn: '09. High-Fidelity UI Screens (Final Mockups)',
-    categoryPt: 'ENTREGA FINAL & PROTÓTIPO',
-    categoryEn: 'FINAL DELIVERY & PROTOTYPE',
-    descPt: 'Telas finais com status transparente do Título de Residência, timeline de aprovação passo a passo e chat de apoio em tempo real.',
-    descEn: 'Final screen compositions featuring real-time permit status badge, step-by-step approval timeline, and integrated live support.',
+    stagePt: '09. Interfaces de Alta Fidelidade',
+    stageEn: '09. High-Fidelity UI Screens',
+    descPt: 'Telas finais com estado transparente do Título de Residência, linha temporal de aprovação e suporte integrado.',
+    descEn: 'Final screen compositions featuring real-time permit tracking, step-by-step approval timeline, and support.',
   },
 ];
+
+const AUTO_ADVANCE_MS = 4000;
 
 export const SueAppProject: React.FC<SueAppProjectProps> = ({
   language,
   onBack,
-  onNextProject = () => {},
-  onPrevProject = () => {},
+  onNextProject,
+  onPrevProject,
 }) => {
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [expandedImage, setExpandedImage] = useState<string | null>(null);
-
-  // Video playback states
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [isVideoMuted, setIsVideoMuted] = useState(true);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
-
+  const shouldReduceMotion = useReducedMotion();
   const isPt = language === 'pt';
-  const currentSlide = SLIDES[currentSlideIndex];
 
-  // Carousel autoplay logic (8s)
+  // Carousel states
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(() => !shouldReduceMotion);
+  const [isHoveringCarousel, setIsHoveringCarousel] = useState(false);
+  const [expandedImage, setExpandedImage] = useState<{ src: string; caption?: string } | null>(null);
+  const touchStartX = useRef<number | null>(null);
+
+  // Video player states (never auto-starts with sound)
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(() => !shouldReduceMotion);
+  const [isVideoMuted, setIsVideoMuted] = useState(true);
+
+  const currentSlide = PROCESS_SLIDES[currentSlideIndex];
+
+  // Respect prefers-reduced-motion dynamically
   useEffect(() => {
-    if (!isPlaying) return;
-    const interval = setInterval(() => {
-      setCurrentSlideIndex((prev) => (prev + 1) % SLIDES.length);
-    }, 8000);
-    return () => clearInterval(interval);
-  }, [isPlaying]);
+    if (shouldReduceMotion) {
+      setIsAutoPlaying(false);
+    }
+  }, [shouldReduceMotion]);
 
-  const goToNextSlide = useCallback(() => {
-    setCurrentSlideIndex((prev) => (prev + 1) % SLIDES.length);
+  // Auto-advance every 4 seconds unless paused, hovering, or reduced-motion
+  useEffect(() => {
+    if (!isAutoPlaying || isHoveringCarousel || shouldReduceMotion || expandedImage) return;
+
+    const timer = setInterval(() => {
+      setCurrentSlideIndex((prev) => (prev + 1) % PROCESS_SLIDES.length);
+    }, AUTO_ADVANCE_MS);
+
+    return () => clearInterval(timer);
+  }, [isAutoPlaying, isHoveringCarousel, shouldReduceMotion, expandedImage]);
+
+  const handlePrevSlide = useCallback(() => {
+    setIsAutoPlaying(false);
+    setCurrentSlideIndex((prev) => (prev - 1 + PROCESS_SLIDES.length) % PROCESS_SLIDES.length);
   }, []);
 
-  const goToPrevSlide = useCallback(() => {
-    setCurrentSlideIndex((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
+  const handleNextSlide = useCallback(() => {
+    setIsAutoPlaying(false);
+    setCurrentSlideIndex((prev) => (prev + 1) % PROCESS_SLIDES.length);
   }, []);
 
+  const handleSelectSlide = useCallback((index: number) => {
+    setIsAutoPlaying(false);
+    setCurrentSlideIndex(index);
+  }, []);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) {
+        handleNextSlide();
+      } else {
+        handlePrevSlide();
+      }
+    }
+    touchStartX.current = null;
+  };
+
+  // Video controls
   const toggleVideoPlay = () => {
-    if (!videoRef.current) return;
-    if (videoRef.current.paused) {
-      videoRef.current.play();
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      video.play();
       setIsVideoPlaying(true);
     } else {
-      videoRef.current.pause();
+      video.pause();
       setIsVideoPlaying(false);
     }
   };
 
   const toggleVideoMute = () => {
-    if (!videoRef.current) return;
-    videoRef.current.muted = !videoRef.current.muted;
-    setIsVideoMuted(videoRef.current.muted);
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = !video.muted;
+    setIsVideoMuted(video.muted);
   };
-
-  const restartVideo = () => {
-    if (!videoRef.current) return;
-    videoRef.current.currentTime = 0;
-    videoRef.current.play();
-    setIsVideoPlaying(true);
-  };
-
-  // =========================================================================
-  // TAB 1: VISÃO GERAL & SLIDESHOW
-  // =========================================================================
-  const OverviewTab = (
-    <div className="flex flex-col gap-8">
-      {/* Editorial Overview Card */}
-      <div className="optical-glass p-6 sm:p-10 rounded-2xl flex flex-col gap-6">
-        <div className="flex items-center justify-between border-b border-white/10 pb-4">
-          <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
-            <span>01 / {isPt ? 'VISÃO GERAL DO PROJETO' : 'PROJECT OVERVIEW'}</span>
-          </div>
-          <span className="font-mono text-[10px] text-neutral-500 uppercase tracking-widest">
-            9 SLIDES • APRESENTAÇÃO COMPLETA
-          </span>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-white leading-tight">
-            SUE — Serviços de União a Emigração
-          </h2>
-          <p className="text-base sm:text-lg text-neutral-200 font-light leading-relaxed">
-            {isPt 
-              ? 'Uma aplicação móvel concebida para simplificar a jornada de regularização de imigrantes e emigrantes, transformando processos burocráticos complexos numa experiência transparente, intuitiva e humana.'
-              : 'A mobile application designed to simplify the migration and residence regularisation journey, transforming opaque bureaucratic hurdles into a transparent, empathetic digital experience.'}
-          </p>
-          <p className="text-sm sm:text-base text-neutral-400 font-light leading-relaxed">
-            {isPt
-              ? 'O projeto aborda as principais dificuldades sentidas pela comunidade migrante: terminologia jurídica impenetrável, falta de acompanhamento em tempo real do Título de Residência e ausência de apoio humanizado durante a transição.'
-              : 'The project addresses the core friction points encountered by international migrants: impenetrable legal jargon, total absence of real-time permit status tracking, and lack of guided human support.'}
-          </p>
-        </div>
-      </div>
-
-      {/* Quick Specs Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="optical-glass p-6 rounded-2xl flex flex-col gap-2">
-          <span className="font-mono text-[9px] uppercase tracking-widest text-neutral-500">PLATAFORMAS</span>
-          <span className="text-lg font-bold text-white">iOS & Android</span>
-          <span className="text-neutral-400 text-xs font-light">App Store & Google Play</span>
-        </div>
-
-        <div className="optical-glass p-6 rounded-2xl flex flex-col gap-2">
-          <span className="font-mono text-[9px] uppercase tracking-widest text-neutral-500">O MEU PAPEL</span>
-          <span className="text-lg font-bold text-white">UX/UI Designer</span>
-          <span className="text-neutral-400 text-xs font-light">Research, Wireframing & Design System</span>
-        </div>
-
-        <div className="optical-glass p-6 rounded-2xl flex flex-col gap-2">
-          <span className="font-mono text-[9px] uppercase tracking-widest text-neutral-500">FERRAMENTAS</span>
-          <span className="text-lg font-bold text-sky-400">Figma, Miro, Forms</span>
-          <span className="text-neutral-400 text-xs font-light">Design Tokens & Usability Testing</span>
-        </div>
-      </div>
-
-      {/* 9-Slide Interactive Carousel Viewer */}
-      <div className="optical-glass p-6 sm:p-8 rounded-2xl flex flex-col gap-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
-          <div>
-            <span className="font-mono text-[9px] uppercase tracking-widest text-sky-400 font-bold block">
-              APRESENTAÇÃO COMPLETA • SLIDE {currentSlide.id} DE {SLIDES.length}
-            </span>
-            <h3 className="text-xl font-bold uppercase text-white mt-1">
-              {isPt ? currentSlide.titlePt : currentSlide.titleEn}
-            </h3>
-          </div>
-
-          {/* Carousel Controls */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="optical-glass px-3 py-1.5 rounded-full text-xs font-mono text-neutral-300 hover:text-white flex items-center gap-1.5 cursor-pointer"
-            >
-              {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-              <span>{isPlaying ? (isPt ? 'Pausar' : 'Pause') : (isPt ? 'Auto' : 'Play')}</span>
-            </button>
-
-            <button
-              onClick={goToPrevSlide}
-              className="optical-glass p-2 rounded-full text-white hover:bg-white/20 transition-all cursor-pointer"
-              title="Anterior"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={goToNextSlide}
-              className="optical-glass p-2 rounded-full text-white hover:bg-white/20 transition-all cursor-pointer"
-              title="Seguinte"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
-        {/* Current Active Slide in High Resolution */}
-        <div 
-          onClick={() => setExpandedImage(currentSlide.image)}
-          className="group cursor-pointer bg-neutral-950 border border-neutral-800 overflow-hidden rounded-2xl relative aspect-[16/9] shadow-2xl transition-all duration-300 hover:border-neutral-600"
-        >
-          <img 
-            src={currentSlide.image} 
-            alt={currentSlide.titlePt} 
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.01]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent pointer-events-none" />
-          <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
-            <p className="text-xs sm:text-sm text-neutral-300 font-light max-w-xl">
-              {isPt ? currentSlide.descPt : currentSlide.descEn}
-            </p>
-            <div className="optical-glass px-3 py-1.5 rounded-full text-white font-mono text-xs flex items-center gap-2 shrink-0">
-              <Maximize2 className="w-3.5 h-3.5 text-white" />
-              <span>{isPt ? 'Expandir Slide' : 'Expand'}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Thumbnails Navigator */}
-        <div className="grid grid-cols-3 sm:grid-cols-9 gap-2 pt-2">
-          {SLIDES.map((s, idx) => {
-            const isSelected = idx === currentSlideIndex;
-            return (
-              <button
-                key={s.id}
-                onClick={() => {
-                  setCurrentSlideIndex(idx);
-                  setIsPlaying(false);
-                }}
-                className={`group relative aspect-[16/9] rounded-lg overflow-hidden border transition-all cursor-pointer ${
-                  isSelected 
-                    ? 'border-white ring-2 ring-white/50 scale-105 z-10' 
-                    : 'border-white/10 opacity-60 hover:opacity-100 hover:border-white/40'
-                }`}
-              >
-                <img src={s.image} alt={s.titlePt} className="w-full h-full object-cover" />
-                <span className="absolute bottom-1 right-1 font-mono text-[8px] bg-black/80 px-1 rounded text-white">
-                  0{s.id}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
-
-  // =========================================================================
-  // TAB 2: PESQUISA COM UTILIZADORES
-  // =========================================================================
-  const ResearchTab = (
-    <div className="flex flex-col gap-8">
-      <div className="optical-glass p-6 sm:p-10 rounded-2xl flex flex-col gap-6">
-        <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-400 border-b border-white/10 pb-4">
-          <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
-          <span>02 / {isPt ? 'PESQUISA COM UTILIZADORES & DESCOBERTA' : 'USER RESEARCH & DISCOVERY'}</span>
-        </div>
-        <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
-          {isPt ? '12 Entrevistas em Profundidade com Migrantes' : '12 In-Depth Interviews with Migrants'}
-        </h3>
-        <p className="text-base text-neutral-300 leading-relaxed font-light">
-          {isPt 
-            ? 'A fase de pesquisa combinou inquéritos quantitativos e 12 entrevistas semiestruturadas com cidadãos imigrantes em Portugal, identificando as maiores dores na interação com os serviços de regularização pública.'
-            : 'The discovery phase merged quantitative surveys with 12 semi-structured interviews with foreign residents in Portugal, mapping the exact friction points experienced with public immigration bodies.'}
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div 
-          onClick={() => setExpandedImage(slide3)}
-          className="group cursor-pointer bg-neutral-950 border border-neutral-800 overflow-hidden rounded-2xl relative aspect-[16/9] shadow-xl hover:border-neutral-600 transition-all"
-        >
-          <img src={slide3} alt="User Research Data" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-            <span className="text-xs font-mono uppercase tracking-wider text-white font-bold">
-              {isPt ? 'Dados da Pesquisa Quantitativa' : 'Quantitative Survey Results'}
-            </span>
-            <div className="optical-glass p-2 rounded-full text-white">
-              <Maximize2 className="w-3.5 h-3.5" />
-            </div>
-          </div>
-        </div>
-
-        <div 
-          onClick={() => setExpandedImage(slide4)}
-          className="group cursor-pointer bg-neutral-950 border border-neutral-800 overflow-hidden rounded-2xl relative aspect-[16/9] shadow-xl hover:border-neutral-600 transition-all"
-        >
-          <img src={slide4} alt="Persona Laura Mendes" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-            <span className="text-xs font-mono uppercase tracking-wider text-white font-bold">
-              {isPt ? 'Persona: Laura Mendes (29 Anos)' : 'Primary Persona Archetype'}
-            </span>
-            <div className="optical-glass p-2 rounded-full text-white">
-              <Maximize2 className="w-3.5 h-3.5" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  // =========================================================================
-  // TAB 3: PROCESSO & WIREFRAMES
-  // =========================================================================
-  const DesignProcessTab = (
-    <div className="flex flex-col gap-8">
-      <div className="optical-glass p-6 sm:p-10 rounded-2xl flex flex-col gap-6">
-        <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-400 border-b border-white/10 pb-4">
-          <span className="w-1.5 h-1.5 rounded-full bg-white" />
-          <span>03 / {isPt ? 'MAPA DE EMPATIA & ARQUITETURA DE INFORMAÇÃO' : 'EMPATHY MAP & IA'}</span>
-        </div>
-        <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
-          {isPt ? 'Da Jornada Emocional à Estruturação dos Fluxos' : 'From Emotional Journey to Functional Flow'}
-        </h3>
-        <p className="text-base text-neutral-300 leading-relaxed font-light">
-          {isPt 
-            ? 'A arquitetura de informação foi desenhada para colocar o estado do Título de Residência no topo da hierarquia visual, eliminando cliques desnecessários e reduzindo a ansiedade do utilizador.'
-            : 'The information architecture prioritized the legal residence permit status at the very top of the hierarchy, removing unnecessary clicks and mitigating user stress.'}
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div 
-          onClick={() => setExpandedImage(slide5)}
-          className="group cursor-pointer bg-neutral-950 border border-neutral-800 overflow-hidden rounded-2xl relative aspect-[16/9] shadow-xl hover:border-neutral-600 transition-all"
-        >
-          <img src={slide5} alt="Empathy Map" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-            <span className="text-xs font-mono uppercase tracking-wider text-white font-bold">
-              {isPt ? 'Slide 05: Mapa de Empatia & Sentimentos' : 'Slide 05: Empathy Map'}
-            </span>
-            <div className="optical-glass p-2 rounded-full text-white">
-              <Maximize2 className="w-3.5 h-3.5" />
-            </div>
-          </div>
-        </div>
-
-        <div 
-          onClick={() => setExpandedImage(slide6)}
-          className="group cursor-pointer bg-neutral-950 border border-neutral-800 overflow-hidden rounded-2xl relative aspect-[16/9] shadow-xl hover:border-neutral-600 transition-all"
-        >
-          <img src={slide6} alt="Information Architecture" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-            <span className="text-xs font-mono uppercase tracking-wider text-white font-bold">
-              {isPt ? 'Slide 06: Arquitetura de Informação' : 'Slide 06: Information Architecture'}
-            </span>
-            <div className="optical-glass p-2 rounded-full text-white">
-              <Maximize2 className="w-3.5 h-3.5" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  // =========================================================================
-  // TAB 4: DESIGN SYSTEM & WIREFRAMES
-  // =========================================================================
-  const PrototypeTab = (
-    <div className="flex flex-col gap-8">
-      <div className="optical-glass p-6 sm:p-10 rounded-2xl flex flex-col gap-6">
-        <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-400 border-b border-white/10 pb-4">
-          <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
-          <span>04 / {isPt ? 'WIREFRAMES & DESIGN SYSTEM' : 'WIREFRAMES & DESIGN SYSTEM'}</span>
-        </div>
-        <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
-          {isPt ? 'Componentes Reutilizáveis & Paleta de Confiança' : 'Reusable Tokens & Trust-First Palette'}
-        </h3>
-        <p className="text-base text-neutral-300 leading-relaxed font-light">
-          {isPt 
-            ? 'Um sistema de design coeso que alia a sobriedade institucional da autoridade migratória com a proximidade calorosa e acolhedora necessária para quem está a recomeçar a vida num novo país.'
-            : 'A design system marrying the institutional rigor required for immigration with the warmth and human clarity demanded by newcomers.'}
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div 
-          onClick={() => setExpandedImage(slide7)}
-          className="group cursor-pointer bg-neutral-950 border border-neutral-800 overflow-hidden rounded-2xl relative aspect-[16/9] shadow-xl hover:border-neutral-600 transition-all"
-        >
-          <img src={slide7} alt="Wireframes" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-            <span className="text-xs font-mono uppercase tracking-wider text-white font-bold">
-              {isPt ? 'Slide 07: Wireframes de Baixa Fidelidade' : 'Slide 07: Lo-Fi Wireframes'}
-            </span>
-            <div className="optical-glass p-2 rounded-full text-white">
-              <Maximize2 className="w-3.5 h-3.5" />
-            </div>
-          </div>
-        </div>
-
-        <div 
-          onClick={() => setExpandedImage(slide8)}
-          className="group cursor-pointer bg-neutral-950 border border-neutral-800 overflow-hidden rounded-2xl relative aspect-[16/9] shadow-xl hover:border-neutral-600 transition-all"
-        >
-          <img src={slide8} alt="Design System" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-            <span className="text-xs font-mono uppercase tracking-wider text-white font-bold">
-              {isPt ? 'Slide 08: Design System & Cores' : 'Slide 08: Design System & Tokens'}
-            </span>
-            <div className="optical-glass p-2 rounded-full text-white">
-              <Maximize2 className="w-3.5 h-3.5" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  // =========================================================================
-  // TAB 5: VÍDEO & TELAS FINAIS
-  // =========================================================================
-  const FinalResultTab = (
-    <div className="flex flex-col gap-8">
-      <div className="optical-glass p-6 sm:p-10 rounded-2xl flex flex-col gap-6">
-        <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-400 border-b border-white/10 pb-4">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-          <span>05 / {isPt ? 'PROTÓTIPO EM VÍDEO & TELAS FINAIS' : 'VIDEO PROTOTYPE & FINAL UI'}</span>
-        </div>
-        <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
-          {isPt ? 'Demonstração Interativa da Aplicação Móvel' : 'Interactive Mobile Experience Walkthrough'}
-        </h3>
-        <p className="text-base text-neutral-300 leading-relaxed font-light">
-          {isPt 
-            ? 'Apresentação em vídeo e composição final das interfaces de alta fidelidade desenhadas no Figma.'
-            : 'Video walkthrough and final high-fidelity UI screen compositions designed in Figma.'}
-        </p>
-      </div>
-
-      {/* Video Player in Optical Glass Frame */}
-      <div className="optical-glass p-4 sm:p-6 rounded-2xl flex flex-col gap-4">
-        <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-black border border-white/10">
-          <video
-            ref={videoRef}
-            src="/project-sue/sue-promo.mp4"
-            autoPlay
-            loop
-            muted={isVideoMuted}
-            playsInline
-            className="w-full h-full object-contain"
-          />
-
-          {/* Video Control Bar */}
-          <div className="absolute bottom-3 left-3 right-3 optical-glass px-4 py-2 rounded-xl flex items-center justify-between text-xs text-white">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={toggleVideoPlay}
-                className="hover:text-sky-400 cursor-pointer flex items-center gap-1.5 font-mono"
-              >
-                {isVideoPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                <span>{isVideoPlaying ? (isPt ? 'Pausar' : 'Pause') : (isPt ? 'Reproduzir' : 'Play')}</span>
-              </button>
-
-              <button
-                onClick={toggleVideoMute}
-                className="hover:text-sky-400 cursor-pointer flex items-center gap-1.5 font-mono"
-              >
-                {isVideoMuted ? <VolumeX className="w-4 h-4 text-amber-400" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
-                <span>{isVideoMuted ? (isPt ? 'Ativar Som' : 'Unmute') : (isPt ? 'Mudo' : 'Mute')}</span>
-              </button>
-
-              <button
-                onClick={restartVideo}
-                className="hover:text-sky-400 cursor-pointer flex items-center gap-1.5 font-mono hidden sm:flex"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>{isPt ? 'Reiniciar' : 'Restart'}</span>
-              </button>
-            </div>
-
-            <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest hidden sm:inline">
-              VÍDEO OFICIAL • SUE PROMO
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Slide 9: Final UI Screen */}
-      <div 
-        onClick={() => setExpandedImage(slide9)}
-        className="group cursor-pointer bg-neutral-950 border border-neutral-800 overflow-hidden rounded-2xl relative aspect-[16/9] shadow-2xl hover:border-neutral-600 transition-all"
-      >
-        <img src={slide9} alt="Final UI Screens" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-          <span className="text-sm font-mono uppercase tracking-wider text-white font-bold">
-            {isPt ? 'Slide 09: Telas Finais de Alta Fidelidade' : 'Slide 09: High-Fidelity UI Screens'}
-          </span>
-          <div className="optical-glass p-2 rounded-full text-white">
-            <Maximize2 className="w-4 h-4" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  // =========================================================================
-  // TAB 6: APRENDIZAGENS & IMPACTO
-  // =========================================================================
-  const LearningsTab = (
-    <div className="flex flex-col gap-8">
-      <div className="optical-glass p-6 sm:p-10 rounded-2xl flex flex-col gap-6">
-        <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-400 border-b border-white/10 pb-4">
-          <span className="w-1.5 h-1.5 rounded-full bg-white" />
-          <span>06 / {isPt ? 'APRENDIZAGENS DOS TESTES DE USABILIDADE' : 'USABILITY & DESIGN IMPACT'}</span>
-        </div>
-
-        <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
-          {isPt ? 'Empatia Radical & Impacto Social do Design' : 'Radical Empathy & Social Impact of Design'}
-        </h3>
-
-        <p className="text-base sm:text-lg text-neutral-200 font-light leading-relaxed">
-          {isPt 
-            ? 'Projetar para pessoas em situação de vulnerabilidade e transição geográfica exige mais do que boas regras de usabilidade: exige profunda empatia emocional. Os testes revelaram que o maior obstáculo não era a navegação em si, mas a ansiedade gerada pela falta de certeza quanto aos prazos legais.'
-            : 'Designing for individuals navigating international relocation requires more than standard UX conventions: it demands acute emotional empathy. Usability tests proved that the greatest hurdle was not interface navigation, but chronic anxiety born from zero legal status clarity.'}
-        </p>
-
-        <p className="text-sm sm:text-base text-neutral-400 font-light leading-relaxed">
-          {isPt 
-            ? 'A introdução de micro-cópias calorosas em português claro, a substituição de termos técnicos por resumos práticos e a linha temporal passo a passo reduziram o tempo de execução de tarefas em 64% durante as sessões de teste.'
-            : 'Introducing warm microcopy in plain Portuguese, replacing legal jargon with actionable step cards, and anchoring the timeline reduced task completion duration by 64% during moderated testing sessions.'}
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="optical-glass p-6 rounded-2xl flex flex-col gap-2">
-          <span className="font-mono text-xs font-bold text-sky-400">
-            {isPt ? '01. Clareza Linguística' : '01. Linguistic Clarity'}
-          </span>
-          <p className="text-xs text-neutral-400 leading-relaxed font-light">
-            {isPt ? 'Simplificar termos jurídicos complexos sem perder o rigor legal foi o maior desafio de UX Writing.' : 'Translating complex administrative jargon into plain language without losing legal precision.'}
-          </p>
-        </div>
-
-        <div className="optical-glass p-6 rounded-2xl flex flex-col gap-2">
-          <span className="font-mono text-xs font-bold text-emerald-400">
-            {isPt ? '02. Feedback Constante' : '02. Constant Status Feedback'}
-          </span>
-          <p className="text-xs text-neutral-400 leading-relaxed font-light">
-            {isPt ? 'Uma simples barra de progresso visual acalma a ansiedade do utilizador mais do que qualquer outro elemento.' : 'A clear visual timeline relieves user anxiety more effectively than any other interface element.'}
-          </p>
-        </div>
-
-        <div className="optical-glass p-6 rounded-2xl flex flex-col gap-2">
-          <span className="font-mono text-xs font-bold text-purple-400">
-            {isPt ? '03. Impacto Social do Design' : '03. Social Impact'}
-          </span>
-          <p className="text-xs text-neutral-400 leading-relaxed font-light">
-            {isPt ? 'O design tem o poder real de devolver dignidade e segurança a quem recomeça a sua vida num novo país.' : 'Design possesses the tangible power to restore dignity and confidence to those rebuilding lives abroad.'}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-
-  const modernTabs: ProjectTabItem[] = [
-    {
-      id: 'overview',
-      labelPt: 'Visão Geral',
-      labelEn: 'Overview',
-      badge: '9 SLIDES',
-      content: OverviewTab,
-    },
-    {
-      id: 'research',
-      labelPt: 'Pesquisa com Utilizadores',
-      labelEn: 'User Research',
-      badge: '12 INT',
-      content: ResearchTab,
-    },
-    {
-      id: 'process',
-      labelPt: 'Jornada & Arquitetura',
-      labelEn: 'Journey & IA',
-      badge: 'FLOW',
-      content: DesignProcessTab,
-    },
-    {
-      id: 'prototype',
-      labelPt: 'Design System',
-      labelEn: 'Design System',
-      badge: 'UI',
-      content: PrototypeTab,
-    },
-    {
-      id: 'result',
-      labelPt: 'Vídeo & Telas Finais',
-      labelEn: 'Video & Final UI',
-      badge: 'MP4',
-      content: FinalResultTab,
-    },
-    {
-      id: 'learnings',
-      labelPt: 'Aprendizagens',
-      labelEn: 'Takeaways',
-      badge: 'UX',
-      content: LearningsTab,
-    },
-  ];
 
   return (
     <>
-      <ModernProjectLayout
-        projectId="sue-app"
-        projectNumber="02"
-        title="SUE — Mobile App"
-        subtitle={isPt 
-          ? "Serviços de União a Emigração • Mobile App para iOS e Android" 
-          : "Union Services for Emigration • iOS & Android Mobile Experience"}
-        category={isPt ? "APLICAÇÃO MÓVEL & UX RESEARCH" : "MOBILE APP & UX RESEARCH"}
-        year="2026"
-        roles={["UX/UI Design", "UX Research", "Usability Testing", "Design System"]}
+      <EditorialProjectLayout
+        title="SUE App"
+        subtitle={
+          isPt
+            ? 'Uma aplicação móvel concebida para simplificar a jornada de regularização de imigrantes e emigrantes, transformando processos burocráticos complexos numa experiência transparente, intuitiva e humana.'
+            : 'A mobile application designed to simplify the migration and residence regularisation journey, transforming complex bureaucratic processes into a transparent, intuitive, and human experience.'
+        }
+        overviewPosition="after"
+        overview={{
+          projectLabel: isPt ? 'O projeto' : 'The project',
+          description: isPt
+            ? 'O projeto SUE (Serviços de União a Emigração) aborda as principais dificuldades sentidas pela comunidade migrante: terminologia jurídica impenetrável, falta de acompanhamento em tempo real do Título de Residência e ausência de apoio humanizado durante a transição.'
+            : 'The SUE (Union Services for Emigration) project addresses key challenges faced by migrant communities: impenetrable legal jargon, lack of real-time permit status tracking, and limited human guidance.',
+          roles: ['UX/UI Designer', 'UX Researcher', 'Design System'],
+          technologies: ['Figma', 'Miro', 'Google Forms'],
+          methodology: isPt
+            ? ['Design Thinking', 'Entrevistas com Utilizadores', 'Testes de Usabilidade']
+            : ['Design Thinking', 'User Interviews', 'Usability Testing'],
+          users: isPt
+            ? ['Imigrantes & Emigrantes', 'iOS & Android']
+            : ['Migrants & Expats', 'iOS & Android'],
+        }}
         language={language}
         onBack={onBack}
         onNextProject={onNextProject}
         onPrevProject={onPrevProject}
         prevProjectName="Nipon Spa"
-        nextProjectName={isPt ? "Plataforma de Helpdesk" : "Helpdesk Platform"}
-        tabs={modernTabs}
-      />
+        nextProjectName={isPt ? 'Plataforma de Helpdesk' : 'Helpdesk Platform'}
+      >
+        {/* 2. CARROSSEL AUTOMÁTICO DO PROCESSO (Imediatamente abaixo do título) */}
+        <section
+          aria-label={isPt ? 'Processo de Design do SUE App' : 'SUE App Design Process'}
+          className="flex flex-col gap-6 sm:gap-8"
+          onMouseEnter={() => setIsHoveringCarousel(true)}
+          onMouseLeave={() => setIsHoveringCarousel(false)}
+        >
+          {/* Header da etapa atual com título próprio e controlos de navegação */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-neutral-200/80 pb-6">
+            <div className="flex flex-col gap-2 max-w-3xl">
+              <div className="flex items-center gap-3 text-xs font-mono uppercase tracking-[0.2em] text-neutral-500">
+                <span>{isPt ? 'Processo de Design' : 'Design Process'}</span>
+                <span aria-hidden="true">·</span>
+                <span className="tabular-nums font-bold text-[#0F1115]">
+                  {String(currentSlide.id).padStart(2, '0')} / {String(PROCESS_SLIDES.length).padStart(2, '0')}
+                </span>
+              </div>
 
-      {/* Expanded Lightbox Modal matching Homepage */}
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[#0F1115]">
+                {isPt ? currentSlide.stagePt : currentSlide.stageEn}
+              </h2>
+
+              <p className="text-sm sm:text-base text-neutral-600 font-light leading-relaxed">
+                {isPt ? currentSlide.descPt : currentSlide.descEn}
+              </p>
+            </div>
+
+            {/* Controlos manuais do carrossel (alinhados e acessíveis em desktop & mobile) */}
+            <div className="flex items-center gap-2 shrink-0">
+              {!shouldReduceMotion && (
+                <button
+                  type="button"
+                  onClick={() => setIsAutoPlaying((prev) => !prev)}
+                  className="h-11 px-4 rounded-full border border-neutral-200 bg-white hover:bg-neutral-100 text-xs font-mono uppercase tracking-wider text-neutral-700 inline-flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap"
+                  aria-label={isAutoPlaying ? (isPt ? 'Pausar carrossel' : 'Pause carousel') : (isPt ? 'Reproduzir carrossel' : 'Play carousel')}
+                >
+                  {isAutoPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+                  <span>{isAutoPlaying ? (isPt ? 'Pausar' : 'Pause') : (isPt ? 'Auto' : 'Play')}</span>
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={handlePrevSlide}
+                className="w-11 h-11 rounded-full border border-neutral-200 bg-white hover:bg-neutral-100 text-[#0F1115] flex items-center justify-center transition-colors cursor-pointer"
+                aria-label={isPt ? 'Etapa anterior' : 'Previous step'}
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+
+              <button
+                type="button"
+                onClick={handleNextSlide}
+                className="w-11 h-11 rounded-full border border-neutral-200 bg-white hover:bg-neutral-100 text-[#0F1115] flex items-center justify-center transition-colors cursor-pointer"
+                aria-label={isPt ? 'Próxima etapa' : 'Next step'}
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Palco do Slide em Tamanho Grande (1 imagem de cada vez com fade suave) */}
+          <div
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            onClick={() => {
+              setIsAutoPlaying(false);
+              setExpandedImage({
+                src: currentSlide.image,
+                caption: isPt ? currentSlide.stagePt : currentSlide.stageEn,
+              });
+            }}
+            className="group relative w-full aspect-[5834/3750] rounded-2xl overflow-hidden border border-neutral-200/80 bg-[#F4F6F8] cursor-pointer shadow-[0_16px_44px_rgba(0,0,0,0.05)]"
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide.id}
+                initial={shouldReduceMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={shouldReduceMotion ? undefined : { opacity: 0 }}
+                transition={{
+                  duration: shouldReduceMotion ? 0 : 0.55,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className="w-full h-full"
+              >
+                <img
+                  src={currentSlide.image}
+                  alt={isPt ? currentSlide.stagePt : currentSlide.stageEn}
+                  onError={(e) => {
+                    const img = e.currentTarget;
+                    if (img.src !== window.location.origin + currentSlide.fallback) {
+                      img.src = currentSlide.fallback;
+                    }
+                  }}
+                  className="w-full h-full object-contain"
+                />
+              </motion.div>
+            </AnimatePresence>
+
+            <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 bg-black/75 backdrop-blur-md text-white text-[11px] font-mono px-3 py-1.5 rounded-full flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
+              <Maximize2 className="w-3 h-3" />
+              <span>{isPt ? 'Expandir' : 'Expand'}</span>
+            </div>
+          </div>
+
+          {/* Indicadores de progresso clicáveis por etapa */}
+          <div
+            role="tablist"
+            aria-label={isPt ? 'Etapas do processo de design' : 'Design process stages'}
+            className="grid grid-cols-9 gap-2 sm:gap-3 pt-1"
+          >
+            {PROCESS_SLIDES.map((slide, idx) => {
+              const isActive = idx === currentSlideIndex;
+              return (
+                <button
+                  key={slide.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-label={isPt ? slide.stagePt : slide.stageEn}
+                  onClick={() => handleSelectSlide(idx)}
+                  className="group relative py-3 cursor-pointer flex items-center focus:outline-none"
+                >
+                  <span
+                    className="relative w-full h-1 rounded-full overflow-hidden block"
+                    style={{ backgroundColor: 'var(--border-color, rgba(0, 0, 0, 0.14))' }}
+                  >
+                    {isActive && (
+                      shouldReduceMotion || !isAutoPlaying || isHoveringCarousel ? (
+                        <span
+                          className="absolute inset-0 bg-[#0F1115] block rounded-full"
+                          style={{ backgroundColor: 'var(--text-primary, #0F1115)' }}
+                        />
+                      ) : (
+                        <motion.span
+                          key={`progress-${currentSlideIndex}`}
+                          initial={{ scaleX: 0 }}
+                          animate={{ scaleX: 1 }}
+                          transition={{ duration: AUTO_ADVANCE_MS / 1000, ease: 'linear' }}
+                          style={{
+                            transformOrigin: 'left center',
+                            backgroundColor: 'var(--text-primary, #0F1115)',
+                          }}
+                          className="absolute inset-0 block rounded-full"
+                        />
+                      )
+                    )}
+                    {!isActive && idx < currentSlideIndex && (
+                      <span
+                        className="absolute inset-0 opacity-35 block rounded-full"
+                        style={{ backgroundColor: 'var(--text-primary, #0F1115)' }}
+                      />
+                    )}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* 3. VÍDEO DO PROJETO (Imediatamente abaixo do carrossel) */}
+        <section
+          aria-label={isPt ? 'Vídeo de Demonstração do SUE App' : 'SUE App Prototype Video'}
+          className="flex flex-col gap-6 sm:gap-8"
+        >
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-neutral-200/80 pb-6">
+            <div className="flex flex-col gap-2 max-w-3xl">
+              <span className="text-xs font-mono uppercase tracking-[0.2em] text-neutral-500">
+                {isPt ? 'Demonstração Final' : 'Final Walkthrough'}
+              </span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[#0F1115]">
+                {isPt ? 'Experiência Interativa em Vídeo' : 'Interactive Mobile Experience'}
+              </h2>
+            </div>
+
+            {/* Controlos dedicados: Reproduzir / Pausar e Ativar Som / Mudo */}
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={toggleVideoPlay}
+                className="h-11 px-4 rounded-full border border-neutral-200 bg-white hover:bg-neutral-100 text-xs font-mono uppercase tracking-wider text-[#0F1115] inline-flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap"
+                aria-label={isVideoPlaying ? (isPt ? 'Pausar vídeo' : 'Pause video') : (isPt ? 'Reproduzir vídeo' : 'Play video')}
+              >
+                {isVideoPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+                <span>{isVideoPlaying ? (isPt ? 'Pausar' : 'Pause') : (isPt ? 'Reproduzir' : 'Play')}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={toggleVideoMute}
+                className="h-11 px-4 rounded-full border border-neutral-200 bg-white hover:bg-neutral-100 text-xs font-mono uppercase tracking-wider text-[#0F1115] inline-flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap"
+                aria-label={isVideoMuted ? (isPt ? 'Ativar som' : 'Unmute video') : (isPt ? 'Desativar som' : 'Mute video')}
+              >
+                {isVideoMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+                <span>{isVideoMuted ? (isPt ? 'Ativar som' : 'Unmute') : (isPt ? 'Som ativo' : 'Mute')}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Contentor horizontal 16:9 mantendo a proporção original sem cortes */}
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-neutral-200/80 bg-black shadow-[0_16px_44px_rgba(0,0,0,0.06)]">
+            <video
+              ref={videoRef}
+              src="/project-sue/sue-promo.mp4"
+              poster="/project-sue/sue-promo-poster.jpg"
+              autoPlay={!shouldReduceMotion}
+              loop
+              muted={isVideoMuted}
+              playsInline
+              onClick={toggleVideoPlay}
+              onPlay={() => setIsVideoPlaying(true)}
+              onPause={() => setIsVideoPlaying(false)}
+              className="w-full h-full object-contain cursor-pointer"
+            />
+          </div>
+        </section>
+      </EditorialProjectLayout>
+
+      {/* Lightbox Modal de Alta Resolução para slides */}
       <AnimatePresence>
         {expandedImage && (
           <motion.div
@@ -758,24 +492,30 @@ export const SueAppProject: React.FC<SueAppProjectProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setExpandedImage(null)}
-            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 cursor-pointer"
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 cursor-pointer"
           >
-            <div className="relative max-w-5xl w-full optical-glass p-3 rounded-2xl border border-white/20 shadow-2xl">
-              <div className="flex justify-between items-center px-3 py-2 border-b border-white/10 mb-3">
-                <span className="font-mono text-xs uppercase text-neutral-400">
-                  SLIDE COMPLETO • SUE MOBILE APP
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-6xl w-full max-h-[92vh] flex flex-col items-center gap-3"
+            >
+              <div className="w-full flex justify-between items-center text-white px-2">
+                <span className="text-xs font-mono uppercase tracking-wider text-neutral-300">
+                  {expandedImage.caption || 'SUE App'}
                 </span>
-                <button 
+                <button
+                  type="button"
                   onClick={() => setExpandedImage(null)}
-                  className="optical-glass p-1.5 rounded-full text-white hover:bg-white/20 transition-colors"
+                  aria-label={isPt ? 'Fechar imagem' : 'Close image'}
+                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
-              <img 
-                src={expandedImage} 
-                alt="Expanded View" 
-                className="w-full max-h-[80vh] object-contain rounded-xl bg-black"
+
+              <img
+                src={expandedImage.src}
+                alt={expandedImage.caption || 'SUE App'}
+                className="max-h-[80vh] w-auto max-w-full object-contain rounded-xl shadow-2xl bg-black"
               />
             </div>
           </motion.div>

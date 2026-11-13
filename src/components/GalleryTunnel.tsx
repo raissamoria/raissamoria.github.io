@@ -4,12 +4,12 @@ import { ArrowDown, ArrowUpRight, Layers, Maximize2, Minimize2, Compass, Sparkle
 import { ProjectItem } from '../types';
 import { OpticalGlassButton, OpticalGlassPill } from './OpticalGlass';
 
-// Authentic website image from https://www.niponspa.pt
+// Cover video for Nipon Spa
 // @ts-ignore
-import niponHeroImg from '../assets/images/nipon_real_house.png';
-// Cover image for SUE app mobile
+import niponCoverVideo from '../../niponspa/video intro.mp4';
+// Cover video for SUE app mobile
 // @ts-ignore
-import sueCapaImg from '../assets/images/sue-capa.png';
+import sueCoverVideo from '../../project sue/SUE PROMO.mp4';
 // Cover image for Plataforma de Helpdesk
 // @ts-ignore
 import helpdeskCoverImg from '../assets/images/help.png';
@@ -29,7 +29,7 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
     liveUrl: "https://www.niponspa.pt/",
     slug: "nipon-spa",
     hasCaseStudy: true,
-    image: niponHeroImg,
+    video: niponCoverVideo,
     metrics: "Figma • UX Architecture • React / Web",
     tags: ["UX/UI Design", "Web Design", "Development", "Japanese Wellness"]
   },
@@ -47,7 +47,7 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
     liveUrl: "#projects/sue-app",
     slug: "sue-app",
     hasCaseStudy: true,
-    image: sueCapaImg,
+    video: sueCoverVideo,
     metrics: "Figma • iOS & Android • UX Research • Design System",
     tags: ["UX/UI Design", "Mobile App", "Emigration Support", "Design System", "Figma"]
   },
@@ -582,14 +582,36 @@ export const GalleryTunnel: React.FC<GalleryTunnelProps> = ({
                 {/* Card Artwork / Live Preview Banner */}
                 <div className="w-full h-44 sm:h-52 rounded-xl bg-[#080808] border border-white/10 relative overflow-hidden mb-5 flex items-center justify-center">
                   
-                  {card.project.image ? (
-                    // Real imagery for project (Nipon Spa, SUE App, etc.)
+                  {card.project.video || card.project.image ? (
+                    // Real media for project (Nipon Spa, SUE App, etc.)
                     <div className="relative w-full h-full overflow-hidden bg-neutral-900">
-                      <img 
-                        src={card.project.image} 
-                        alt={card.project.title} 
-                        className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                      />
+                      {card.project.video ? (
+                        <video
+                          ref={(el) => {
+                            if (el) el.playbackRate = card.project.videoPlaybackRate ?? 1;
+                          }}
+                          src={card.project.video}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          preload="auto"
+                          onLoadedMetadata={(e) => {
+                            e.currentTarget.playbackRate = card.project.videoPlaybackRate ?? 1;
+                          }}
+                          onPlay={(e) => {
+                            e.currentTarget.playbackRate = card.project.videoPlaybackRate ?? 1;
+                          }}
+                          aria-label={card.project.title}
+                          className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                        />
+                      ) : (
+                        <img 
+                          src={card.project.image} 
+                          alt={card.project.title} 
+                          className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                        />
+                      )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
                       <div className="absolute bottom-3 left-4 right-4 flex justify-between items-end">
                         <div className="max-w-[70%]">
