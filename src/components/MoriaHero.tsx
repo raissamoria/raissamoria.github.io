@@ -3,8 +3,6 @@ import { BackgroundTitle } from './BackgroundTitle';
 import { GlassOrb } from './GlassOrb';
 import { GlassOrbPhysicsEngine, DEFAULT_PHYSICS_CONFIG } from './GlassOrbPhysics';
 import { GlassOrbData } from '../types';
-import { OpticalGlassButton } from './OpticalGlass';
-import { ArrowUpRight } from 'lucide-react';
 
 interface MoriaHeroProps {
   language?: 'pt' | 'en';
@@ -322,11 +320,6 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
     setDraggedOrbId(null);
   };
 
-  const handleScrollToProjects = () => {
-    const el = document.getElementById('portfolio-grid-section');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <section
       ref={containerRef}
@@ -385,62 +378,6 @@ export const MoriaHero: React.FC<MoriaHeroProps> = ({ language = 'pt' }) => {
       </div>
 
 
-      {/* 7. HERO BOTTOM DOCK & ACTION BUTTONS */}
-      <div className="relative z-20 w-full max-w-[1720px] mx-auto flex flex-col md:flex-row justify-between items-end md:items-center gap-6 pb-2 pointer-events-none">
-        
-        {/* Editorial Subtitle & Role */}
-        <div className="flex flex-col gap-1 max-w-xl pointer-events-auto">
-          <div className="flex items-center gap-2 font-mono text-[10px] text-neutral-400 uppercase tracking-[0.2em]">
-            <span className="text-neutral-400 text-xs">⎊</span>
-            <span>{language === 'pt' ? 'DESIGN DE PRODUTO & SISTEMAS DIGITAIS' : 'PRODUCT DESIGN & DIGITAL SYSTEMS'}</span>
-          </div>
-          <p className="text-sm md:text-base text-neutral-300 font-light leading-snug">
-            {language === 'pt' ? (
-              <>
-                Desenvolvimento de interfaces limpas, arquitetura de informação e experiências digitais intuitivas orientadas a produto.
-              </>
-            ) : (
-              <>
-                Designing clean interfaces, robust information architectures, and intuitive digital experiences focused on product craft.
-              </>
-            )}
-          </p>
-        </div>
-
-        {/* Primary Action Buttons */}
-        <div className="flex flex-wrap items-center gap-3 pointer-events-auto">
-          
-          <OpticalGlassButton 
-            onClick={handleScrollToProjects}
-            className="shadow-[0_0_20px_rgba(255,255,255,0.06)]"
-          >
-            <span>{language === 'pt' ? 'VER TRABALHOS' : 'EXPLORE WORKS'}</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
-          </OpticalGlassButton>
-
-          <OpticalGlassButton
-            href="#projects/nipon-spa"
-            className="hidden sm:inline-flex"
-          >
-            <span>NIPON SPA</span>
-          </OpticalGlassButton>
-
-          <OpticalGlassButton
-            href="#projects/sue-app"
-            className="hidden sm:inline-flex"
-          >
-            <span>SUE APP</span>
-          </OpticalGlassButton>
-
-          <OpticalGlassButton
-            href="#projects/plataforma-helpdesk"
-            className="hidden sm:inline-flex"
-          >
-            <span>{language === 'pt' ? 'PLATAFORMA DE HELPDESK' : 'HELPDESK PLATFORM'}</span>
-          </OpticalGlassButton>
-        </div>
-
-      </div>
 
       {/* 8. Minimalist Scroll to Explore Indicator */}
       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1.5 pointer-events-none">

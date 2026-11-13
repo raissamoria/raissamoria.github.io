@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { ArrowUpRight, Github, Linkedin, Mail, Sparkles, ArrowRight, ArrowDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import { MoriaHero } from "./components/MoriaHero";
+import { DesignPhilosophySection } from "./components/DesignPhilosophySection";
 import { ProjectsSection } from "./components/ProjectsSection";
 import { NiponSpaProject } from "./components/NiponSpaProject";
 import { SueAppProject } from "./components/SueAppProject";
@@ -155,8 +156,6 @@ export default function App() {
             <span className="font-sans font-black text-sm tracking-[-0.03em] uppercase text-white group-hover:text-neutral-300 transition-colors">
               RAÍSSA MORIÁ
             </span>
-            <div className="w-1.5 h-1.5 rounded-full bg-white" />
-            <span className="text-[11px] text-neutral-400 uppercase tracking-widest font-mono hidden sm:inline">PORTFOLIO</span>
           </a>
 
           {/* Clean minimal navigation links */}
@@ -215,7 +214,10 @@ export default function App() {
         <MoriaHero language={language} />
       </main>
 
-      {/* 3. PROJECTS SHOWCASE ARCHIVE */}
+      {/* 3. AUTOMATIC LOOPING DESIGN PHILOSOPHY TYPOGRAPHY */}
+      <DesignPhilosophySection language={language} />
+
+      {/* 4. PROJECTS SHOWCASE ARCHIVE */}
       <ProjectsSection 
         language={language} 
         onSelectProject={handleOpenProject}

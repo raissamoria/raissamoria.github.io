@@ -3,7 +3,6 @@ import { motion, AnimatePresence, useSpring } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
 import { ProjectItem } from '../types';
 import { PORTFOLIO_PROJECTS } from './GalleryTunnel';
-import { OpticalGlassPill } from './OpticalGlass';
 
 interface ProjectsSectionProps {
   language: 'pt' | 'en';
@@ -14,7 +13,6 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
   language,
   onSelectProject,
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [hoveredProject, setHoveredProject] = useState<ProjectItem | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -32,25 +30,6 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
     springY.set(y);
     setMousePos({ x, y });
   };
-
-  const categories = [
-    { id: 'all', labelPt: 'Todos', labelEn: 'All Works' },
-    { id: 'UX/UI & Web', labelPt: 'UX/UI & Web', labelEn: 'UX/UI & Web' },
-    { id: 'Service Design', labelPt: 'Service Design', labelEn: 'Service Design' },
-    { id: 'Creative Dev', labelPt: 'Desenvolvimento', labelEn: 'Creative Dev' },
-    { id: 'Product Design', labelPt: 'Design de Produto', labelEn: 'Product Design' },
-    { id: 'Motion Design', labelPt: 'Motion Design', labelEn: 'Motion Design' },
-    { id: 'Visual Identity', labelPt: 'Identidade Visual', labelEn: 'Visual Identity' },
-  ];
-
-  const filteredProjects = selectedCategory === 'all'
-    ? PORTFOLIO_PROJECTS
-    : PORTFOLIO_PROJECTS.filter(p => 
-        p.category === selectedCategory || 
-        (selectedCategory === 'UX/UI & Web' && (p.category.includes('UX/UI') || p.category.includes('Mobile') || p.category.includes('Service'))) ||
-        (selectedCategory === 'Product Design' && (p.category.includes('Product') || p.category.includes('Mobile') || p.category.includes('Service'))) ||
-        (selectedCategory === 'Service Design' && (p.category.includes('Service') || p.category.includes('UX/UI') || p.category.includes('Mobile')))
-      );
 
   const handleProjectClick = (project: ProjectItem) => {
     if (project.hasCaseStudy && project.slug && onSelectProject) {
@@ -112,50 +91,36 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
 
       <div className="max-w-[1720px] mx-auto flex flex-col gap-16 relative z-10">
         
-        {/* Section Header with Minimalist Monochrome Hierarchy */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 border-b border-neutral-800 pb-10">
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-white" />
-              <span>01 / {language === 'pt' ? 'PROJETOS & TRABALHOS SELECIONADOS' : 'SELECTED WORKS ARCHIVE'}</span>
-            </div>
-            <h2 className="text-4xl sm:text-6xl font-black uppercase tracking-tight text-white leading-none">
-              {language === 'pt' ? (
-                <>
-                  Trabalhos Selecionados & <br />
-                  <span className="text-neutral-500">Design de Produto.</span>
-                </>
-              ) : (
-                <>
-                  Selected Works & <br />
-                  <span className="text-neutral-500">Product Design.</span>
-                </>
-              )}
+        {/* Section Header with 3D "MY WORK" Lettering */}
+        <div className="flex items-center justify-start border-b border-neutral-800 pb-10">
+          <div className="relative flex items-center">
+            <h2 className="sr-only">
+              {language === 'pt' ? 'My Work — Trabalhos Selecionados & Design de Produto' : 'My Work — Selected Works & Product Design'}
             </h2>
-          </div>
-
-          {/* Category Filter Pills (Optical Glass System) */}
-          <div className="flex flex-wrap gap-2">
-            {categories.map((cat) => {
-              const isSelected = selectedCategory === cat.id;
-              return (
-                <OpticalGlassPill
-                  key={cat.id}
-                  active={isSelected}
-                  onClick={() => setSelectedCategory(cat.id)}
-                  className="!px-4 !py-2 cursor-pointer"
-                >
-                  {language === 'pt' ? cat.labelPt : cat.labelEn}
-                </OpticalGlassPill>
-              );
-            })}
+            {/* Subtle ambient backlight so glossy black 3D silhouette separates cleanly across all themes */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -inset-4 rounded-full opacity-20 blur-2xl"
+              style={{
+                background: 'radial-gradient(ellipse at center, var(--text-primary, #ffffff) 0%, transparent 70%)',
+              }}
+            />
+            <picture className="relative z-10 block">
+              <source srcSet="/my-work-3d-lettering.webp" type="image/webp" />
+              <img
+                src="/my-work-3d-lettering.png"
+                alt="MY WORK"
+                className="w-[260px] sm:w-[360px] md:w-[440px] lg:w-[500px] h-auto object-contain select-none"
+                draggable={false}
+              />
+            </picture>
           </div>
         </div>
 
         {/* Projects Grid: Pure Minimalist Visuals (Only Image + Title Underneath) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, idx) => {
+            {PORTFOLIO_PROJECTS.map((project, idx) => {
               return (
                 <motion.article
                   key={project.id}

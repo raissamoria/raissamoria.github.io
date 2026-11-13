@@ -19,7 +19,7 @@
     background-color: #008080;
     color: #000000;
     font-family: var(--font-sans);
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 }
 
